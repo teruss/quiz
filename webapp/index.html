@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en" ng-app="quizApp">
+<head>
+    <meta charset="utf-8">
+    <title>My HTML File</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="css/app.css">
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="js/controller.js"></script>
+</head>
+<body ng-controller="QuizCtrl">
+<div ng-show="is_backend_ready">
+<h2>QuizUnit</h2>
+    <form ng-submit="signin()">
+        <input type="button" class="btn" value="Login">
+    </form>
+<form ng-submit="insert()">
+    <input type="text" ng-model="question" size="50"><br>
+    <input type="text" ng-model="answer" size="50"><br>
+    <input type="text" ng-model="dummy1" size="50"><br>
+    <input type="text" ng-model="dummy2" size="50"><br>
+    <input type="text" ng-model="dummy3" size="50"><br>
+    <input type="submit" class="btn" value="Post">
+</form>
+
+<ul>
+    <li ng-repeat="quiz in quizzes">
+        {{quiz.question}} {{quiz.answer}}: {{quiz.dummy1}}
+    </li>
+</ul>
+</div>
+</body>
+</html>
