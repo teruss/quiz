@@ -9,11 +9,7 @@
     <script src="js/controller.js"></script>
 </head>
 <body ng-controller="QuizCtrl">
-<div ng-show="is_backend_ready">
 <h2>QuizUnit</h2>
-    <form ng-submit="signin()">
-        <input type="button" class="btn" value="Login">
-    </form>
 <form ng-submit="insert()">
     <input type="text" ng-model="question" size="50"><br>
     <input type="text" ng-model="answer" size="50"><br>
@@ -28,6 +24,5 @@
         {{quiz.question}} {{quiz.answer}}: {{quiz.dummy1}}
     </li>
 </ul>
-</div>
 </body>
 </html>
