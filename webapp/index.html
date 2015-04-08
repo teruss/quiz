@@ -1,27 +1,32 @@
 <!doctype html>
 <html lang="en" ng-app="quizApp">
-<head>
+  <head>
+    <title>QuizPost</title>
     <meta charset="utf-8">
-    <title>My HTML File</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
     <script src="js/controller.js"></script>
-</head>
-<body ng-controller="QuizCtrl">
-<h2>QuizUnit</h2>
-<form ng-submit="insert()">
-    <input type="text" ng-model="question" size="50"><br>
-    <input type="text" ng-model="answer" size="50"><br>
-    <input type="text" ng-model="dummy1" size="50"><br>
-    <input type="text" ng-model="dummy2" size="50"><br>
-    <input type="text" ng-model="dummy3" size="50"><br>
-    <input type="submit" class="btn" value="Post">
-</form>
-
-<ul>
-    <li ng-repeat="quiz in quizzes">
+  </head>
+  
+  <body ng-controller="QuizCtrl">
+    <nav class="navbar navbar-inverse">
+    </nav>
+    <h2>QuizPost</h2>
+    <form ng-submit="insert()">
+      <input type="text" ng-model="question" size="50"><br>
+      <input type="text" ng-model="answer" size="50"><br>
+      <input type="text" ng-model="dummy1" size="50"><br>
+      <input type="text" ng-model="dummy2" size="50"><br>
+      <input type="text" ng-model="dummy3" size="50"><br>
+      <input type="submit" class="btn" value="Post">
+    </form>
+    
+    <ul>
+      <li ng-repeat="quiz in quizzes">
         {{quiz.question}} {{quiz.answer}}: {{quiz.dummy1}}
-    </li>
-</ul>
-</body>
+      </li>
+    </ul>
+  </body>
 </html>
