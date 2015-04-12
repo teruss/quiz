@@ -90,40 +90,64 @@ function loggedIn(fbAccessToken) {
       console.log("accessToken:"+accessToken);
 
       // Prepare the target bucket to be queried
-var bucket = Kii.bucketWithName("quiz");
+      var bucket = Kii.bucketWithName("quiz");
+      
+      // Build "all" query
+      var all_query = KiiQuery.queryWithClause();
+      
+      // Define the callbacks
+      var queryCallbacks = {
+	success: function(queryPerformed, resultSet, nextQuery) {
+	  console.log(resultSet);
+	  // do something with the results
+	  for(var i=0; i<resultSet.length; i++) {
+	    // do something with the object resultSet[i];
+	    console.log("result:"+resultSet[i].get("question"));
+	  }
+	  if(nextQuery != null) {
+	    // There are more results (pages).
+	    // Execute the next query to get more results.
+//	    bucket.executeQuery(nextQuery, queryCallbacks);
+	  }
+	},
+	failure: function(queryPerformed, anErrorString) {
+	  // do something with the error response
+	}
+      }
+      
+      // Execute the query
+      bucket.executeQuery(all_query, queryCallbacks);
 
-// Build "all" query
-var all_query = KiiQuery.queryWithClause();
+      // Prepare the target Bucket to be queried.
+      var userBucket = KiiUser.getCurrentUser().bucketWithName("quiz");
+      var userQueryCallbacks = {
+	success: function(queryPerformed, resultSet, nextQuery) {
+	  console.log(resultSet);
+	  // do something with the results
+	  for(var i=0; i<resultSet.length; i++) {
+	    // do something with the object resultSet[i];
+	    console.log("due:"+resultSet[i].get("due"));
+	    console.log("quiz:"+resultSet[i].get("quiz"));
+	  }
+	  if(nextQuery != null) {
+	    // There are more results (pages).
+	    // Execute the next query to get more results.
+//	    bucket.executeQuery(nextQuery, queryCallbacks);
+	  }
+	},
+	failure: function(queryPerformed, anErrorString) {
+	  // do something with the error response
+	}
+      }
 
-// Define the callbacks
-var queryCallbacks = {
-  success: function(queryPerformed, resultSet, nextQuery) {
-    console.log(resultSet);
-    // do something with the results
-    for(var i=0; i<resultSet.length; i++) {
-      // do something with the object resultSet[i];
-//      console.log("result:"+resultSet[i]);
-    }
-    if(nextQuery != null) {
-      // There are more results (pages).
-      // Execute the next query to get more results.
-      bucket.executeQuery(nextQuery, queryCallbacks);
-    }
-  },
-  failure: function(queryPerformed, anErrorString) {
-    // do something with the error response
-  }
-}
-
-// Execute the query
-bucket.executeQuery(all_query, queryCallbacks);
+      userBucket.executeQuery(all_query, userQueryCallbacks);
     },
     // unable to connect
     failure : function(user, network, error) {
       console.log("Unable to connect to " + network + ". Reason: " + error);
     }
   };
-
+  
   KiiSocialConnect.setupNetwork(KiiSocialNetworkName.FACEBOOK, "123", null, {appId:"123"});
   
   // set options required by Facebook's API, you should also get the fbAccessToken 
