@@ -12,7 +12,19 @@
   </head>
   
   <body ng-controller="QuizCtrl">
-    <script type="text/javascript" src="js/Facebook.js"></script>
+    <script src="js/facebook_sample.js"></script>
+    
+    <!--
+	Below we include the Login Button social plugin. This button uses
+      the JavaScript SDK to present a graphical Login button that triggers
+      the FB.login() function when clicked.
+      -->
+    
+    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+    </fb:login-button>
+    
+    <div id="status">
+    </div>
     <nav class="navbar navbar-inverse">
       <div class="container-fluid">
 	<div class="navbar-header">
