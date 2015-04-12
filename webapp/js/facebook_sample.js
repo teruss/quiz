@@ -31,6 +31,7 @@ function checkLoginState() {
 }
 
 window.fbAsyncInit = function() {
+  console.log("call facebook init");
   FB.init({
     appId      : '576444712448750',
     cookie     : true,  // enable cookies to allow the server to access 
@@ -76,11 +77,46 @@ function loggedIn(fbAccessToken) {
       'Thanks for logging in, ' + response.name + '!';
   });
 
+  console.log("facebook token:"+ fbAccessToken);
+
   // SNS Registration
   var loginCallbacks = {
     // successfully connected to Facebook
     success : function(user, network) {
       console.log("Connected user " + user + " to network: " + network);
+      console.log(user);
+      // Get an access token by getAccessToekn method.
+      var accessToken = KiiUser.getCurrentUser().getAccessToken();
+      console.log("accessToken:"+accessToken);
+
+      // Prepare the target bucket to be queried
+var bucket = Kii.bucketWithName("quiz");
+
+// Build "all" query
+var all_query = KiiQuery.queryWithClause();
+
+// Define the callbacks
+var queryCallbacks = {
+  success: function(queryPerformed, resultSet, nextQuery) {
+    console.log(resultSet);
+    // do something with the results
+    for(var i=0; i<resultSet.length; i++) {
+      // do something with the object resultSet[i];
+//      console.log("result:"+resultSet[i]);
+    }
+    if(nextQuery != null) {
+      // There are more results (pages).
+      // Execute the next query to get more results.
+      bucket.executeQuery(nextQuery, queryCallbacks);
+    }
+  },
+  failure: function(queryPerformed, anErrorString) {
+    // do something with the error response
+  }
+}
+
+// Execute the query
+bucket.executeQuery(all_query, queryCallbacks);
     },
     // unable to connect
     failure : function(user, network, error) {
@@ -88,8 +124,7 @@ function loggedIn(fbAccessToken) {
     }
   };
 
-  /*
-  KiiSocialConnect.setupNetwork(KiiSocialNetworkName.FACEBOOK, null, null, null);
+  KiiSocialConnect.setupNetwork(KiiSocialNetworkName.FACEBOOK, "123", null, {appId:"123"});
   
   // set options required by Facebook's API, you should also get the fbAccessToken 
   var options = {
@@ -99,5 +134,6 @@ function loggedIn(fbAccessToken) {
   // this method must be after KiiSocialConnect.setupNetwork
   console.log("try to log in with KiiSocialConnect");
   KiiSocialConnect.logIn(KiiSocialNetworkName.FACEBOOK, options, loginCallbacks);
-*/
+  // this method must be after KiiSocialConnect.setupNetwork
+//KiiSocialConnect.linkCurrentUserWithNetwork(KiiSocialNetworkName.FACEBOOK, options, loginCallbacks);
 }
