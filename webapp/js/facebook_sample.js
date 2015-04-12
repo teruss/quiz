@@ -118,6 +118,12 @@ function loggedIn(fbAccessToken) {
       // Execute the query
       bucket.executeQuery(all_query, queryCallbacks);
 
+      console.log("now:"+new Date().getTime());
+      var ticks = ((new Date().getTime() * 10000) + 621355968000000000);
+      console.log("ticks:"+ticks);
+      
+      // Build "all" query
+      var user_query = KiiQuery.queryWithClause();
       // Prepare the target Bucket to be queried.
       var userBucket = KiiUser.getCurrentUser().bucketWithName("quiz");
       var userQueryCallbacks = {
