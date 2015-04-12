@@ -122,7 +122,8 @@ function loggedIn(fbAccessToken) {
       var ticks = ((new Date().getTime() * 10000) + 621355968000000000);
       console.log("ticks:"+ticks);
       
-      // Build "all" query
+      // Build "user" query
+      var clause = KiiClause.lessThan("due", ticks);
       var user_query = KiiQuery.queryWithClause();
       // Prepare the target Bucket to be queried.
       var userBucket = KiiUser.getCurrentUser().bucketWithName("quiz");
@@ -134,6 +135,20 @@ function loggedIn(fbAccessToken) {
 	    // do something with the object resultSet[i];
 	    console.log("due:"+resultSet[i].get("due"));
 	    console.log("quiz:"+resultSet[i].get("quiz"));
+	    if (i == 0) {
+	      var uri = resultSet[i].get("quiz");
+	      var quiz = KiiObject.objectWithURI(uri);
+	      quiz.refresh({
+		success: function(theObject) {
+		  console.log("Object refreshed!");
+		  console.log(theObject);
+		  console.log(theObject.get("question"));
+		},
+		failure: function(theObject, errorString) {
+		  console.log("Error refreshing object: " + errorString);
+		}
+	      });
+	    }
 	  }
 	  if(nextQuery != null) {
 	    // There are more results (pages).
