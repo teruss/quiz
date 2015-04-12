@@ -8,7 +8,7 @@ function statusChangeCallback(response) {
   // for FB.getLoginStatus().
   if (response.status === 'connected') {
     // Logged into your app and Facebook.
-    testAPI();
+    loggedIn(response.authResponse.accessToken);
   } else if (response.status === 'not_authorized') {
     // The person is logged into Facebook, but not your app.
     document.getElementById('status').innerHTML = 'Please log ' +
@@ -32,7 +32,7 @@ function checkLoginState() {
 
 window.fbAsyncInit = function() {
   FB.init({
-    appId      : '1517369935158594',
+    appId      : '576444712448750',
     cookie     : true,  // enable cookies to allow the server to access 
     // the session
     xfbml      : true,  // parse social plugins on this page
@@ -68,11 +68,36 @@ window.fbAsyncInit = function() {
 
 // Here we run a very simple test of the Graph API after login is
 // successful.  See statusChangeCallback() for when this call is made.
-function testAPI() {
+function loggedIn(fbAccessToken) {
   console.log('Welcome!  Fetching your information.... ');
   FB.api('/me', function(response) {
     console.log('Successful login for: ' + response.name);
     document.getElementById('status').innerHTML =
       'Thanks for logging in, ' + response.name + '!';
   });
+
+  // SNS Registration
+  var loginCallbacks = {
+    // successfully connected to Facebook
+    success : function(user, network) {
+      console.log("Connected user " + user + " to network: " + network);
+    },
+    // unable to connect
+    failure : function(user, network, error) {
+      console.log("Unable to connect to " + network + ". Reason: " + error);
+    }
+  };
+
+  /*
+  KiiSocialConnect.setupNetwork(KiiSocialNetworkName.FACEBOOK, null, null, null);
+  
+  // set options required by Facebook's API, you should also get the fbAccessToken 
+  var options = {
+    access_token : fbAccessToken
+  };
+  
+  // this method must be after KiiSocialConnect.setupNetwork
+  console.log("try to log in with KiiSocialConnect");
+  KiiSocialConnect.logIn(KiiSocialNetworkName.FACEBOOK, options, loginCallbacks);
+*/
 }

@@ -3,6 +3,7 @@ function init() {
 }
 
 window.onload = function() {
+  console.log("Kii initialize");
   Kii.initializeWithSite("d2e84a86", "2c41dd084726f3a409c9963646fddc22", KiiSite.JP);
 };
 
