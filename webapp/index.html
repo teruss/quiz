@@ -50,14 +50,13 @@
       <input type="text" ng-model="dummy3" size="50"><br>
       <input type="submit" class="btn" value="Post">
     </form>
-    
-    <ul>
-      <p>quiz begin</p>
-      <li ng-repeat="quiz in quizzes">
-        {{quiz.question}} {{quiz.answer}}: {{quiz.dummy1}}
-      </li>
-      <p>quiz end</p>
-    </ul>
-    <p>{{test1}}</p>
+
+    <div ng-repeat="quiz in quizzes">
+      {{quiz.question}}
+      <div ng-repeat="choice in quiz.choices">
+	{{choice}}
+      </div>
+      <hr/>
+    </div>
   </body>
 </html>

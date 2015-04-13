@@ -160,10 +160,8 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
       var user_query = KiiQuery.queryWithClause();
       // Prepare the target Bucket to be queried.
       var userBucket = KiiUser.getCurrentUser().bucketWithName("quiz");
-      $scope.test1 = "test33";
       var userQueryCallbacks = {
 	success: function(queryPerformed, resultSet, nextQuery) {
-	  $scope.test1 = "test122";
 	  console.log(resultSet);
 	  $scope.$apply(function() {
 	    $scope.quizzes = resultSet;
@@ -173,12 +171,10 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 	    // do something with the object resultSet[i];
 	    console.log("due:"+resultSet[i].get("due"));
 	    console.log("quiz:"+resultSet[i].get("quiz"));
-//	    if (i == 0) {
-	      $scope.test1 = "test111";
-	      var uri = resultSet[i].get("quiz");
-	      var quiz = KiiObject.objectWithURI(uri);
+	    
+	    var uri = resultSet[i].get("quiz");
+	    var quiz = KiiObject.objectWithURI(uri);
 	    refreshQuiz(quiz, i);
-//	    }
 	  }
 	  if(nextQuery != null) {
 	    // There are more results (pages).
@@ -205,11 +201,19 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 	console.log("Object refreshed!");
 	console.log(theObject);
 	console.log(theObject.get("question"));
+	var answer = theObject.get('answer');
+	var dummy0 = theObject.get('candidate0');
+	var dummy1 = theObject.get('candidate1');
+	var dummy2 = theObject.get('candidate2');
+	var choices = [answer, dummy0, dummy1, dummy2];
+	var shuffle = function() {return Math.random()-.5};
+	choices.sort(shuffle);
 
 	$scope.$apply(function() {
-	  console.log("j=="+j);
 	  $scope.quizzes[j] = {
-	    'question': theObject.get("question")
+	    'question': theObject.get("question"),
+	    'choices' : choices,
+	    'answer' : answer
 	  };
 	});
       },
