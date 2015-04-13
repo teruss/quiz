@@ -53,9 +53,11 @@
 
     <div ng-repeat="quiz in quizzes">
       {{quiz.question}}
-      <div ng-repeat="choice in quiz.choices">
-	{{choice}}
-      </div>
+      <form ng-submit="answer()">
+	<div ng-repeat="choice in quiz.choices">
+	  <input type="submit" class="btn" value={{choice}}>
+	</div>
+      </form>
       <hr/>
     </div>
   </body>
