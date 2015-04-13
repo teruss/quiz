@@ -9,7 +9,7 @@ window.onload = function() {
 
 var quizApp = angular.module('quizApp', []);
 
-quizApp.controller('QuizCtrl', function($scope, $window) {
+quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
   $window.init= function() {
     $scope.$apply($scope.load_quiz_lib);
   };
@@ -206,4 +206,4 @@ quizApp.controller('QuizCtrl', function($scope, $window) {
   //  $scope.quizzes = [{
   //    'question': "QQQQ"
   //  }];
-});
+}]);
