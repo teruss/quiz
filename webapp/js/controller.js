@@ -12,6 +12,7 @@ var quizApp = angular.module('quizApp', []);
 quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
   $window.init= function() {
     $scope.$apply($scope.load_quiz_lib);
+    $scope.$apply($scope.statusChangeCallback);
   };
   
   $window.fbAsyncInit = function() {
@@ -37,7 +38,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     // These three cases are handled in the callback function.
     
     FB.getLoginStatus(function(response) {
-      statusChangeCallback(response);
+      $scope.statusChangeCallback(response);
     });
   };
   
@@ -57,9 +58,12 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 
   $scope.list = function() {
   }
-  
+
   // This is called with the results from from FB.getLoginStatus().
-  function statusChangeCallback(response) {
+  $scope.statusChangeCallback = function (response) {
+    $scope.$apply(function() {
+      $scope.test1 = "test111222";
+    });
     console.log('statusChangeCallback');
     console.log(response);
     // The response object is returned with a status field that lets the
@@ -90,7 +94,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
       document.getElementById('status').innerHTML =
 	'Thanks for logging in, ' + response.name + '!';
     });
-
+    $scope.test1 = "test111-13-83";
     console.log("facebook token:"+ fbAccessToken);
     
     KiiSocialConnect.setupNetwork(KiiSocialNetworkName.FACEBOOK, "123", null, {appId:"123"});
@@ -111,6 +115,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
   var loginCallbacks = {
     // successfully connected to Facebook
     success : function(user, network) {
+      $scope.test1 = "test11101-";
       console.log("Connected user " + user + " to network: " + network);
       console.log(user);
       // Get an access token by getAccessToekn method.
@@ -155,35 +160,25 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
       var user_query = KiiQuery.queryWithClause();
       // Prepare the target Bucket to be queried.
       var userBucket = KiiUser.getCurrentUser().bucketWithName("quiz");
+      $scope.test1 = "test33";
       var userQueryCallbacks = {
 	success: function(queryPerformed, resultSet, nextQuery) {
+	  $scope.test1 = "test122";
 	  console.log(resultSet);
+	  $scope.$apply(function() {
+	    $scope.quizzes = resultSet;
+	  });
 	  // do something with the results
 	  for(var i=0; i<resultSet.length; i++) {
 	    // do something with the object resultSet[i];
 	    console.log("due:"+resultSet[i].get("due"));
 	    console.log("quiz:"+resultSet[i].get("quiz"));
-	    if (i == 0) {
+//	    if (i == 0) {
+	      $scope.test1 = "test111";
 	      var uri = resultSet[i].get("quiz");
 	      var quiz = KiiObject.objectWithURI(uri);
-	      quiz.refresh({
-		success: function(theObject) {
-		  console.log("Object refreshed!");
-		  console.log(theObject);
-		  console.log(theObject.get("question"));
-		  $scope.quizzes = [{
-		    'question': "OK?"
-		  }];
-		  
-		  //		      $scope.quizzes = [{
-		  //			'question': theObject.get("question")
-		  //		      }];
-		},
-		failure: function(theObject, errorString) {
-		  console.log("Error refreshing object: " + errorString);
-		}
-	      });
-	    }
+	    refreshQuiz(quiz, i);
+//	    }
 	  }
 	  if(nextQuery != null) {
 	    // There are more results (pages).
@@ -203,7 +198,28 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
       console.log("Unable to connect to " + network + ". Reason: " + error);
     }
   };
-  //  $scope.quizzes = [{
-  //    'question': "QQQQ"
-  //  }];
+
+  var refreshQuiz = function(quiz, j) {
+    quiz.refresh({
+      success: function(theObject) {
+	console.log("Object refreshed!");
+	console.log(theObject);
+	console.log(theObject.get("question"));
+
+	$scope.$apply(function() {
+	  console.log("j=="+j);
+	  $scope.quizzes[j] = {
+	    'question': theObject.get("question")
+	  };
+	});
+      },
+      failure: function(theObject, errorString) {
+	console.log("Error refreshing object: " + errorString);
+      }
+    });
+  };
+			       
+  $scope.quizzes = [{
+    'question': "QQQQ"
+  }];
 }]);
