@@ -53,10 +53,13 @@
 
     <div ng-repeat="quiz in quizzes">
       {{quiz.question}}
-      <form ng-submit="answer()">
+      <form ng-submit="answer(quiz)">
 	<div ng-repeat="choice in quiz.choices">
-	  <input type="submit" class="btn" value={{choice}}>
+	  <div class="radio">
+	    <label><input type="radio" name="optradio">{{choice}}</label>
+	  </div>
 	</div>
+	<input type="submit" class="btn" value="Post">
       </form>
       <hr/>
     </div>
