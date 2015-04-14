@@ -213,7 +213,8 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 	  $scope.quizzes[j] = {
 	    'question': theObject.get("question"),
 	    'choices' : choices,
-	    'answer' : answer
+	    'answer' : answer,
+	    'guess' : 'g'
 	  };
 	});
       },
@@ -222,8 +223,8 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
       }
     });
   };
-			       
-  $scope.quizzes = [{
-    'question': "QQQQ"
-  }];
+
+  $scope.answer = function(quiz) {
+    console.log(quiz);
+  };
 }]);

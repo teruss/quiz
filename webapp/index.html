@@ -41,26 +41,17 @@
       </div>
     </nav>
     <h2>QuizPost</h2>
-    <p>Nothing here {{'yet' + '!'}}</p>
-    <form ng-submit="insert()">
-      <input type="text" ng-model="question" size="50"><br>
-      <input type="text" ng-model="answer" size="50"><br>
-      <input type="text" ng-model="dummy1" size="50"><br>
-      <input type="text" ng-model="dummy2" size="50"><br>
-      <input type="text" ng-model="dummy3" size="50"><br>
-      <input type="submit" class="btn" value="Post">
-    </form>
-
     <div ng-repeat="quiz in quizzes">
       {{quiz.question}}
       <form ng-submit="answer(quiz)">
 	<div ng-repeat="choice in quiz.choices">
 	  <div class="radio">
-	    <label><input type="radio" name="optradio">{{choice}}</label>
+	    <label><input type="radio" ng-model="quiz.guess" ng-value="choice" id="{{choice}}" name="quiz_radio">{{choice}}</label>
 	  </div>
 	</div>
 	<input type="submit" class="btn" value="Post">
       </form>
+      <p>guess: {{quiz.guess}}</p>
       <hr/>
     </div>
   </body>
