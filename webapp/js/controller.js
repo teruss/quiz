@@ -172,9 +172,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 	    console.log("due:"+resultSet[i].get("due"));
 	    console.log("quiz:"+resultSet[i].get("quiz"));
 	    
-	    var uri = resultSet[i].get("quiz");
-	    var quiz = KiiObject.objectWithURI(uri);
-	    refreshQuiz(quiz, i);
+	    refreshQuiz(resultSet, i);
 	  }
 	  if(nextQuery != null) {
 	    // There are more results (pages).
@@ -195,7 +193,11 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     }
   };
 
-  var refreshQuiz = function(quiz, j) {
+  var refreshQuiz = function(userDeck, j) {
+    var userCard = userDeck[j];
+    var uri = userCard.get("quiz");
+    var quiz = KiiObject.objectWithURI(uri);
+
     quiz.refresh({
       success: function(theObject) {
 	console.log("Object refreshed!");
@@ -213,7 +215,9 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 	  $scope.quizzes[j] = {
 	    'question': theObject.get("question"),
 	    'choices' : choices,
-	    'answer' : answer
+	    'answer' : answer,
+	    'object' : theObject,
+	    'userCard' : userCard
 	  };
 	});
       },
@@ -225,6 +229,14 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 
   $scope.answer = function(quiz) {
     console.log(quiz);
+    var obj = quiz.object;
+    var userCard = quiz.userCard;
+    var due = userCard.get("due");
+    console.log("due:"+due);
+    var interval = userCard.get("interval");
+    console.log("interval:"+interval);
+    
+    
     if (quiz.answer == quiz.guess) {
       quiz.result = "Right!";
     } else {
