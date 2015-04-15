@@ -213,8 +213,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 	  $scope.quizzes[j] = {
 	    'question': theObject.get("question"),
 	    'choices' : choices,
-	    'answer' : answer,
-	    'guess' : 'g'
+	    'answer' : answer
 	  };
 	});
       },
@@ -226,5 +225,10 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 
   $scope.answer = function(quiz) {
     console.log(quiz);
+    if (quiz.answer == quiz.guess) {
+      quiz.result = "Right!";
+    } else {
+      quiz.result = "Wrong!";
+    }
   };
 }]);
