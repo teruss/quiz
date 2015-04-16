@@ -244,4 +244,11 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
       quiz.result = "Wrong!";
     }
   };
+
+  $scope.calcInterval = function(interval, due, now, good) {
+    if (!good)
+      return 10 * 60 * 1000 * 1000 * 10;
+    var delay = now - due;
+    return (interval + delay / 2) * 1.2;
+  };
 }]);
