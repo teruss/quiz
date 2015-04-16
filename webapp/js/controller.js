@@ -235,7 +235,8 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     console.log("due:"+due);
     var interval = userCard.get("interval");
     console.log("interval:"+interval);
-    
+
+    userCard.set("due", due + interval);
     
     if (quiz.answer == quiz.guess) {
       quiz.result = "Right!";
