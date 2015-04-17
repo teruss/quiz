@@ -123,8 +123,9 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
       console.log("ticks:"+ticks);
       
       // Build "user" query
-      var clause = KiiClause.lessThan("due", ticks);
-      var user_query = KiiQuery.queryWithClause(clause);
+      var clause1 = KiiClause.lessThan("due", ticks);
+      var clause2 = KiiClause.notEquals("suspended", true);
+      var user_query = KiiQuery.queryWithClause(KiiClause.and(clause1, clause2));
       // Prepare the target Bucket to be queried.
       var userBucket = KiiUser.getCurrentUser().bucketWithName("quiz");
       var userQueryCallbacks = {
