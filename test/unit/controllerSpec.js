@@ -19,4 +19,12 @@ describe('QuizCtrl', function() {
   it('should return 1260 ticks if interval is 1000 and now is 100 and due is 0 and correct answer', function() {
     expect(scope.calcInterval(1000, 0, 100, true)).toBe(1260);
   });
+
+  it('should never return negative ticks', function() {
+    expect(scope.calcInterval(-1000, 0, 100, true)).toBe(0);
+  });
+
+  it('should return ticks from javascript dateime', function() {
+    expect(scope.ticksFromJS(0)).toBe(621355968000000000);
+  });
 });

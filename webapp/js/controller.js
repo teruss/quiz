@@ -61,9 +61,6 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 
   // This is called with the results from from FB.getLoginStatus().
   $scope.statusChangeCallback = function (response) {
-    $scope.$apply(function() {
-      $scope.test1 = "test111222";
-    });
     console.log('statusChangeCallback');
     console.log(response);
     // The response object is returned with a status field that lets the
@@ -94,7 +91,6 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
       document.getElementById('status').innerHTML =
 	'Thanks for logging in, ' + response.name + '!';
     });
-    $scope.test1 = "test111-13-83";
     console.log("facebook token:"+ fbAccessToken);
     
     KiiSocialConnect.setupNetwork(KiiSocialNetworkName.FACEBOOK, "123", null, {appId:"123"});
@@ -107,15 +103,12 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     // this method must be after KiiSocialConnect.setupNetwork
     console.log("try to log in with KiiSocialConnect");
     KiiSocialConnect.logIn(KiiSocialNetworkName.FACEBOOK, options, loginCallbacks);
-    // this method must be after KiiSocialConnect.setupNetwork
-    //KiiSocialConnect.linkCurrentUserWithNetwork(KiiSocialNetworkName.FACEBOOK, options, loginCallbacks);
   }
 
   // SNS Registration
   var loginCallbacks = {
     // successfully connected to Facebook
     success : function(user, network) {
-      $scope.test1 = "test11101-";
       console.log("Connected user " + user + " to network: " + network);
       console.log(user);
       // Get an access token by getAccessToekn method.
@@ -135,7 +128,6 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 	  // do something with the results
 	  for(var i=0; i<resultSet.length; i++) {
 	    // do something with the object resultSet[i];
-	    console.log("result:"+resultSet[i].get("question"));
 	  }
 	  if(nextQuery != null) {
 	    // There are more results (pages).
@@ -152,7 +144,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
       bucket.executeQuery(all_query, queryCallbacks);
 
       console.log("now:"+new Date().getTime());
-      var ticks = ((new Date().getTime() * 10000) + 621355968000000000);
+      var ticks = $scope.ticksFromJS(new Date().getTime());
       console.log("ticks:"+ticks);
       
       // Build "user" query
@@ -185,7 +177,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 	}
       }
 
-      userBucket.executeQuery(all_query, userQueryCallbacks);
+      userBucket.executeQuery(user_query, userQueryCallbacks);
     },
     // unable to connect
     failure : function(user, network, error) {
@@ -235,20 +227,38 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     console.log("due:"+due);
     var interval = userCard.get("interval");
     console.log("interval:"+interval);
+    var good = quiz.answer === quiz.guess;
+    var nextInterval = $scope.calcInterval(interval, due, $scope.ticksFromJS(new Date().getTime()), good);
+    userCard.set("interval", nextInterval);
+    userCard.set("due", due + nextInterval);
+    userCard.set("suspended", !good);
 
-    userCard.set("due", due + interval);
-    
-    if (quiz.answer == quiz.guess) {
+    if (good) {
       quiz.result = "Right!";
     } else {
       quiz.result = "Wrong!";
     }
+    userCard.save({
+      success: function(theObject) {
+	console.log("Object saved!");
+	console.log(theObject);
+	console.log("due:"+theObject.get("due"));
+	console.log("quiz:"+theObject.get("quiz"));
+      },
+      failure: function(theObject, errorString) {
+	console.log("Error saving object: " + errorString);
+      }
+    });
   };
-
+  
   $scope.calcInterval = function(interval, due, now, good) {
     if (!good)
       return 10 * 60 * 1000 * 1000 * 10;
     var delay = now - due;
-    return (interval + delay / 2) * 1.2;
+    return Math.max(0, (interval + delay / 2) * 1.2);
+  };
+
+  $scope.ticksFromJS = function(time) {
+    return (time * 10000) + 621355968000000000;
   };
 }]);
