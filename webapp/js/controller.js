@@ -118,38 +118,13 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
       // Prepare the target bucket to be queried
       var bucket = Kii.bucketWithName("quiz");
       
-      // Build "all" query
-      var all_query = KiiQuery.queryWithClause();
-      
-      // Define the callbacks
-      var queryCallbacks = {
-	success: function(queryPerformed, resultSet, nextQuery) {
-	  console.log(resultSet);
-	  // do something with the results
-	  for(var i=0; i<resultSet.length; i++) {
-	    // do something with the object resultSet[i];
-	  }
-	  if(nextQuery != null) {
-	    // There are more results (pages).
-	    // Execute the next query to get more results.
-	    //	    bucket.executeQuery(nextQuery, queryCallbacks);
-	  }
-	},
-	failure: function(queryPerformed, anErrorString) {
-	  // do something with the error response
-	}
-      }
-      
-      // Execute the query
-      bucket.executeQuery(all_query, queryCallbacks);
-
       console.log("now:"+new Date().getTime());
       var ticks = $scope.ticksFromJS(new Date().getTime());
       console.log("ticks:"+ticks);
       
       // Build "user" query
       var clause = KiiClause.lessThan("due", ticks);
-      var user_query = KiiQuery.queryWithClause();
+      var user_query = KiiQuery.queryWithClause(clause);
       // Prepare the target Bucket to be queried.
       var userBucket = KiiUser.getCurrentUser().bucketWithName("quiz");
       var userQueryCallbacks = {
@@ -162,6 +137,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 	  for(var i=0; i<resultSet.length; i++) {
 	    // do something with the object resultSet[i];
 	    console.log("due:"+resultSet[i].get("due"));
+	    console.log("due js:"+$scope.dateFromTicks(resultSet[i].get("due")));
 	    console.log("quiz:"+resultSet[i].get("quiz"));
 	    
 	    refreshQuiz(resultSet, i);
@@ -244,6 +220,9 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 	console.log(theObject);
 	console.log("due:"+theObject.get("due"));
 	console.log("quiz:"+theObject.get("quiz"));
+	var ticks = theObject.get("due");
+	var tickDate = $scope.dateFromTicks(ticks)
+	console.log("next:"+tickDate);
       },
       failure: function(theObject, errorString) {
 	console.log("Error saving object: " + errorString);
@@ -260,5 +239,17 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 
   $scope.ticksFromJS = function(time) {
     return (time * 10000) + 621355968000000000;
+  };
+
+  $scope.dateFromTicks = function(ticks) {
+    //ticks are in nanotime; convert to microtime
+    var ticksToMicrotime = ticks / 10000;
+    
+    //ticks are recorded from 1/1/1; get microtime difference from 1/1/1/ to 1/1/1970
+    var epochMicrotimeDiff = 621355968000000000;
+    
+    //new date is ticks, converted to microtime, minus difference from epoch microtime
+    var tickDate = new Date((ticks - epochMicrotimeDiff) / 10000);
+    return tickDate;
   };
 }]);
