@@ -213,7 +213,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     if (good) {
       quiz.result = "Right!";
     } else {
-      quiz.result = "Wrong!";
+      quiz.result = "Wrong! The answer is: " + quiz.answer;
     }
     userCard.save({
       success: function(theObject) {
