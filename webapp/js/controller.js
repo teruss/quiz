@@ -93,7 +93,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     });
     console.log("facebook token:"+ fbAccessToken);
     
-    KiiSocialConnect.setupNetwork(KiiSocialNetworkName.FACEBOOK, "123", null, {appId:"123"});
+    KiiSocialConnect.setupNetwork(KiiSocialNetworkName.FACEBOOK, "576444712448750", null, {appId:"123"});
     
     // set options required by Facebook's API, you should also get the fbAccessToken 
     var options = {
@@ -126,6 +126,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
       var clause1 = KiiClause.lessThan("due", ticks);
       var clause2 = KiiClause.notEquals("suspended", true);
       var user_query = KiiQuery.queryWithClause(KiiClause.and(clause1, clause2));
+      //var user_query = KiiQuery.queryWithClause();
       // Prepare the target Bucket to be queried.
       var userBucket = KiiUser.getCurrentUser().bucketWithName("quiz");
       var userQueryCallbacks = {
@@ -143,6 +144,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 	    
 	    refreshQuiz(resultSet, i);
 	  }
+	  console.log("nextQuery:" + nextQuery);
 	  if(nextQuery != null) {
 	    // There are more results (pages).
 	    // Execute the next query to get more results.
@@ -211,7 +213,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     userCard.set("suspended", !good);
 
     if (good) {
-      quiz.result = "Right!";
+      quiz.result = "Right! The next due is: " + $scope.dateFromTicks(due + nextInterval);
     } else {
       quiz.result = "Wrong! The answer is: " + quiz.answer;
     }

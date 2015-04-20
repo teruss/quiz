@@ -12,17 +12,14 @@
   </head>
   
   <body ng-controller="QuizCtrl">
-    <script src="js/facebook_sample.js"></script>
-    
-    <!--
-	Below we include the Login Button social plugin. This button uses
-      the JavaScript SDK to present a graphical Login button that triggers
-      the FB.login() function when clicked.
-      -->
-    
-    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-    </fb:login-button>
-    
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3&appId=576444712448750";
+      fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));</script>
     <div id="status">
     </div>
     <nav class="navbar navbar-inverse">
@@ -35,24 +32,26 @@
 	    <li class="active"><a href="#">Home</a></li>
 	  </ul>
 	  <ul class="nav navbar-nav navbar-right">
-	    <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+	    <div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="true"></div>
 	  </ul>
 	</div>
       </div>
     </nav>
     <h2>QuizPost</h2>
-    <div ng-repeat="quiz in quizzes">
-      {{quiz.question}}
-      <form ng-submit="answer(quiz)">
-	<div ng-repeat="choice in quiz.choices">
-	  <div class="radio">
-	    <label><input type="radio" ng-model="quiz.guess" ng-value="choice" id="{{choice}}" name="quiz_radio">{{choice}}</label>
+    <div class="container-fluid">
+      <div ng-repeat="quiz in quizzes">
+	{{quiz.question}}
+	<form ng-submit="answer(quiz)">
+	  <div ng-repeat="choice in quiz.choices">
+	    <div class="radio">
+	      <label><input type="radio" ng-model="quiz.guess" ng-value="choice" id="{{choice}}" name="quiz_radio">{{choice}}</label>
+	    </div>
 	  </div>
-	</div>
-	<input type="submit" class="btn" value="Post">
-      </form>
-      <p>{{quiz.result}}</p>
-      <hr/>
+	  <input type="submit" class="btn" value="Post">
+	</form>
+	<p>{{quiz.result}}</p>
+	<hr/>
+      </div>
     </div>
   </body>
 </html>
