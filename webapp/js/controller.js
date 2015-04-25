@@ -139,7 +139,8 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
       // Build "user" query
       var clause1 = KiiClause.lessThan("due", ticks);
       var clause2 = KiiClause.notEquals("suspended", true);
-      var user_query = KiiQuery.queryWithClause(KiiClause.and(clause1, clause2));
+      var clause3 = KiiClause.notEquals("kind", "sort");
+      var user_query = KiiQuery.queryWithClause(KiiClause.and(clause1, clause2, clause3));
       //var user_query = KiiQuery.queryWithClause();
       // Prepare the target Bucket to be queried.
       var userBucket = KiiUser.getCurrentUser().bucketWithName("quiz");
