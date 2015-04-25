@@ -2,19 +2,33 @@ function init() {
   window.init();
 }
 
-window.onload = function() {
-  console.log("Kii initialize");
-  Kii.initializeWithSite("d2e84a86", "2c41dd084726f3a409c9963646fddc22", KiiSite.JP);
-};
+var checkLoginState = function() {
+  console.log("checkLoginStatus");
+  FB.getLoginStatus(function(response) {
+    $scope.statusChangeCallback(response);
+  });
+}
 
 var quizApp = angular.module('quizApp', []);
 
 quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
   $window.init= function() {
     $scope.$apply($scope.load_quiz_lib);
-    $scope.$apply($scope.statusChangeCallback);
   };
-  
+
+  $window.onload = function() {
+    console.log("Kii initialize");
+    Kii.initializeWithSite("d2e84a86", "2c41dd084726f3a409c9963646fddc22", KiiSite.JP);
+    
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3&appId=576444712448750";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  };
+
   $window.fbAsyncInit = function() {
     console.log("call facebook init");
     FB.init({
@@ -255,4 +269,5 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     var tickDate = new Date((ticks - epochMicrotimeDiff) / 10000);
     return tickDate;
   };
+
 }]);
