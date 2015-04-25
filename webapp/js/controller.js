@@ -139,8 +139,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
       // Build "user" query
       var clause1 = KiiClause.lessThan("due", ticks);
       var clause2 = KiiClause.notEquals("suspended", true);
-      var clause3 = KiiClause.notEquals("kind", "sort");
-      var user_query = KiiQuery.queryWithClause(KiiClause.and(clause1, clause2, clause3));
+      var user_query = KiiQuery.queryWithClause(KiiClause.and(clause1, clause2));
       //var user_query = KiiQuery.queryWithClause();
       // Prepare the target Bucket to be queried.
       var userBucket = KiiUser.getCurrentUser().bucketWithName("quiz");
@@ -153,7 +152,6 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 	  // do something with the results
 	  for(var i=0; i<resultSet.length; i++) {
 	    // do something with the object resultSet[i];
-	    console.log("due:"+resultSet[i].get("due"));
 	    console.log("due js:"+$scope.dateFromTicks(resultSet[i].get("due")));
 	    console.log("quiz:"+resultSet[i].get("quiz"));
 	    
@@ -187,7 +185,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     quiz.refresh({
       success: function(theObject) {
 	console.log("Object refreshed!");
-	console.log(theObject);
+	console.log(theObject.get("kind"));
 	console.log(theObject.get("question"));
 	var answer = theObject.get('answer');
 	var dummy0 = theObject.get('candidate0');
@@ -200,6 +198,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 	$scope.$apply(function() {
 	  $scope.quizzes[j] = {
 	    'question': theObject.get("question"),
+	    'kind': theObject.get("kind", "normal"),
 	    'choices' : choices,
 	    'answer' : answer,
 	    'object' : theObject,
