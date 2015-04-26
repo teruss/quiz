@@ -50,7 +50,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
       $scope.statusChangeCallback(response);
     });
   };
-    
+  
   $scope.load_quiz_lib = function() {
   };
 
@@ -125,8 +125,8 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 	  for(var i=0; i<resultSet.length; i++) {
 	    refreshQuiz(resultSet, i);
 	  }
-//	  if (!nextQuery)
-//	    $scope.showPublicQuiz(resultSet);
+	  if (!nextQuery)
+	    showPublicQuiz();
 	},
 	failure: function(queryPerformed, anErrorString) {
 	  // do something with the error response
@@ -141,7 +141,21 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     }
   };
 
-  $scope.showPublicQuiz = function() {
+  var showPublicQuiz = function() {
+    var all_query = KiiQuery.queryWithClause();
+    var queryCallbacks = {
+      success: function(queryPerformed, resultSet, nextQuery) {
+	// do something with the results
+	for(var i=0; i<resultSet.length; i++) {
+	  // do something with the object resultSet[i];
+	  $scope.quizzes.push(createQuizFromKiiObject(resultSet[i], null));
+	}
+      },
+      failure: function(queryPerformed, anErrorString) {
+	// do something with the error response
+      }
+    }
+    $scope.quizBucket.executeQuery(all_query, queryCallbacks);
   };
 
   var refreshQuiz = function(userDeck, j) {
