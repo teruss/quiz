@@ -202,7 +202,8 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 	    'choices' : choices,
 	    'answer' : answer,
 	    'object' : theObject,
-	    'userCard' : userCard
+	    'userCard' : userCard,
+	    'finished' : false
 	  };
 	});
       },
@@ -229,6 +230,12 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     }
 
     $scope.saveUserCard(userCard, nextInterval, due + nextInterval, !good);
+    $window.setTimeout(function() {
+      $scope.$apply(function() {
+	quiz.finished = true;
+	console.log(quiz);
+      });
+    }, 500);
   };
   
   $scope.calcInterval = function(interval, due, now, good) {

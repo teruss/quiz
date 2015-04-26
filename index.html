@@ -33,9 +33,8 @@
     <h2>QuizPost</h2>
     <div class="container">
       <div class="row">
-	<div class="col-md-6">
-	  <div ng-repeat="quiz in quizzes | filter:{kind:'normal'}">
-
+	<div class="col-md-4">
+	  <div ng-repeat="quiz in quizzes | filter:{kind:'normal'} | filter:{finished:false}">
 	    {{quiz.question}}
 	    <form ng-submit="answer(quiz)">
 	      <div ng-repeat="choice in quiz.choices">
@@ -49,7 +48,22 @@
 	    <hr/>
 	  </div>
 	</div>
-	<div class="col-md-6">
+	<div class="col-md-4">
+	  <div ng-repeat="quiz in quizzes | filter:{kind:'normal'} | filter:{finished:true}">
+	    {{quiz.question}}
+	    <form ng-submit="answer(quiz)">
+	      <div ng-repeat="choice in quiz.choices">
+		<div class="radio">
+		  <label><input type="radio" ng-model="quiz.guess" ng-value="choice" id="{{choice}}" name="quiz_radio">{{choice}}</label>
+		</div>
+	      </div>
+	      <input type="submit" class="btn" value="Post">
+	    </form>
+	    <p>{{quiz.result}}</p>
+	    <hr/>
+	  </div>
+	</div>
+	<div class="col-md-4">
           <form ng-submit="createQuiz(quiz)">
 	    <div class="form-group">
 	      <label for="inputdefault">Question</label>
@@ -76,5 +90,8 @@
 	</div>
       </div>
     </div>
+    <footer class="container-fluid">
+      <small>Copyright (C) 2015 teruss All Rights Reserved.</small>
+    </footer>
   </body>
 </html>
