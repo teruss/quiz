@@ -327,6 +327,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     obj.set('candidate1', quiz.dummy2);
     obj.set('candidate2', quiz.dummy3);
     obj.set("kind", "normal");
+    $scope.isCreating = true;
     
     obj.save({
       success: function(theObject) {
@@ -335,9 +336,20 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 	var userCard = createUserCard(theObject);
 
 	$scope.saveUserCard(userCard);
+	quiz.question = "";
+	quiz.answer = "";
+	quiz.dummy1 = "";
+	quiz.dummy2 = "";
+	quiz.dummy3 = "";
+	$scope.$apply(function() {
+	  $scope.isCreating = false;
+	});
       },
       failure: function(theObject, errorString) {
 	console.log("Error saving object: " + errorString);
+	$scope.$apply(function() {
+	  $scope.isCreating = false;
+	});
       }
     });
   };
@@ -359,7 +371,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 
     userCard.save({
       success: function(theObject) {
-	console.log("Object saved!");
+	console.log("user card was saved!");
 	console.log(theObject);
 	console.log("due:"+theObject.get("due"));
 	console.log("quiz:"+theObject.get("quiz"));
