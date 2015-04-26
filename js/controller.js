@@ -163,8 +163,24 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
   };
 
   var refreshQuiz = function(userDeck, j) {
+    console.log("refreshQuiz:" + j);
     var userCard = userDeck[j];
+    console.log("userCard:" + userCard);
     var uri = userCard.get("quiz");
+    console.log("uri:" + uri);
+    if (!uri) {
+      console.log("no quiz uri");
+      userCard.delete({
+	success: function(theDeletedObject) {
+	  console.log("Object deleted!");
+	  console.log(theDeletedObject);
+	},
+	failure: function(theObject, errorString) {
+	  console.log("Error deleting object: " + errorString);
+	}
+      });
+      return;
+    }
     var quiz = KiiObject.objectWithURI(uri);
 
     quiz.refresh({
@@ -211,8 +227,8 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     console.log(uniqueNames);
     
     var shuffle = function() {return Math.random()-.5};
-    choices.sort(shuffle);
-    console.log(choices);
+    uniqueNames.sort(shuffle);
+
     return {
       'question': theObject.get("question"),
       'kind': kind,
@@ -227,6 +243,11 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
   $scope.answer = function(quiz) {
     console.log(quiz);
     var userCard = quiz.userCard;
+    if (!userCard) {
+      console.log("no user card");
+      searchUserCard(quiz);
+      return;
+    }
     var due = userCard.get("due");
     console.log("due:"+due);
     var interval = userCard.get("interval");
@@ -240,13 +261,42 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
       quiz.result = "Wrong! The answer is: " + quiz.answer;
     }
 
-    $scope.saveUserCard(userCard, nextInterval, due + nextInterval, !good);
+    userCard.set("suspended", !good);
+    userCard.set("due", due + nextInterval);
+    userCard.set("interval", nextInterval);
+
+    $scope.saveUserCard(userCard);
     $window.setTimeout(function() {
       $scope.$apply(function() {
 	quiz.finished = true;
 	console.log(quiz);
       });
     }, 500);
+  };
+
+  var searchUserCard = function(quiz) {
+    console.log("searchUserCard");
+    var clause1 = KiiClause.equals("quiz", quiz.object.objectURI());
+    var user_query = KiiQuery.queryWithClause(clause1);
+    var userQueryCallbacks = {
+      success: function(queryPerformed, resultSet, nextQuery) {
+	console.log(resultSet);
+	if (resultSet.length >= 1) {
+	  console.log("found user card");
+	  quiz.userCard = resultSet[0];
+	  $scope.answer(quiz);
+	  return;
+	}
+	console.log("not found user card");
+	quiz.userCard = createUserCard(quiz.object);
+	$scope.answer(quiz);
+      },
+      failure: function(queryPerformed, anErrorString) {
+	// do something with the error response
+      }
+    }
+    
+    $scope.getUserBucket().executeQuery(user_query, userQueryCallbacks);
   };
   
   $scope.calcInterval = function(interval, due, now, good) {
@@ -276,31 +326,36 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     obj.set('candidate0', quiz.dummy1);
     obj.set('candidate1', quiz.dummy2);
     obj.set('candidate2', quiz.dummy3);
+    obj.set("kind", "normal");
     
     obj.save({
       success: function(theObject) {
 	console.log("Object saved!");
 	console.log(theObject);
-	var userBucket = $scope.getUserBucket();
-	var userCard = userBucket.createObject();
-	userCard.set("quiz", theObject.objectURI());
-	userCard.set("kind", "normal");
-	$scope.saveUserCard(userCard, 0, $scope.currentTicks(), false);
+	var userCard = createUserCard(theObject);
+
+	$scope.saveUserCard(userCard);
       },
       failure: function(theObject, errorString) {
 	console.log("Error saving object: " + errorString);
       }
     });
   };
+
+  var createUserCard = function(theObject) {
+    var userBucket = $scope.getUserBucket();
+    var userCard = userBucket.createObject();
+    userCard.set("due", $scope.currentTicks());
+    userCard.set("interval", 0);
+    userCard.set("suspended", false);
+    userCard.set("quiz", theObject.objectURI());
+    return userCard;
+  };
   
   $scope.quizBucket = Kii.bucketWithName("quiz");
 
-  $scope.saveUserCard = function(userCard, interval, due, suspended) {
-    console.log("saveUserCard:"+userCard+","+interval+","+due+","+suspended);
-
-    userCard.set("interval", interval);
-    userCard.set("due", due);
-    userCard.set("suspended", suspended);
+  $scope.saveUserCard = function(userCard) {
+    console.log("saveUserCard:"+userCard);
 
     userCard.save({
       success: function(theObject) {

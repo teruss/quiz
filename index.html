@@ -65,7 +65,7 @@
 	</div>
 	<div class="col-md-4">
 	  <h3>Done</h3>
-	  <div ng-repeat="quiz in quizzes | filter:{kind:'normal'} | filter:{finished:true}">
+	  <div ng-repeat="quiz in quizzes.concat(publicQuizzes) | filter:{kind:'normal'} | filter:{finished:true}">
 	    {{quiz.question}}
 	    <form>
 	      <div ng-repeat="choice in quiz.choices">
