@@ -1,44 +1,52 @@
-function init() {
-  window.init();
-}
-
 var checkLoginState = function() {
   console.log("checkLoginStatus");
   FB.getLoginStatus(function(response) {
-    $scope.statusChangeCallback(response);
+    window.checkFB(response);
   });
 }
 
 var quizApp = angular.module('quizApp', []);
 
 quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
-  $window.init= function() {
-    $scope.$apply($scope.load_quiz_lib);
+  var sandbox = {
+    "kiiAppId":"6db83d12",
+    "kiiAppKey":"df55dc77ffa451cb686cfda8f9e0fece",
+    "facebookAppId" : '816805231746029'
   };
-
+  var production = {
+    "kiiAppId":"d2e84a86",
+    "kiiAppKey":"2c41dd084726f3a409c9963646fddc22",
+    "facebookAppId" : '576444712448750',
+  }
+    //var keys = sandbox;
+  var keys = production;
+  
   $window.onload = function() {
     console.log("Kii initialize");
-    Kii.initializeWithSite("d2e84a86", "2c41dd084726f3a409c9963646fddc22", KiiSite.JP);
+    Kii.initializeWithSite(keys.kiiAppId, keys.kiiAppKey, KiiSite.JP);
     
-    (function(d, s, id) {
+    (function(d, s, id){
       var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
+      if (d.getElementById(id)) {return;}
       js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3&appId=576444712448750";
+      js.src = "//connect.facebook.net/en_US/sdk.js";
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
   };
 
+  $window.checkFB = function(response) {
+    console.log("fb");
+    $scope.statusChangeCallback(response);
+  };
+  
   $window.fbAsyncInit = function() {
     console.log("call facebook init");
     FB.init({
-      appId      : '576444712448750',
-      cookie     : true,  // enable cookies to allow the server to access 
-      // the session
-      xfbml      : true,  // parse social plugins on this page
-      version    : 'v2.2' // use version 2.2
+      appId      : keys.facebookAppId,
+      xfbml      : true,
+      version    : 'v2.3'
     });
-    
+
     // Now that we've initialized the JavaScript SDK, we call 
     // FB.getLoginStatus().  This function gets the state of the
     // person visiting this page and can return one of three states to
@@ -55,7 +63,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
       $scope.statusChangeCallback(response);
     });
   };
-  
+    
   $scope.load_quiz_lib = function() {
   };
 
@@ -67,7 +75,6 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
       "dummy2" : $scope.dummy2,
       "dummy3" : $scope.dummy3
     }
-
   }
 
   $scope.list = function() {
@@ -100,6 +107,10 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
   // successful.  See statusChangeCallback() for when this call is made.
   function loggedIn(fbAccessToken) {
     console.log('Welcome!  Fetching your information.... ');
+    $scope.$apply(function() {
+      console.log("logged in");
+      $scope.isLoggedIn = true;
+    });
     FB.api('/me', function(response) {
       console.log('Successful login for: ' + response.name);
       document.getElementById('status').innerHTML =
@@ -107,7 +118,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     });
     console.log("facebook token:"+ fbAccessToken);
     
-    KiiSocialConnect.setupNetwork(KiiSocialNetworkName.FACEBOOK, "576444712448750", null, {appId:"123"});
+    KiiSocialConnect.setupNetwork(KiiSocialNetworkName.FACEBOOK, keys.facebookAppId, null, {appId:"123"});
     
     // set options required by Facebook's API, you should also get the fbAccessToken 
     var options = {
