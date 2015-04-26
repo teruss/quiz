@@ -31,43 +31,49 @@
       </div>
     </nav>
     <h2>QuizPost</h2>
-    <div class="container-fluid">
-      <form ng-submit="createQuiz(quiz)">
-	<div class="form-group">
-	  <label for="inputdefault">Question</label>
-	  <input class="form-control" id="inputdefault" type="text" ng-model="quiz.question">
-	</div>
-	<div class="form-group">
-	  <label for="inputanswer">Answer</label>
-	  <input class="form-control" id="inputanswer" type="text" ng-model="quiz.answer">
-	</div>
-	<div class="form-group">
-	  <label for="inputwronganswer1">Wrong Answer 1</label>
-	  <input class="form-control" id="inputwronganswer1" type="text" ng-model="quiz.dummy1">
-	</div> 
-	<div class="form-group">
-	  <label for="inputwronganswer2">Wrong Answer 2</label>
-	  <input class="form-control" id="inputwronganswer2" type="text" ng-model="quiz.dummy2">
-	</div> 
-	<div class="form-group">
-	  <label for="inputwronganswer3">Wrong Answer 3</label>
-	  <input class="form-control" id="inputwronganswer3" type="text" ng-model="quiz.dummy3">
-	</div> 
-	<input type="submit" class="btn" value="Create Quiz">
-      </form>
-      <div ng-repeat="quiz in quizzes | filter:{kind:'normal'}">
+    <div class="container">
+      <div class="row">
+	<div class="col-md-6">
+	  <div ng-repeat="quiz in quizzes | filter:{kind:'normal'}">
 
-	{{quiz.question}}
-	<form ng-submit="answer(quiz)">
-	  <div ng-repeat="choice in quiz.choices">
-	    <div class="radio">
-	      <label><input type="radio" ng-model="quiz.guess" ng-value="choice" id="{{choice}}" name="quiz_radio">{{choice}}</label>
-	    </div>
+	    {{quiz.question}}
+	    <form ng-submit="answer(quiz)">
+	      <div ng-repeat="choice in quiz.choices">
+		<div class="radio">
+		  <label><input type="radio" ng-model="quiz.guess" ng-value="choice" id="{{choice}}" name="quiz_radio">{{choice}}</label>
+		</div>
+	      </div>
+	      <input type="submit" class="btn" value="Post">
+	    </form>
+	    <p>{{quiz.result}}</p>
+	    <hr/>
 	  </div>
-	  <input type="submit" class="btn" value="Post">
-	</form>
-	<p>{{quiz.result}}</p>
-	<hr/>
+	</div>
+	<div class="col-md-6">
+          <form ng-submit="createQuiz(quiz)">
+	    <div class="form-group">
+	      <label for="inputdefault">Question</label>
+	      <input class="form-control" id="inputdefault" type="text" ng-model="quiz.question">
+	    </div>
+	    <div class="form-group">
+	      <label for="inputanswer">Answer</label>
+	      <input class="form-control" id="inputanswer" type="text" ng-model="quiz.answer">
+	    </div>
+	    <div class="form-group">
+	      <label for="inputwronganswer1">Wrong Answer 1</label>
+	      <input class="form-control" id="inputwronganswer1" type="text" ng-model="quiz.dummy1">
+	    </div> 
+	    <div class="form-group">
+	      <label for="inputwronganswer2">Wrong Answer 2</label>
+	      <input class="form-control" id="inputwronganswer2" type="text" ng-model="quiz.dummy2">
+	    </div> 
+	    <div class="form-group">
+	      <label for="inputwronganswer3">Wrong Answer 3</label>
+	      <input class="form-control" id="inputwronganswer3" type="text" ng-model="quiz.dummy3">
+	    </div> 
+	    <input type="submit" class="btn" value="Create Quiz">
+	  </form>
+	</div>
       </div>
     </div>
   </body>
