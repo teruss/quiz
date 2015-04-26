@@ -71,27 +71,15 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
   $scope.statusChangeCallback = function (response) {
     console.log('statusChangeCallback');
     console.log(response);
-    // The response object is returned with a status field that lets the
-    // app know the current login status of the person.
-    // Full docs on the response object can be found in the documentation
-    // for FB.getLoginStatus().
     if (response.status === 'connected') {
-      // Logged into your app and Facebook.
       loggedIn(response.authResponse.accessToken);
     } else if (response.status === 'not_authorized') {
-      // The person is logged into Facebook, but not your app.
-      document.getElementById('status').innerHTML = 'Please log ' +
-	'into this app.';
+      console.log('Please log into this app.');
     } else {
-      // The person is not logged into Facebook, so we're not sure if
-      // they are logged into this app or not.
-      document.getElementById('status').innerHTML = 'Please log ' +
-	'into Facebook.';
+      console.log('Please log into this app.');
     }
   }
 
-  // Here we run a very simple test of the Graph API after login is
-  // successful.  See statusChangeCallback() for when this call is made.
   function loggedIn(fbAccessToken) {
     console.log('Welcome!  Fetching your information.... ');
     $scope.$apply(function() {
@@ -105,34 +93,25 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     
     KiiSocialConnect.setupNetwork(KiiSocialNetworkName.FACEBOOK, keys.facebookAppId, null, {appId:"123"});
     
-    // set options required by Facebook's API, you should also get the fbAccessToken 
     var options = {
       access_token : fbAccessToken
     };
     
-    // this method must be after KiiSocialConnect.setupNetwork
     console.log("try to log in with KiiSocialConnect");
     KiiSocialConnect.logIn(KiiSocialNetworkName.FACEBOOK, options, loginCallbacks);
   }
 
-  // SNS Registration
   var loginCallbacks = {
-    // successfully connected to Facebook
     success : function(user, network) {
       console.log("Connected user " + user + " to network: " + network);
       console.log(user);
-      // Get an access token by getAccessToekn method.
-      var accessToken = KiiUser.getCurrentUser().getAccessToken();
-      console.log("accessToken:"+accessToken);
 
-      // Prepare the target bucket to be queried
+      var accessToken = KiiUser.getCurrentUser().getAccessToken();
+
       var bucket = $scope.quizBucket;
       
-      console.log("now:"+new Date().getTime());
       var ticks = $scope.currentTicks();
-      console.log("ticks:"+ticks);
       
-      // Build "user" query
       var clause1 = KiiClause.lessThan("due", ticks);
       var clause2 = KiiClause.notEquals("suspended", true);
       var user_query = KiiQuery.queryWithClause(KiiClause.and(clause1, clause2));
@@ -142,14 +121,12 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 	  $scope.$apply(function() {
 	    $scope.quizzes = resultSet;
 	  });
-	  // do something with the results
+
 	  for(var i=0; i<resultSet.length; i++) {
-	    // do something with the object resultSet[i];
-	    console.log("due js:"+$scope.dateFromTicks(resultSet[i].get("due")));
-	    console.log("quiz:"+resultSet[i].get("quiz"));
-	    
 	    refreshQuiz(resultSet, i);
 	  }
+//	  if (!nextQuery)
+//	    $scope.showPublicQuiz(resultSet);
 	},
 	failure: function(queryPerformed, anErrorString) {
 	  // do something with the error response
@@ -164,6 +141,9 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     }
   };
 
+  $scope.showPublicQuiz = function() {
+  };
+
   var refreshQuiz = function(userDeck, j) {
     var userCard = userDeck[j];
     var uri = userCard.get("quiz");
@@ -172,39 +152,9 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     quiz.refresh({
       success: function(theObject) {
 	console.log("Object refreshed!");
-	console.log(theObject.get("question"));
-	var answer = theObject.get('answer');
-	var kind = theObject.get('kind');
-	if (!kind) {
-	  kind = "normal";
-	  theObject.set('kind', "normal");
-	  theObject.save({
-	    success: function(theObject2) {
-	      console.log("Object2 saved!");
-	      console.log(theObject2);
-	    },
-	    failure: function(theObject2, errorString2) {
-	      console.log("Error saving object2: " + errorString2);
-	    }
-	  });
-	}
-	var dummy0 = theObject.get('candidate0');
-	var dummy1 = theObject.get('candidate1');
-	var dummy2 = theObject.get('candidate2');
-	var choices = [answer, dummy0, dummy1, dummy2];
-	var shuffle = function() {return Math.random()-.5};
-	choices.sort(shuffle);
-
 	$scope.$apply(function() {
-	  $scope.quizzes[j] = {
-	    'question': theObject.get("question"),
-	    'kind': kind,
-	    'choices' : choices,
-	    'answer' : answer,
-	    'object' : theObject,
-	    'userCard' : userCard,
-	    'finished' : false
-	  };
+	  $scope.quizzes[j] = createQuizFromKiiObject(theObject, userCard);
+	  console.log("quiz created");
 	});
       },
       failure: function(theObject, errorString) {
@@ -213,6 +163,49 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     });
   };
 
+  var createQuizFromKiiObject = function(theObject, userCard) {
+    console.log(theObject.get("question"));
+    
+    var answer = theObject.get('answer');
+    var kind = theObject.get('kind');
+    if (!kind) {
+      kind = "normal";
+      theObject.set('kind', "normal");
+      theObject.save({
+	success: function(theObject2) {
+	  console.log("Object2 saved!");
+	  console.log(theObject2);
+	},
+	failure: function(theObject2, errorString2) {
+	  console.log("Error saving object2: " + errorString2);
+	}
+      });
+    }
+    var dummy0 = theObject.get('candidate0');
+    var dummy1 = theObject.get('candidate1');
+    var dummy2 = theObject.get('candidate2');
+    var choices = [answer, dummy0, dummy1, dummy2];
+
+    var uniqueNames = [];
+    $.each(choices, function(i, el){
+      if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+    });
+    console.log(uniqueNames);
+    
+    var shuffle = function() {return Math.random()-.5};
+    choices.sort(shuffle);
+    console.log(choices);
+    return {
+      'question': theObject.get("question"),
+      'kind': kind,
+      'choices' : uniqueNames,
+      'answer' : answer,
+      'object' : theObject,
+      'userCard' : userCard,
+      'finished' : false
+    };
+  };
+  
   $scope.answer = function(quiz) {
     console.log(quiz);
     var userCard = quiz.userCard;
