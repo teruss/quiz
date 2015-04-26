@@ -51,13 +51,12 @@
 	<div class="col-md-4">
 	  <div ng-repeat="quiz in quizzes | filter:{kind:'normal'} | filter:{finished:true}">
 	    {{quiz.question}}
-	    <form ng-submit="answer(quiz)">
+	    <form>
 	      <div ng-repeat="choice in quiz.choices">
 		<div class="radio">
 		  <label><input type="radio" ng-model="quiz.guess" ng-value="choice" id="{{choice}}" name="quiz_radio">{{choice}}</label>
 		</div>
 	      </div>
-	      <input type="submit" class="btn" value="Post">
 	    </form>
 	    <p>{{quiz.result}}</p>
 	    <hr/>
