@@ -18,8 +18,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     "kiiAppKey":"2c41dd084726f3a409c9963646fddc22",
     "facebookAppId" : '576444712448750',
   }
-    //var keys = sandbox;
-  var keys = production;
+  var keys = (document.location.hostname == "localhost") ? sandbox : production;
   
   $window.onload = function() {
     console.log("Kii initialize");
@@ -47,18 +46,6 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
       version    : 'v2.3'
     });
 
-    // Now that we've initialized the JavaScript SDK, we call 
-    // FB.getLoginStatus().  This function gets the state of the
-    // person visiting this page and can return one of three states to
-    // the callback you provide.  They can be:
-    //
-    // 1. Logged into your app ('connected')
-    // 2. Logged into Facebook, but not your app ('not_authorized')
-    // 3. Not logged into Facebook and can't tell if they are logged into
-    //    your app or not.
-    //
-    // These three cases are handled in the callback function.
-    
     FB.getLoginStatus(function(response) {
       $scope.statusChangeCallback(response);
     });
@@ -113,8 +100,6 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     });
     FB.api('/me', function(response) {
       console.log('Successful login for: ' + response.name);
-      document.getElementById('status').innerHTML =
-	'Thanks for logging in, ' + response.name + '!';
     });
     console.log("facebook token:"+ fbAccessToken);
     
@@ -141,19 +126,16 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
       console.log("accessToken:"+accessToken);
 
       // Prepare the target bucket to be queried
-      var bucket = Kii.bucketWithName("quiz");
+      var bucket = $scope.quizBucket;
       
       console.log("now:"+new Date().getTime());
-      var ticks = $scope.ticksFromJS(new Date().getTime());
+      var ticks = $scope.currentTicks();
       console.log("ticks:"+ticks);
       
       // Build "user" query
       var clause1 = KiiClause.lessThan("due", ticks);
       var clause2 = KiiClause.notEquals("suspended", true);
       var user_query = KiiQuery.queryWithClause(KiiClause.and(clause1, clause2));
-      //var user_query = KiiQuery.queryWithClause();
-      // Prepare the target Bucket to be queried.
-      var userBucket = KiiUser.getCurrentUser().bucketWithName("quiz");
       var userQueryCallbacks = {
 	success: function(queryPerformed, resultSet, nextQuery) {
 	  console.log(resultSet);
@@ -168,19 +150,13 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 	    
 	    refreshQuiz(resultSet, i);
 	  }
-	  console.log("nextQuery:" + nextQuery);
-	  if(nextQuery != null) {
-	    // There are more results (pages).
-	    // Execute the next query to get more results.
-	    //	    bucket.executeQuery(nextQuery, queryCallbacks);
-	  }
 	},
 	failure: function(queryPerformed, anErrorString) {
 	  // do something with the error response
 	}
       }
 
-      userBucket.executeQuery(user_query, userQueryCallbacks);
+      $scope.getUserBucket().executeQuery(user_query, userQueryCallbacks);
     },
     // unable to connect
     failure : function(user, network, error) {
@@ -196,9 +172,22 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     quiz.refresh({
       success: function(theObject) {
 	console.log("Object refreshed!");
-	console.log(theObject.get("kind"));
 	console.log(theObject.get("question"));
 	var answer = theObject.get('answer');
+	var kind = theObject.get('kind');
+	if (!kind) {
+	  kind = "normal";
+	  theObject.set('kind', "normal");
+	  theObject.save({
+	    success: function(theObject2) {
+	      console.log("Object2 saved!");
+	      console.log(theObject2);
+	    },
+	    failure: function(theObject2, errorString2) {
+	      console.log("Error saving object2: " + errorString2);
+	    }
+	  });
+	}
 	var dummy0 = theObject.get('candidate0');
 	var dummy1 = theObject.get('candidate1');
 	var dummy2 = theObject.get('candidate2');
@@ -209,7 +198,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 	$scope.$apply(function() {
 	  $scope.quizzes[j] = {
 	    'question': theObject.get("question"),
-	    'kind': theObject.get("kind", "normal"),
+	    'kind': kind,
 	    'choices' : choices,
 	    'answer' : answer,
 	    'object' : theObject,
@@ -225,7 +214,6 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
 
   $scope.answer = function(quiz) {
     console.log(quiz);
-    var obj = quiz.object;
     var userCard = quiz.userCard;
     var due = userCard.get("due");
     console.log("due:"+due);
@@ -233,15 +221,69 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     console.log("interval:"+interval);
     var good = quiz.answer === quiz.guess;
     var nextInterval = $scope.calcInterval(interval, due, $scope.ticksFromJS(new Date().getTime()), good);
-    userCard.set("interval", nextInterval);
-    userCard.set("due", due + nextInterval);
-    userCard.set("suspended", !good);
-
+    
     if (good) {
       quiz.result = "Right! The next due is: " + $scope.dateFromTicks(due + nextInterval);
     } else {
       quiz.result = "Wrong! The answer is: " + quiz.answer;
     }
+
+    $scope.saveUserCard(userCard, nextInterval, due + nextInterval, !good);
+  };
+  
+  $scope.calcInterval = function(interval, due, now, good) {
+    if (!good)
+      return 10 * 60 * 1000 * 1000 * 10;
+    var delay = now - due;
+    return Math.max(0, (interval + delay / 2) * 1.2);
+  };
+
+  $scope.ticksFromJS = function(time) {
+    return (time * 10000) + 621355968000000000;
+  };
+
+  $scope.dateFromTicks = function(ticks) {
+    var epochMicrotimeDiff = 621355968000000000;
+    var tickDate = new Date((ticks - epochMicrotimeDiff) / 10000);
+    return tickDate;
+  };
+
+  $scope.createQuiz = function(quiz) {
+    console.log("create quiz");
+    console.log(quiz);
+    var appBucket = $scope.quizBucket;
+    var obj = appBucket.createObject();
+    obj.set("question", quiz.question);
+    obj.set("answer", quiz.answer);
+    obj.set('candidate0', quiz.dummy1);
+    obj.set('candidate1', quiz.dummy2);
+    obj.set('candidate2', quiz.dummy3);
+    
+    obj.save({
+      success: function(theObject) {
+	console.log("Object saved!");
+	console.log(theObject);
+	var userBucket = $scope.getUserBucket();
+	var userCard = userBucket.createObject();
+	userCard.set("quiz", theObject.objectURI());
+	userCard.set("kind", "normal");
+	$scope.saveUserCard(userCard, 0, $scope.currentTicks(), false);
+      },
+      failure: function(theObject, errorString) {
+	console.log("Error saving object: " + errorString);
+      }
+    });
+  };
+  
+  $scope.quizBucket = Kii.bucketWithName("quiz");
+
+  $scope.saveUserCard = function(userCard, interval, due, suspended) {
+    console.log("saveUserCard:"+userCard+","+interval+","+due+","+suspended);
+
+    userCard.set("interval", interval);
+    userCard.set("due", due);
+    userCard.set("suspended", suspended);
+
     userCard.save({
       success: function(theObject) {
 	console.log("Object saved!");
@@ -257,28 +299,12 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
       }
     });
   };
-  
-  $scope.calcInterval = function(interval, due, now, good) {
-    if (!good)
-      return 10 * 60 * 1000 * 1000 * 10;
-    var delay = now - due;
-    return Math.max(0, (interval + delay / 2) * 1.2);
-  };
 
-  $scope.ticksFromJS = function(time) {
-    return (time * 10000) + 621355968000000000;
-  };
+  $scope.getUserBucket = function() {
+    return KiiUser.getCurrentUser().bucketWithName("quiz");
+  }
 
-  $scope.dateFromTicks = function(ticks) {
-    //ticks are in nanotime; convert to microtime
-    var ticksToMicrotime = ticks / 10000;
-    
-    //ticks are recorded from 1/1/1; get microtime difference from 1/1/1/ to 1/1/1970
-    var epochMicrotimeDiff = 621355968000000000;
-    
-    //new date is ticks, converted to microtime, minus difference from epoch microtime
-    var tickDate = new Date((ticks - epochMicrotimeDiff) / 10000);
-    return tickDate;
+  $scope.currentTicks = function() {
+    return $scope.ticksFromJS(new Date().getTime());
   };
-
 }]);
