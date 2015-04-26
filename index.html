@@ -34,7 +34,22 @@
     <div class="container">
       <div class="row">
 	<div class="col-md-4">
+	  <h3>My Quizzes</h3>
 	  <div ng-repeat="quiz in quizzes | filter:{kind:'normal'} | filter:{finished:false}">
+	    {{quiz.question}}
+	    <form ng-submit="answer(quiz)">
+	      <div ng-repeat="choice in quiz.choices">
+		<div class="radio">
+		  <label><input type="radio" ng-model="quiz.guess" ng-value="choice" id="{{choice}}" name="quiz_radio">{{choice}}</label>
+		</div>
+	      </div>
+	      <input type="submit" class="btn" value="Post">
+	    </form>
+	    <p>{{quiz.result}}</p>
+	    <hr/>
+	  </div>
+	  <h3>Recently Added Quizzes</h3>
+	  <div ng-repeat="quiz in publicQuizzes | filter:{kind:'normal'} | filter:{finished:false}">
 	    {{quiz.question}}
 	    <form ng-submit="answer(quiz)">
 	      <div ng-repeat="choice in quiz.choices">
@@ -49,6 +64,7 @@
 	  </div>
 	</div>
 	<div class="col-md-4">
+	  <h3>Done</h3>
 	  <div ng-repeat="quiz in quizzes | filter:{kind:'normal'} | filter:{finished:true}">
 	    {{quiz.question}}
 	    <form>
@@ -63,6 +79,7 @@
 	  </div>
 	</div>
 	<div class="col-md-4" ng-show="isLoggedIn">
+	  <h3>Create New Quiz</h3>
           <form ng-submit="createQuiz(quiz)">
 	    <div class="form-group">
 	      <label for="inputdefault">Question</label>

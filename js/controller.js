@@ -142,13 +142,17 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
   };
 
   var showPublicQuiz = function() {
+    console.log("showPublicPuzzle");
     var all_query = KiiQuery.queryWithClause();
     var queryCallbacks = {
       success: function(queryPerformed, resultSet, nextQuery) {
 	// do something with the results
+	$scope.publicQuizzes = [];
 	for(var i=0; i<resultSet.length; i++) {
 	  // do something with the object resultSet[i];
-	  $scope.quizzes.push(createQuizFromKiiObject(resultSet[i], null));
+	  $scope.$apply(function() {
+	    $scope.publicQuizzes.push(createQuizFromKiiObject(resultSet[i], null));
+	  });
 	}
       },
       failure: function(queryPerformed, anErrorString) {
