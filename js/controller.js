@@ -144,6 +144,8 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
   var showPublicQuiz = function() {
     console.log("showPublicPuzzle");
     var all_query = KiiQuery.queryWithClause();
+    all_query.setLimit(10);
+    all_query.sortByDesc("_modified");
     var queryCallbacks = {
       success: function(queryPerformed, resultSet, nextQuery) {
 	// do something with the results
