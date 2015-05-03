@@ -259,22 +259,18 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     var nextInterval = $scope.calcInterval(interval, due, $scope.ticksFromJS(new Date().getTime()), good);
     
     if (good) {
-      quiz.result = "Right! The next due is: " + $scope.dateFromTicks(due + nextInterval);
+      quiz.result = "Right!";
+      quiz.next_due = "" + $scope.dateFromTicks(due + nextInterval);
     } else {
       quiz.result = "Wrong! The answer is: " + quiz.answer;
     }
+    console.log("quiz.next_due:" + quiz.next_due);
 
     userCard.set("suspended", !good);
     userCard.set("due", due + nextInterval);
     userCard.set("interval", nextInterval);
 
     $scope.saveUserCard(userCard);
-    $window.setTimeout(function() {
-      $scope.$apply(function() {
-	quiz.finished = true;
-	console.log(quiz);
-      });
-    }, 500);
   };
 
   var searchUserCard = function(quiz) {
