@@ -23,25 +23,21 @@
       <h3>{{quizType}}</h3>
       <div ng-repeat="quiz in quizzes | filter:{kind:'normal'} | filter:{finished:false}">
 	{{quiz.question}}
-	<div class="row">
-	  <div class="col-md-6">
-	    <form ng-submit="answer(quiz)">
-	      <div ng-repeat="choice in quiz.choices">
-		<div class="radio">
-		  <label><input type="radio" ng-model="quiz.guess" ng-value="choice" id="{{choice}}" name="quiz_radio" ng-disabled="quiz.result">{{choice}}</label>
-		</div>
-	      </div>
-	      <button ng-disabled="quiz.result || !quiz.guess" type="submit" class="btn">Post</button>
-	    </form>
+	<form ng-submit="answer(quiz)">
+	  <div ng-repeat="choice in quiz.choices">
+	    <div class="radio">
+	      <label><input type="radio" ng-model="quiz.guess" ng-value="choice" id="{{choice}}" name="quiz_radio" ng-disabled="quiz.result">{{choice}}</label>
+	    </div>
 	  </div>
-	  <div class="col-md-6" ng-show="quiz.result">
-	    <p>{{quiz.result}}</p>
-	    <p>The next due is:</p>
-	    <p>{{quiz.next_due}}</p>
-	    <form ng-submit="quiz.finished=true">
-	      <button type="submit" class="btn">OK</button>
-	    </form>
-	  </div>
+	  <button ng-disabled="quiz.result || !quiz.guess" type="submit" class="btn">Post</button>
+	</form>
+	<div ng-show="quiz.result">
+	  <p>{{quiz.result}}</p>
+	  <p>The next due is:</p>
+	  <p>{{quiz.next_due}}</p>
+	  <form ng-submit="quiz.finished=true">
+	    <button type="submit" class="btn">OK</button>
+	  </form>
 	</div>
 	<hr/>
       </div>
