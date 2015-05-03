@@ -6,119 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
     <script type="text/javascript" src="js/KiiSDK.js"></script>
-    <script src="js/controller.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
   </head>
   
   <body ng-controller="QuizCtrl">
-    <script>
-    </script>
-    <div id="fb-root"></div>
-    <nav class="navbar navbar-inverse">
-      <div class="container-fluid">
-	<div class="navbar-header">
-	  <a class="navbar-brand" href="#">QuizPost</a>
-	</div>
-	<div>
-	  <ul class="nav navbar-nav">
-	    <li class="active"><a href="#">Home</a></li>
-	  </ul>
-	  <ul class="nav navbar-nav navbar-right">
-	    <div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" onlogin="checkLoginState()" ng-hide="isLoggedIn"></div>
-	  </ul>
-	</div>
-      </div>
-    </nav>
-    <h2>QuizPost</h2>
-    <div class="container">
-      <div class="row">
-	<div class="col-md-4">
-	  <h3>My Quizzes</h3>
-	  <div ng-repeat="quiz in quizzes | filter:{kind:'normal'} | filter:{finished:false}">
-	    <div class="row">
-	      <div class="col-md-6">
-	      {{quiz.question}}
-	      <form ng-submit="answer(quiz)">
-		<div ng-repeat="choice in quiz.choices">
-		  <div class="radio">
-		    <label><input type="radio" ng-model="quiz.guess" ng-value="choice" id="{{choice}}" name="quiz_radio" ng-disabled="quiz.result">{{choice}}</label>
-		  </div>
-		</div>
-		<button ng-disabled="quiz.result || !quiz.guess" type="submit" class="btn">Post</button>
-	      </form>
-	      </div>
-	      <div class="col-md-6" ng-show="quiz.result">
-		<p>{{quiz.result}}</p>
-		<p>The next due is:</p>
-		<p>{{quiz.next_due}}</p>
-		<form ng-submit="quiz.finished=true">
-		  <button type="submit" class="btn">OK</button>
-		</form>
-	      </div>
-	    </div>
-	    <hr/>
-	  </div>
-	  <h3>Recently Added Quizzes</h3>
-	  <div ng-repeat="quiz in publicQuizzes | filter:{kind:'normal'} | filter:{finished:false}">
-	    {{quiz.question}}
-	    <form ng-submit="answer(quiz)">
-	      <div ng-repeat="choice in quiz.choices">
-		<div class="radio">
-		  <label><input type="radio" ng-model="quiz.guess" ng-value="choice" id="{{choice}}" name="quiz_radio">{{choice}}</label>
-		</div>
-	      </div>
-	      <input type="submit" class="btn" value="Post">
-	    </form>
-	    <p>{{quiz.result}}</p>
-	    <hr/>
-	  </div>
-	</div>
-	<div class="col-md-4">
-	  <h3>Done</h3>
-	  <div ng-repeat="quiz in quizzes.concat(publicQuizzes) | filter:{kind:'normal'} | filter:{finished:true}">
-	    {{quiz.question}}
-	    <form>
-	      <div ng-repeat="choice in quiz.choices">
-		<div class="radio">
-		  <label><input type="radio" ng-model="quiz.guess" ng-value="choice" id="{{choice}}" name="quiz_radio">{{choice}}</label>
-		</div>
-	      </div>
-	    </form>
-	    <p>{{quiz.result}}</p>
-	    <hr/>
-	  </div>
-	</div>
-	<div class="col-md-4" ng-show="isLoggedIn">
-	  <h3>Create New Quiz</h3>
-          <form ng-submit="createQuiz(quiz)">
-	    <div class="form-group">
-	      <label for="inputdefault">Question</label>
-	      <input class="form-control" id="inputdefault" type="text" ng-model="quiz.question">
-	    </div>
-	    <div class="form-group">
-	      <label for="inputanswer">Answer</label>
-	      <input class="form-control" id="inputanswer" type="text" ng-model="quiz.answer">
-	    </div>
-	    <div class="form-group">
-	      <label for="inputwronganswer1">Wrong Answer 1</label>
-	      <input class="form-control" id="inputwronganswer1" type="text" ng-model="quiz.dummy1">
-	    </div> 
-	    <div class="form-group">
-	      <label for="inputwronganswer2">Wrong Answer 2</label>
-	      <input class="form-control" id="inputwronganswer2" type="text" ng-model="quiz.dummy2">
-	    </div> 
-	    <div class="form-group">
-	      <label for="inputwronganswer3">Wrong Answer 3</label>
-	      <input class="form-control" id="inputwronganswer3" type="text" ng-model="quiz.dummy3">
-	    </div> 
-	    <input ng-disabled="isCreating" type="submit" class="btn" value="Create Quiz">
-	  </form>
-	</div>
-      </div>
-    </div>
-    <footer class="container-fluid">
-      <small>Copyright (C) 2015 teruss All Rights Reserved.</small>
-    </footer>
+    <div ng-view></div>
   </body>
 </html>

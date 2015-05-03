@@ -3,3 +3,4 @@ node_modules
 *.html~
 webapp/bower_components
 *.js~
+bower_components

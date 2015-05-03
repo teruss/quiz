@@ -5,9 +5,9 @@ var checkLoginState = function() {
   });
 }
 
-var quizApp = angular.module('quizApp', []);
+var quizControllers = angular.module('quizControllers', []);
 
-quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
+quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', function($scope, $window, $routeParams) {
   var sandbox = {
     "kiiAppId":"6db83d12",
     "kiiAppKey":"df55dc77ffa451cb686cfda8f9e0fece",
@@ -19,6 +19,12 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     "facebookAppId" : '576444712448750',
   }
   var keys = (document.location.hostname == "localhost") ? sandbox : production;
+
+  if ($routeParams.quizType == "recent") {
+    $scope.quizType = "Recent Quizzes";
+  } else {
+    $scope.quizType = "My Quizzes";
+  }
   
   $window.onload = function() {
     console.log("Kii initialize");
@@ -257,20 +263,23 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     console.log("interval:"+interval);
     var good = quiz.answer === quiz.guess;
     var nextInterval = $scope.calcInterval(interval, due, $scope.ticksFromJS(new Date().getTime()), good);
-    
-    if (good) {
-      quiz.result = "Right!";
-      quiz.next_due = "" + $scope.dateFromTicks(due + nextInterval);
-    } else {
-      quiz.result = "Wrong! The answer is: " + quiz.answer;
-    }
-    console.log("quiz.next_due:" + quiz.next_due);
+
+    $scope.$apply(function() {
+      if (good) {
+	quiz.result = "Right!";
+	quiz.next_due = "" + $scope.dateFromTicks(due + nextInterval);
+      } else {
+	quiz.result = "Wrong! The answer is: " + quiz.answer;
+      }
+      console.log("quiz.next_due:" + quiz.next_due);
+    });
 
     userCard.set("suspended", !good);
     userCard.set("due", due + nextInterval);
     userCard.set("interval", nextInterval);
 
     $scope.saveUserCard(userCard);
+    console.log("result:"+quiz.result);
   };
 
   var searchUserCard = function(quiz) {
