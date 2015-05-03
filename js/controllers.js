@@ -263,17 +263,15 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', fun
     console.log("interval:"+interval);
     var good = quiz.answer === quiz.guess;
     var nextInterval = $scope.calcInterval(interval, due, $scope.ticksFromJS(new Date().getTime()), good);
-
-    $scope.$apply(function() {
-      if (good) {
-	quiz.result = "Right!";
-	quiz.next_due = "" + $scope.dateFromTicks(due + nextInterval);
-      } else {
-	quiz.result = "Wrong! The answer is: " + quiz.answer;
-      }
-      console.log("quiz.next_due:" + quiz.next_due);
-    });
-
+    
+    if (good) {
+      quiz.result = "Right!";
+      quiz.next_due = "" + $scope.dateFromTicks(due + nextInterval);
+    } else {
+      quiz.result = "Wrong! The answer is: " + quiz.answer;
+    }
+    console.log("quiz.next_due:" + quiz.next_due);
+    
     userCard.set("suspended", !good);
     userCard.set("due", due + nextInterval);
     userCard.set("interval", nextInterval);
@@ -292,7 +290,9 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', fun
 	if (resultSet.length >= 1) {
 	  console.log("found user card");
 	  quiz.userCard = resultSet[0];
-	  $scope.answer(quiz);
+	  $scope.$apply(function() {
+	    $scope.answer(quiz);
+	  });
 	  return;
 	}
 	console.log("not found user card");
