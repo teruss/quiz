@@ -22,9 +22,9 @@
     <div class="col-md-4">
       <h3>{{quizType}}</h3>
       <div ng-repeat="quiz in quizzes | filter:{kind:'normal'} | filter:{finished:false}">
+	{{quiz.question}}
 	<div class="row">
 	  <div class="col-md-6">
-	    {{quiz.question}}
 	    <form ng-submit="answer(quiz)">
 	      <div ng-repeat="choice in quiz.choices">
 		<div class="radio">
@@ -47,9 +47,9 @@
       </div>
       <h3>Recently Added Quizzes</h3>
       <div ng-repeat="quiz in publicQuizzes | filter:{kind:'normal'} | filter:{finished:false}">
+	{{quiz.question}}
 	<div class="row">
 	  <div class="col-md-6">
-	    {{quiz.question}}
 	    <form ng-submit="answer(quiz)">
 	      <div ng-repeat="choice in quiz.choices">
 		<div class="radio">
