@@ -200,6 +200,7 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
   };
 
   var createQuizFromKiiObject = function(theObject, userCard) {
+    console.log("createQuizFormKiiObject");
     console.log(theObject.get("question"));
     
     var answer = theObject.get('answer');
@@ -221,12 +222,12 @@ quizApp.controller('QuizCtrl',['$scope', '$window', function($scope, $window) {
     var dummy1 = theObject.get('candidate1');
     var dummy2 = theObject.get('candidate2');
     var choices = [answer, dummy0, dummy1, dummy2];
+    console.log(choices);
 
     var uniqueNames = [];
     $.each(choices, function(i, el){
       if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
     });
-    console.log(uniqueNames);
     
     var shuffle = function() {return Math.random()-.5};
     uniqueNames.sort(shuffle);

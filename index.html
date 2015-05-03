@@ -43,7 +43,7 @@
 		  <label><input type="radio" ng-model="quiz.guess" ng-value="choice" id="{{choice}}" name="quiz_radio">{{choice}}</label>
 		</div>
 	      </div>
-	      <input type="submit" class="btn" value="Post">
+	      <input ng-disabled="!quiz.guess" type="submit" class="btn" value="Post">
 	    </form>
 	    <p>{{quiz.result}}</p>
 	    <hr/>
