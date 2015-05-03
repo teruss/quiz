@@ -266,10 +266,10 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', fun
     
     if (good) {
       quiz.result = "Right!";
-      quiz.next_due = "" + $scope.dateFromTicks(due + nextInterval);
     } else {
       quiz.result = "Wrong! The answer is: " + quiz.answer;
     }
+    quiz.next_due = "" + $scope.dateFromTicks(due + nextInterval);
     console.log("quiz.next_due:" + quiz.next_due);
     
     userCard.set("suspended", !good);
