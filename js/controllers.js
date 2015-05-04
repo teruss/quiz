@@ -401,3 +401,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', fun
     return $scope.ticksFromJS(new Date().getTime());
   };
 }]);
+
+quizControllers.controller('NewQuizCtrl', ['$scope', function ($scope) {
+  
+}]);

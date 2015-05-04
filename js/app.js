@@ -10,9 +10,9 @@ quizApp.config(['$routeProvider',
 		      templateUrl: 'partials/quiz-list.html',
 		      controller: 'QuizCtrl'
 		    }).
-		    when('/quizzes/:quizType', {
-		      templateUrl: 'partials/quiz-list.html',
-		      controller: 'QuizCtrl'
+		    when('/create', {
+		      templateUrl: 'partials/create-quiz.html',
+		      controller: 'NewQuizCtrl'
 		    }).
 		    otherwise({
 		      redirectTo: '/quizzes'

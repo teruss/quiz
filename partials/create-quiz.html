@@ -1,0 +1,52 @@
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#/quizzes">QuizPost</a>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+	<li class="active"><a href="#/quizzes">Home</a></li>
+      </ul>
+      <ul class="nav navbar-nav">
+	<li class="active"><a href="#/create">Create Quiz</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+	<div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" onlogin="checkLoginState()" ng-hide="isLoggedIn"></div>
+      </ul>
+    </div>
+  </div>
+</nav>
+<h2>QuizPost</h2>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4" ng-show="isLoggedIn">
+      <h3>Create New Quiz</h3>
+      <form ng-submit="createQuiz(quiz)">
+	<div class="form-group">
+	  <label for="inputdefault">Question</label>
+	  <textarea class="form-control" id="inputdefault" ng-model="quiz.question" rows="3"></textarea>
+	</div>
+	<div class="form-group">
+	  <label for="inputanswer">Answer</label>
+	  <input class="form-control" id="inputanswer" type="text" ng-model="quiz.answer">
+	</div>
+	<div class="form-group">
+	  <label for="inputwronganswer1">Wrong Answer 1</label>
+	  <input class="form-control" id="inputwronganswer1" type="text" ng-model="quiz.dummy1">
+	</div> 
+	<div class="form-group">
+	  <label for="inputwronganswer2">Wrong Answer 2</label>
+	  <input class="form-control" id="inputwronganswer2" type="text" ng-model="quiz.dummy2">
+	</div> 
+	<div class="form-group">
+	  <label for="inputwronganswer3">Wrong Answer 3</label>
+	  <input class="form-control" id="inputwronganswer3" type="text" ng-model="quiz.dummy3">
+	</div> 
+	<input ng-disabled="isCreating" type="submit" class="btn" value="Create Quiz">
+      </form>
+    </div>
+  </div>
+</div>
+<footer class="container-fluid">
+  <small>Copyright (C) 2015 teruss All Rights Reserved.</small>
+</footer>
