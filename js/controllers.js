@@ -296,7 +296,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', fun
 	  return;
 	}
 	console.log("not found user card");
-	quiz.userCard = createUserCard(quiz.object);
+	quiz.userCard = $scope.createUserCard(quiz.object);
 	$scope.answer(quiz);
       },
       failure: function(queryPerformed, anErrorString) {
@@ -324,45 +324,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', fun
     return tickDate;
   };
 
-  $scope.createQuiz = function(quiz) {
-    console.log("create quiz");
-    console.log(quiz);
-    var appBucket = $scope.quizBucket;
-    var obj = appBucket.createObject();
-    obj.set("question", quiz.question);
-    obj.set("answer", quiz.answer);
-    obj.set('candidate0', quiz.dummy1);
-    obj.set('candidate1', quiz.dummy2);
-    obj.set('candidate2', quiz.dummy3);
-    obj.set("kind", "normal");
-    $scope.isCreating = true;
-    
-    obj.save({
-      success: function(theObject) {
-	console.log("Object saved!");
-	console.log(theObject);
-	var userCard = createUserCard(theObject);
-
-	$scope.saveUserCard(userCard);
-	quiz.question = "";
-	quiz.answer = "";
-	quiz.dummy1 = "";
-	quiz.dummy2 = "";
-	quiz.dummy3 = "";
-	$scope.$apply(function() {
-	  $scope.isCreating = false;
-	});
-      },
-      failure: function(theObject, errorString) {
-	console.log("Error saving object: " + errorString);
-	$scope.$apply(function() {
-	  $scope.isCreating = false;
-	});
-      }
-    });
-  };
-
-  var createUserCard = function(theObject) {
+  $scope.createUserCard = function(theObject) {
     var userBucket = $scope.getUserBucket();
     var userCard = userBucket.createObject();
     userCard.set("due", $scope.currentTicks());
@@ -400,8 +362,4 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', fun
   $scope.currentTicks = function() {
     return $scope.ticksFromJS(new Date().getTime());
   };
-}]);
-
-quizControllers.controller('NewQuizCtrl', ['$scope', function ($scope) {
-  
 }]);

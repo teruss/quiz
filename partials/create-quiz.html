@@ -42,7 +42,7 @@
 	  <label for="inputwronganswer3">Wrong Answer 3</label>
 	  <input class="form-control" id="inputwronganswer3" type="text" ng-model="quiz.dummy3">
 	</div> 
-	<input ng-disabled="isCreating" type="submit" class="btn" value="Create Quiz">
+	<input ng-disabled="isCreating || !quiz.answer || !quiz.dummy1 || quiz.answer === quiz.dummy1" type="submit" class="btn" value="Create Quiz">
       </form>
     </div>
   </div>
