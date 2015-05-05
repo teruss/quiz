@@ -7,7 +7,7 @@ var checkLoginState = function() {
 
 var quizControllers = angular.module('quizControllers', []);
 
-quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', function($scope, $window, $routeParams) {
+quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$location', function($scope, $window, $routeParams, $location) {
   var sandbox = {
     "kiiAppId":"6db83d12",
     "kiiAppKey":"df55dc77ffa451cb686cfda8f9e0fece",
@@ -245,6 +245,9 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', fun
       'answer' : answer,
       'object' : theObject,
       'userCard' : userCard,
+      'dummy1' : dummy0,
+      'dummy2' : dummy1,
+      'dummy3' : dummy2,
       'finished' : false
     };
   };
@@ -278,6 +281,14 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', fun
 
     $scope.saveUserCard(userCard);
     console.log("result:"+quiz.result);
+  };
+
+  $scope.edit = function(quiz) {
+    console.log("edit");
+    $scope.quiz = angular.copy(quiz);
+    $scope.master =  angular.copy(quiz);
+    console.log($scope.master);
+    $location.path('/create').search(quiz);
   };
 
   var searchUserCard = function(quiz) {

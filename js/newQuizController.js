@@ -1,4 +1,14 @@
-quizControllers.controller('NewQuizCtrl', ['$scope', function ($scope) {
+quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', function ($scope, $routeParams) {
+  console.log("new");
+  console.log($routeParams);
+  $scope.master = angular.copy( $routeParams )
+  $scope.quiz = $routeParams
+  console.log("master:"+$scope.master)
+  $scope.reset = function() {
+    $scope.quiz = $scope.master;
+    console.log($scope.master);
+    console.log($scope.quiz);
+  };
   $scope.createQuiz = function(quiz) {
     console.log("create quiz");
     console.log(quiz);
