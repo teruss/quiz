@@ -1,9 +1,5 @@
 quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', function ($scope, $routeParams) {
-  console.log("new");
-  console.log($routeParams);
-  $scope.master = angular.copy( $routeParams )
   $scope.quiz = $routeParams
-  console.log("master:"+$scope.master)
   $scope.reset = function() {
     $scope.quiz = $scope.master;
     console.log($scope.master);
@@ -14,6 +10,17 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', function ($
     console.log(quiz);
     var appBucket = $scope.quizBucket;
     var obj = appBucket.createObject();
+    saveQuiz(quiz, obj);
+  };
+  
+  $scope.editQuiz = function(quiz) {
+    console.log("edit quiz");
+    console.log(quiz);
+    var obj = quiz.object;
+    saveQuiz(quiz, obj);
+  };
+  
+  var saveQuiz = function(quiz, obj) {
     obj.set("question", quiz.question);
     obj.set("answer", quiz.answer);
     obj.set('candidate0', quiz.dummy1);
@@ -27,7 +34,7 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', function ($
 	console.log("Object saved!");
 	console.log(theObject);
 	var userCard = $scope.createUserCard(theObject);
-
+	
 	$scope.saveUserCard(userCard);
 	quiz.question = "";
 	quiz.answer = "";
@@ -45,5 +52,6 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', function ($
 	});
       }
     });
-  };  
+  };
+  
 }]);

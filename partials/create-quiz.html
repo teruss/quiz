@@ -42,8 +42,8 @@
 	  <label for="inputwronganswer3">Wrong Answer 3</label>
 	  <input class="form-control" id="inputwronganswer3" type="text" ng-model="quiz.dummy3">
 	</div>
-	<input type="button" ng-click="reset()" value="Reset" />
-	<input ng-disabled="isCreating || !quiz.answer || !quiz.dummy1 || quiz.answer === quiz.dummy1" type="submit" class="btn" value="Create Quiz">
+	<input ng-disabled="isCreating || !quiz.answer || !quiz.dummy1 || quiz.answer === quiz.dummy1" type="submit" class="btn btn-block" value="Create Quiz">
+	<input ng-disabled="!quiz.object || isCreating || !quiz.answer || !quiz.dummy1 || quiz.answer === quiz.dummy1" type="button" ng-click="editQuiz(quiz)" class="btn btn-block" value="Update Quiz">
       </form>
     </div>
   </div>
