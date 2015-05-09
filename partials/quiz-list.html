@@ -39,7 +39,7 @@
 	  </form>
 	</div>
 	<div ng-show="quiz.result" class="form-group">
-	  <p>{{quiz.result}} The next due is: {{quiz.next_due}}</p>
+	  <p>{{quiz.result}} You should review after {{quiz.next_due}}.</p>
 	  <form ng-submit="quiz.finished=true">
 	    <button type="submit" class="btn btn-block btn-primary">OK</button>
 	  </form>

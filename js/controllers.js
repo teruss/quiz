@@ -232,7 +232,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
 
     var uniqueNames = [];
     $.each(choices, function(i, el){
-      if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+      if(el && $.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
     });
     
     var shuffle = function() {return Math.random()-.5};
@@ -273,15 +273,31 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     } else {
       quiz.result = "Wrong! The answer is: " + quiz.answer;
     }
-    quiz.next_due = "" + $scope.dateFromTicks(now + nextInterval);
-    console.log("quiz.next_due:" + quiz.next_due);
+    quiz.next_due = daysBetween(new Date(), $scope.dateFromTicks(now + nextInterval));
     
     userCard.set("suspended", !good);
-    userCard.set("due", due + nextInterval);
+    userCard.set("due", now + nextInterval);
     userCard.set("interval", nextInterval);
 
     $scope.saveUserCard(userCard);
     console.log("result:"+quiz.result);
+  };
+
+  var daysBetween = function(date1, date2) {
+    console.log(date1);
+    console.log(date2);
+    //Get 1 day in milliseconds
+    var one_day=1000*60*60*24;
+    
+    // Convert both dates to milliseconds
+    var date1_ms = date1.getTime();
+    var date2_ms = date2.getTime();
+
+    // Calculate the difference in milliseconds
+    var difference_ms = date2_ms - date1_ms;
+    
+    // Convert back to days and return
+    return Math.round(difference_ms/one_day) + " days"; 
   };
 
   $scope.edit = function(quiz) {
