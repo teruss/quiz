@@ -39,9 +39,7 @@
 	  </form>
 	</div>
 	<div ng-show="quiz.result" class="form-group">
-	  <p>{{quiz.result}}</p>
-	  <p>The next due is:</p>
-	  <p>{{quiz.next_due}}</p>
+	  <p>{{quiz.result}} The next due is: {{quiz.next_due}}</p>
 	  <form ng-submit="quiz.finished=true">
 	    <button type="submit" class="btn btn-block btn-primary">OK</button>
 	  </form>

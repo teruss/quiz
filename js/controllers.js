@@ -265,14 +265,15 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     var interval = userCard.get("interval");
     console.log("interval:"+interval);
     var good = quiz.answer === quiz.guess;
-    var nextInterval = $scope.calcInterval(interval, due, $scope.ticksFromJS(new Date().getTime()), good);
+    var now = $scope.currentTicks()
+    var nextInterval = $scope.calcInterval(interval, due, now, good);
     
     if (good) {
       quiz.result = "Right!";
     } else {
       quiz.result = "Wrong! The answer is: " + quiz.answer;
     }
-    quiz.next_due = "" + $scope.dateFromTicks(due + nextInterval);
+    quiz.next_due = "" + $scope.dateFromTicks(now + nextInterval);
     console.log("quiz.next_due:" + quiz.next_due);
     
     userCard.set("suspended", !good);
