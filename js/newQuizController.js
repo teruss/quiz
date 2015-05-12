@@ -1,4 +1,12 @@
-quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', function ($scope, $routeParams) {
+quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook', function ($scope, $routeParams, Facebook) {
+      
+  Facebook.getLoginStatus(function(response) {
+    if (response.status == 'connected') {
+      $scope.isLoggedIn = true;
+    }
+  });
+
+  console.log("new quiz ctrl:" + $scope.isLoggedIn);
   $scope.quiz = $routeParams
   $scope.reset = function() {
     $scope.quiz = $scope.master;
