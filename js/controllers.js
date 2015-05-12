@@ -7,7 +7,7 @@ var checkLoginState = function() {
 
 var quizControllers = angular.module('quizControllers', []);
 
-quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$location', 'Facebook', function($scope, $window, $routeParams, $location, Facebook) {
+quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$location', 'Facebook', '$route', function($scope, $window, $routeParams, $location, Facebook, $route) {
   var sandbox = {
     "kiiAppId":"6db83d12",
     "kiiAppKey":"df55dc77ffa451cb686cfda8f9e0fece",
@@ -31,10 +31,8 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     Kii.initializeWithSite(keys.kiiAppId, keys.kiiAppKey, KiiSite.JP);
   };
 
-  $scope.facebookReady = false;
-
   var userIsConnected = false;
-      
+
   Facebook.getLoginStatus(function(response) {
     if (response.status == 'connected') {
       userIsConnected = true;
@@ -58,6 +56,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
    * Login
    */
   $scope.login = function() {
+    console.log("login");
     Facebook.login(function(response) {
       if (response.status == 'connected') {
         $scope.isLoggedIn = true;
@@ -72,7 +71,8 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
   $scope.logout = function() {
     Facebook.logout(function() {
       $scope.$apply(function() {
-        $scope.isLoggedIn = false;  
+        $scope.isLoggedIn = false;
+	$route.reload();
       });
     });
   }
@@ -92,11 +92,6 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     }
   );
 
-  $window.checkFB = function(response) {
-    console.log("fb");
-    $scope.statusChangeCallback(response);
-  };
-  
   $scope.load_quiz_lib = function() {
   };
 
