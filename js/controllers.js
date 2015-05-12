@@ -7,7 +7,7 @@ var checkLoginState = function() {
 
 var quizControllers = angular.module('quizControllers', []);
 
-quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$location', function($scope, $window, $routeParams, $location) {
+quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$location', 'Facebook', function($scope, $window, $routeParams, $location, Facebook) {
   var sandbox = {
     "kiiAppId":"6db83d12",
     "kiiAppKey":"df55dc77ffa451cb686cfda8f9e0fece",
@@ -29,32 +29,72 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
   $window.onload = function() {
     console.log("Kii initialize");
     Kii.initializeWithSite(keys.kiiAppId, keys.kiiAppKey, KiiSite.JP);
-    
-    (function(d, s, id){
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) {return;}
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/sdk.js";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
   };
+
+  $scope.facebookReady = false;
+
+  var userIsConnected = false;
+      
+  Facebook.getLoginStatus(function(response) {
+    if (response.status == 'connected') {
+      userIsConnected = true;
+    }
+
+    console.log("userIsConnected?:"+userIsConnected);
+    $scope.statusChangeCallback(response);
+  });
+  
+  /**
+   * IntentLogin
+   */
+  $scope.IntentLogin = function() {
+    console.log("intentLogin:"+userIsConnected);
+    if(!userIsConnected) {
+      $scope.login();
+    }
+  };
+  
+  /**
+   * Login
+   */
+  $scope.login = function() {
+    Facebook.login(function(response) {
+      if (response.status == 'connected') {
+        $scope.isLoggedIn = true;
+      }
+      $scope.statusChangeCallback(response);
+    });
+  };  
+
+  /**
+   * Logout
+   */
+  $scope.logout = function() {
+    Facebook.logout(function() {
+      $scope.$apply(function() {
+        $scope.isLoggedIn = false;  
+      });
+    });
+  }
+  /**
+   * Watch for Facebook to be ready.
+   * There's also the event that could be used
+   */
+  $scope.$watch(
+    function() {
+      return Facebook.isReady();
+    },
+    function(newVal, oldVal) {
+      console.log("newVal:" + newVal + "," + oldVal);
+      if (newVal) {
+        $scope.facebookReady = newVal;
+      }
+    }
+  );
 
   $window.checkFB = function(response) {
     console.log("fb");
     $scope.statusChangeCallback(response);
-  };
-  
-  $window.fbAsyncInit = function() {
-    console.log("call facebook init");
-    FB.init({
-      appId      : keys.facebookAppId,
-      xfbml      : true,
-      version    : 'v2.3'
-    });
-
-    FB.getLoginStatus(function(response) {
-      $scope.statusChangeCallback(response);
-    });
   };
   
   $scope.load_quiz_lib = function() {

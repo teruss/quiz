@@ -14,7 +14,8 @@
 	<li class="active"><a href="#/create">Create Quiz</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-	<div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" onlogin="checkLoginState()" ng-hide="isLoggedIn"></div>
+	<button type="button" class="btn btn-primary btn-large" data-ng-show="!isLoggedIn" data-ng-disabled="!facebookReady" data-ng-click="IntentLogin()">Login with Facebook</button>
+	<button type="button" class="btn btn-danger btn-large" data-ng-show="isLoggedIn" data-ng-disabled="!facebookReady" data-ng-click="logout()">Logout</button>
       </ul>
     </div>
   </div>
