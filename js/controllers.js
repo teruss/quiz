@@ -26,7 +26,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     $scope.quizType = "My Quizzes";
   }
   
-  $window.onload = function() {
+  var kiiInitialize = function() {
     console.log("Kii initialize");
     Kii.initializeWithSite(keys.kiiAppId, keys.kiiAppKey, KiiSite.JP);
   };
@@ -113,6 +113,8 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     console.log('statusChangeCallback');
     console.log(response);
     if (response.status === 'connected') {
+      console.log("kii initializing");
+      kiiInitialize();
       loggedIn(response.authResponse.accessToken);
     } else if (response.status === 'not_authorized') {
       console.log('Please log into this app.');
