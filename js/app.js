@@ -18,7 +18,7 @@ quizApp.config(['$routeProvider', 'FacebookProvider',
 		    otherwise({
 		      redirectTo: '/quizzes'
 		    });
-
+		  
 		  var sandbox = {
 		    "kiiAppId":"6db83d12",
 		    "kiiAppKey":"df55dc77ffa451cb686cfda8f9e0fece",
@@ -36,4 +36,3 @@ quizApp.config(['$routeProvider', 'FacebookProvider',
 		}]);
 
 quizApp.service('quizManager', QuizManager);
-});
