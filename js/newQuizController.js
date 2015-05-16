@@ -1,4 +1,4 @@
-quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook', function ($scope, $routeParams, Facebook) {
+quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook', 'quizManager', function ($scope, $routeParams, Facebook, quizManager) {
       
   Facebook.getLoginStatus(function(response) {
     if (response.status == 'connected') {
@@ -16,7 +16,7 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
   $scope.createQuiz = function(quiz) {
     console.log("create quiz");
     console.log(quiz);
-    var appBucket = $scope.quizBucket;
+    var appBucket = quizManager.quizBucket();
     var obj = appBucket.createObject();
     saveQuiz(quiz, obj);
   };
@@ -41,9 +41,9 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
       success: function(theObject) {
 	console.log("Object saved!");
 	console.log(theObject);
-	var userCard = $scope.createUserCard(theObject);
+	var userCard = quizManager.createUserCard(theObject);
 	
-	$scope.saveUserCard(userCard);
+	quizManager.saveUserCard(userCard);
 	quiz.question = "";
 	quiz.answer = "";
 	quiz.dummy1 = "";

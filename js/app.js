@@ -34,3 +34,7 @@ quizApp.config(['$routeProvider', 'FacebookProvider',
 		  console.log("init:"+ keys.facebookAppId);
 		  FacebookProvider.init(keys.facebookAppId);
 		}]);
+
+quizApp.factory('quizManager', function() {
+  return new QuizManager();
+});

@@ -7,7 +7,7 @@ var checkLoginState = function() {
 
 var quizControllers = angular.module('quizControllers', []);
 
-quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$location', 'Facebook', '$route', function($scope, $window, $routeParams, $location, Facebook, $route) {
+quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$location', 'Facebook', '$route', 'quizManager', function($scope, $window, $routeParams, $location, Facebook, $route, quizManager) {
   var sandbox = {
     "kiiAppId":"6db83d12",
     "kiiAppKey":"df55dc77ffa451cb686cfda8f9e0fece",
@@ -153,7 +153,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
 
       var bucket = $scope.quizBucket;
       
-      var ticks = $scope.currentTicks();
+      var ticks = quizManager.currentTicks();
       
       var clause1 = KiiClause.lessThan("due", ticks);
       var clause2 = KiiClause.notEquals("suspended", true);
@@ -176,7 +176,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
 	}
       }
 
-      $scope.getUserBucket().executeQuery(user_query, userQueryCallbacks);
+      quizManager.getUserBucket().executeQuery(user_query, userQueryCallbacks);
     },
     // unable to connect
     failure : function(user, network, error) {
@@ -302,7 +302,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     var interval = userCard.get("interval");
     console.log("interval:"+interval);
     var good = quiz.answer === quiz.guess;
-    var now = $scope.currentTicks()
+    var now = quizManager.currentTicks()
     var nextInterval = $scope.calcInterval(interval, due, now, good);
     
     if (good) {
@@ -316,7 +316,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     userCard.set("due", now + nextInterval);
     userCard.set("interval", nextInterval);
 
-    $scope.saveUserCard(userCard);
+    quizManager.saveUserCard(userCard);
     console.log("result:"+quiz.result);
   };
 
@@ -379,52 +379,11 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     return Math.max(0, (interval + delay / 2) * 1.2);
   };
 
-  $scope.ticksFromJS = function(time) {
-    return (time * 10000) + 621355968000000000;
-  };
-
   $scope.dateFromTicks = function(ticks) {
     var epochMicrotimeDiff = 621355968000000000;
     var tickDate = new Date((ticks - epochMicrotimeDiff) / 10000);
     return tickDate;
   };
 
-  $scope.createUserCard = function(theObject) {
-    var userBucket = $scope.getUserBucket();
-    var userCard = userBucket.createObject();
-    userCard.set("due", $scope.currentTicks());
-    userCard.set("interval", 0);
-    userCard.set("suspended", false);
-    userCard.set("quiz", theObject.objectURI());
-    return userCard;
-  };
-  
   $scope.quizBucket = Kii.bucketWithName("quiz");
-
-  $scope.saveUserCard = function(userCard) {
-    console.log("saveUserCard:"+userCard);
-
-    userCard.save({
-      success: function(theObject) {
-	console.log("user card was saved!");
-	console.log(theObject);
-	console.log("due:"+theObject.get("due"));
-	console.log("quiz:"+theObject.get("quiz"));
-	var ticks = theObject.get("due");
-	var tickDate = $scope.dateFromTicks(ticks)
-	console.log("next:"+tickDate);
-      },
-      failure: function(theObject, errorString) {
-	console.log("Error saving object: " + errorString);
-      }
-    });
-  };
-
-  $scope.getUserBucket = function() {
-    return KiiUser.getCurrentUser().bucketWithName("quiz");
-  }
-
-  $scope.currentTicks = function() {
-    return $scope.ticksFromJS(new Date().getTime());
-  };
 }]);
