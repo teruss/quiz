@@ -1,13 +1,18 @@
 describe('QuizCtrl', function() {
   var scope, ctrl;
-  
+  var quizManager;
+
   beforeEach(module('quizApp'));
 
-  beforeEach(inject(function($controller) {
-    scope = {};
-    ctrl = $controller('QuizCtrl', {$scope:scope});
+  beforeEach(inject(function($controller, _quizManager_, $rootScope) {
+    scope = $rootScope.$new();
+    ctrl = $controller('QuizCtrl', {
+      $scope:scope
+    });
+    
+    quizManager = _quizManager_;
   }));
-
+  
   it('should return 10 minutes interval if wrong answer', function() {
     expect(scope.calcInterval(1000, 0, 0, false)).toBe(600 * 1000 * 1000 * 10);
   });
@@ -25,6 +30,6 @@ describe('QuizCtrl', function() {
   });
 
   it('should return ticks from javascript dateime', function() {
-    expect(scope.ticksFromJS(0)).toBe(621355968000000000);
+    expect(quizManager.ticksFromJS(0)).toBe(621355968000000000);
   });
 });
