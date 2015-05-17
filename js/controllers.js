@@ -294,7 +294,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     var userCard = quiz.userCard;
     if (!userCard) {
       console.log("no user card");
-      searchUserCard(quiz);
+      $scope.searchUserCard(quiz);
       return;
     }
     var due = userCard.get("due");
@@ -310,7 +310,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     } else {
       quiz.result = "Wrong! The answer is: " + quiz.answer;
     }
-    quiz.next_due = daysBetween(new Date(), $scope.dateFromTicks(now + nextInterval));
+    quiz.next_due = quizManager.daysBetween(new Date(), $scope.dateFromTicks(now + nextInterval));
     
     userCard.set("suspended", !good);
     userCard.set("due", now + nextInterval);
@@ -318,23 +318,6 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
 
     quizManager.saveUserCard(userCard);
     console.log("result:"+quiz.result);
-  };
-
-  var daysBetween = function(date1, date2) {
-    console.log(date1);
-    console.log(date2);
-    //Get 1 day in milliseconds
-    var one_day=1000*60*60*24;
-    
-    // Convert both dates to milliseconds
-    var date1_ms = date1.getTime();
-    var date2_ms = date2.getTime();
-
-    // Calculate the difference in milliseconds
-    var difference_ms = date2_ms - date1_ms;
-    
-    // Convert back to days and return
-    return Math.round(difference_ms/one_day) + " days"; 
   };
 
   $scope.edit = function(quiz) {
@@ -345,7 +328,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     $location.path('/create').search(quiz);
   };
 
-  var searchUserCard = function(quiz) {
+  $scope.searchUserCard = function(quiz) {
     console.log("searchUserCard");
     var clause1 = KiiClause.equals("quiz", quiz.object.objectURI());
     var user_query = KiiQuery.queryWithClause(clause1);

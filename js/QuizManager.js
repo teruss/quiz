@@ -40,4 +40,28 @@ function QuizManager() {
       }
     });
   };
+
+  this.daysBetween = function(date1, date2) {
+    console.log(date1);
+    console.log(date2);
+    var one_minute = 1000 * 60;
+    var one_hour = one_minute * 60;
+    var one_day= one_hour * 24;
+
+    var date1_ms = date1.getTime();
+    var date2_ms = date2.getTime();
+    var difference_ms = date2_ms - date1_ms;
+
+    var days = Math.floor(difference_ms/one_day);
+    if (days > 1)
+      return days + " days";
+    if (days == 1)
+      return days + " day";
+    var hours = Math.floor(difference_ms / one_hour)
+    if (hours > 1)
+      return hours + " hours";
+    if (hours == 1)
+      return hours + " hour";
+    return Math.floor(difference_ms / one_minute) + " minutes";
+  };  
 };
