@@ -22,7 +22,7 @@ function QuizManager() {
   };
 
   this.ticksFromJS = function(time) {
-    return (time * 10000) + 621355968000000000;
+    return (time * 10000) + 621356292000000000;
   };
 
   this.saveUserCard = function(userCard) {

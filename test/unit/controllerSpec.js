@@ -30,7 +30,7 @@ describe('QuizCtrl', function() {
   });
 
   it('should return ticks from javascript datetime', function() {
-    expect(quizManager.ticksFromJS(0)).toBe(621355968000000000);
+    expect(quizManager.ticksFromJS(0)).toBe(621356292000000000);
   });
 
   it('should return readable days', function() {
@@ -70,11 +70,16 @@ describe('QuizCtrl', function() {
     quiz.object.objectURI = function(){};
     quiz.userCard = {};
     quiz.userCard.get = function(str) {
-      return 0
+      return 0;
     };
     quiz.userCard.set = function(str) {};
     quiz.userCard.save = function() {};
     scope.answer(quiz);
-    expect(quiz.next_due).toBe('441440 days');
+    expect(quiz.next_due).toBe('441442 days');
   });
+
+  it('should return 635556672000000000 ticks if date is 2015 1 1', function() {
+    expect(quizManager.ticksFromJS(new Date(2015, 0, 1))).toBe(635556672000000000);    
+  });
+     
 });
