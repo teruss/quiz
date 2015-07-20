@@ -154,6 +154,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
       var bucket = $scope.quizBucket;
       
       var ticks = quizManager.currentTicks();
+      console.log("currentTicks:"+ticks);
       
       var clause1 = KiiClause.lessThan("due", ticks);
       var clause2 = KiiClause.notEquals("suspended", true);

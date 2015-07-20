@@ -34,7 +34,7 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
     obj.set('candidate0', quiz.dummy1);
     obj.set('candidate1', quiz.dummy2);
     obj.set('candidate2', quiz.dummy3);
-    obj.set("kind", "normal");
+    obj.set("kind", quiz.isFreeAnswer ? "free" : "normal");
     $scope.isCreating = true;
     
     obj.save({
@@ -62,4 +62,11 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
     });
   };
   
+  $scope.isValid = function(quiz) {
+    if ($scope.isCreating)
+      return false;
+    if (quiz.isFreeAnswer)
+      return !quiz.answer;
+    return !quiz.answer || !quiz.dummy1 || quiz.answer === quiz.dummy1;
+  }
 }]);

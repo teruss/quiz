@@ -27,6 +27,9 @@
 	  <textarea class="form-control" id="inputdefault" ng-model="quiz.question" rows="3"></textarea>
 	</div>
 	<div class="form-group">
+    <label>Free Answer:
+    <input type="checkbox" ng-model="quiz.isFreeAnswer">
+  </label> <br />
 	  <label for="inputanswer">Answer</label>
 	  <input class="form-control" id="inputanswer" type="text" ng-model="quiz.answer">
 	</div>
@@ -42,8 +45,8 @@
 	  <label for="inputwronganswer3">Wrong Answer 3</label>
 	  <input class="form-control" id="inputwronganswer3" type="text" ng-model="quiz.dummy3">
 	</div>
-	<input ng-disabled="isCreating || !quiz.answer || !quiz.dummy1 || quiz.answer === quiz.dummy1" type="submit" class="btn btn-block" value="Create Quiz">
-	<input ng-disabled="!quiz.object || isCreating || !quiz.answer || !quiz.dummy1 || quiz.answer === quiz.dummy1" type="button" ng-click="editQuiz(quiz)" class="btn btn-block" value="Update Quiz">
+	<input ng-disabled="isValid(quiz)" type="submit" class="btn btn-block" value="Create Quiz">
+	<input ng-disabled="!quiz.object || isValid(quiz)" type="button" ng-click="editQuiz(quiz)" class="btn btn-block" value="Update Quiz">
       </form>
     </div>
   </div>
