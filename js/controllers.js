@@ -156,26 +156,25 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
       var ticks = quizManager.currentTicks();
       console.log("currentTicks:"+ticks);
       
-      var clause1 = KiiClause.lessThan("due", ticks);
-      var clause2 = KiiClause.notEquals("suspended", true);
-      var user_query = KiiQuery.queryWithClause(KiiClause.and(clause1, clause2));
+      var user_query = KiiQuery.queryWithClause(KiiClause.lessThan("due", ticks));
+      user_query.sortByAsc("num_wrong");
       var userQueryCallbacks = {
-	success: function(queryPerformed, resultSet, nextQuery) {
-	  console.log(resultSet);
-	  $scope.$apply(function() {
-	    $scope.quizzes = resultSet;
-	  });
-
-	  for(var i=0; i<resultSet.length; i++) {
-	    refreshQuiz(resultSet, i);
-	  }
-	  if (!nextQuery)
-	    showPublicQuiz();
-	},
-	failure: function(queryPerformed, anErrorString) {
-	  // do something with the error response
-	}
-      }
+      	success: function(queryPerformed, resultSet, nextQuery) {
+      	  console.log(resultSet);
+      	  $scope.$apply(function() {
+      	    $scope.quizzes = resultSet;
+      	  });
+      
+      	  for(var i=0; i<resultSet.length; i++) {
+      	    refreshQuiz(resultSet, i);
+      	  }
+      	  if (!nextQuery)
+      	    showPublicQuiz();
+        },
+      	failure: function(queryPerformed, anErrorString) {
+      	  // do something with the error response
+      	}
+      };
 
       quizManager.getUserBucket().executeQuery(user_query, userQueryCallbacks);
     },
@@ -347,7 +346,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
   var isGood = function(quiz) {
     if (quiz.kind == 'normal')
       return quiz.answer === quiz.guess;
-    return $.inArray(quiz.answer, quiz.choices);
+    return $.inArray(quiz.answer, quiz.choices) != -1;
   };
   
   $scope.answer = function(quiz) {
@@ -432,7 +431,6 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
   $scope.quizBucket = Kii.bucketWithName("quiz");
   
   $scope.showQuiz = function(quiz) {
-    return true;
-    //return quiz.kind == 'normal' || quiz.kind == 'free';
+    return quiz.kind == 'normal' || quiz.kind == 'free';
   };
 }]);
