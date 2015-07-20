@@ -346,7 +346,11 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
   var isGood = function(quiz) {
     if (quiz.kind == 'normal')
       return quiz.answer === quiz.guess;
-    return $.inArray(quiz.answer, quiz.choices) != -1;
+    console.log("ans:" + quiz.guess);
+    var x = $.inArray(quiz.guess, quiz.choices) != -1;
+    console.log("x:"+x);
+    console.log(quiz);
+    return x;
   };
   
   $scope.answer = function(quiz) {
@@ -368,7 +372,10 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     if (good) {
       quiz.result = "Right!";
     } else {
-      quiz.result = "Wrong! The answer is: " + quiz.answer;
+      if (quiz.kind == 'normal')
+        quiz.result = "Wrong! The answer is: " + quiz.answer;
+      else
+        quiz.result = "Wrong! The answer is: " + quiz.choices[0];
     }
     quiz.next_due = quizManager.daysBetween(new Date(), $scope.dateFromTicks(now + nextInterval));
     
