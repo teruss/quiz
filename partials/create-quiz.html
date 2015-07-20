@@ -33,18 +33,20 @@
 	  <label for="inputanswer">Answer</label>
 	  <input class="form-control" id="inputanswer" type="text" ng-model="quiz.answer">
 	</div>
-	<div class="form-group">
-	  <label for="inputwronganswer1">Wrong Answer 1</label>
-	  <input class="form-control" id="inputwronganswer1" type="text" ng-model="quiz.dummy1">
-	</div> 
-	<div class="form-group">
-	  <label for="inputwronganswer2">Wrong Answer 2</label>
-	  <input class="form-control" id="inputwronganswer2" type="text" ng-model="quiz.dummy2">
-	</div> 
-	<div class="form-group">
-	  <label for="inputwronganswer3">Wrong Answer 3</label>
-	  <input class="form-control" id="inputwronganswer3" type="text" ng-model="quiz.dummy3">
-	</div>
+  <div ng-hide="quiz.isFreeAnswer">
+  	<div class="form-group">
+  	  <label for="inputwronganswer1">Wrong Answer 1</label>
+  	  <input class="form-control" id="inputwronganswer1" type="text" ng-model="quiz.dummy1">
+  	</div> 
+  	<div class="form-group">
+  	  <label for="inputwronganswer2">Wrong Answer 2</label>
+  	  <input class="form-control" id="inputwronganswer2" type="text" ng-model="quiz.dummy2">
+  	</div> 
+  	<div class="form-group">
+  	  <label for="inputwronganswer3">Wrong Answer 3</label>
+  	  <input class="form-control" id="inputwronganswer3" type="text" ng-model="quiz.dummy3">
+  	</div>
+  </div>
 	<input ng-disabled="isValid(quiz)" type="submit" class="btn btn-block" value="Create Quiz">
 	<input ng-disabled="!quiz.object || isValid(quiz)" type="button" ng-click="editQuiz(quiz)" class="btn btn-block" value="Update Quiz">
       </form>
