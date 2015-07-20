@@ -25,15 +25,18 @@
   <div class="row">
     <div class="col-md-4">
       <h3>{{quizType}}</h3>
-      <div ng-repeat="quiz in quizzes | filter:{kind:'normal'} | filter:{finished:false}">
+      <div ng-repeat="quiz in quizzes | filter:showQuiz | filter:{finished:false}">
 	{{quiz.question}}
 	<div>
 	  <form ng-submit="answer(quiz)">
-	    <div ng-repeat="choice in quiz.choices">
+	    <div ng-show="quiz.kind == 'normal'" ng-repeat="choice in quiz.choices">
 	      <div class="radio">
-		<label><input type="radio" ng-model="quiz.guess" ng-value="choice" id="{{choice}}" name="quiz_radio" ng-disabled="quiz.result">{{choice}}</label>
+		      <label><input type="radio" ng-model="quiz.guess" ng-value="choice" id="{{choice}}" name="quiz_radio" ng-disabled="quiz.result">{{choice}}</label>
+	     </div>
 	    </div>
-	    </div>
+      <div class="form-group" ng-show="quiz.kind == 'free'">
+    	  <input class="form-control" id="inputanswer" type="text" ng-model="quiz.guess">
+      </div>
 	    <div class="form-group" ng-hide="quiz.result">
 	      <button ng-disabled="quiz.result || !quiz.guess" type="submit" class="btn btn-block btn-primary">Check Answer</button>
 	    </div>
@@ -70,7 +73,7 @@
     </div>
     <div class="col-md-4">
       <h3>Recently Added Quizzes</h3>
-      <div ng-repeat="quiz in publicQuizzes | filter:{kind:'normal'} | filter:{finished:false}">
+      <div ng-repeat="quiz in publicQuizzes | filter:showQuiz | filter:{finished:false}">
 	{{quiz.question}}
 	<div class="row">
 	  <div class="col-md-6">

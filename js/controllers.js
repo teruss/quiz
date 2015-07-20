@@ -370,4 +370,8 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
   };
 
   $scope.quizBucket = Kii.bucketWithName("quiz");
+  
+  $scope.showQuiz = function(quiz) {
+    return quiz.kind == 'normal' || quiz.kind == 'free';
+  };
 }]);
