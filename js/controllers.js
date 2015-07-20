@@ -217,13 +217,13 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     if (!uri) {
       console.log("no quiz uri");
       userCard.delete({
-	success: function(theDeletedObject) {
-	  console.log("Object deleted!");
-	  console.log(theDeletedObject);
-	},
-	failure: function(theObject, errorString) {
-	  console.log("Error deleting object: " + errorString);
-	}
+      	success: function(theDeletedObject) {
+      	  console.log("Object deleted!");
+      	  console.log(theDeletedObject);
+      	},
+      	failure: function(theObject, errorString) {
+      	  console.log("Error deleting object: " + errorString);
+      	}
       });
       return;
     }
@@ -231,37 +231,30 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
 
     quiz.refresh({
       success: function(theObject) {
-	console.log("Object refreshed!");
-	$scope.$apply(function() {
-	  $scope.quizzes[j] = createQuizFromKiiObject(theObject, userCard);
-	  console.log("quiz created");
-	});
+      	console.log("Object refreshed!");
+      	$scope.$apply(function() {
+      	  $scope.quizzes[j] = createQuizFromKiiObject(theObject, userCard);
+      	  console.log("quiz created");
+          console.log($scope.quizzes[j]);
+      	});
       },
       failure: function(theObject, errorString) {
-	console.log("Error refreshing object: " + errorString);
+      	console.log("Error refreshing object: " + errorString);
+        userCard.delete({
+        	success: function(theDeletedObject) {
+        	  console.log("Object deleted!");
+        	  console.log(theDeletedObject);
+        	},
+        	failure: function(theObject, errorString) {
+        	  console.log("Error deleting object: " + errorString);
+        	}
+        });
       }
     });
   };
-
-  var createQuizFromKiiObject = function(theObject, userCard) {
-    console.log("createQuizFormKiiObject");
-    console.log(theObject.get("question"));
-    
+  
+  var createChoiceQuiz = function(theObject, userCard) {
     var answer = theObject.get('answer');
-    var kind = theObject.get('kind');
-    if (!kind) {
-      kind = "normal";
-      theObject.set('kind', "normal");
-      theObject.save({
-	success: function(theObject2) {
-	  console.log("Object2 saved!");
-	  console.log(theObject2);
-	},
-	failure: function(theObject2, errorString2) {
-	  console.log("Error saving object2: " + errorString2);
-	}
-      });
-    }
     var dummy0 = theObject.get('candidate0');
     var dummy1 = theObject.get('candidate1');
     var dummy2 = theObject.get('candidate2');
@@ -278,7 +271,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
 
     return {
       'question': theObject.get("question"),
-      'kind': kind,
+      'kind': 'normal',
       'choices' : uniqueNames,
       'answer' : answer,
       'object' : theObject,
@@ -287,7 +280,74 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
       'dummy2' : dummy1,
       'dummy3' : dummy2,
       'finished' : false
+    };    
+  };
+
+  var createFreeQuiz = function(theObject, userCard) {
+    var choices = theObject.get('answers');
+    console.log(choices);
+    console.log("free");
+    if (!choices) {
+      console.error("it is not valid free quiz");
+      theObject.delete({
+        success: function(theDeletedObject) {
+          console.log("Object deleted!");
+          console.log(theDeletedObject);
+        },
+        failure: function(theObject, errorString) {
+          console.log("Error deleting object: " + errorString);
+        }
+      });
+      return null; 
+    }
+
+    var uniqueNames = [];
+    $.each(choices, function(i, el){
+      if(el && $.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+    });
+    
+    console.log("uni");
+    console.log(uniqueNames);
+    var x = {
+      'question': theObject.get("question"),
+      'kind': 'free',
+      'choices' : uniqueNames,
+      'object' : theObject,
+      'userCard' : userCard,
+      'finished' : false
     };
+    console.log("x:");
+    console.log(x);
+    return x;
+  };
+
+  var createQuizFromKiiObject = function(theObject, userCard) {
+    console.log("createQuizFormKiiObject:"+userCard);
+    console.log(theObject.get("question"));
+    
+    var kind = theObject.get('kind');
+    if (!kind) {
+      kind = "normal";
+      theObject.set('kind', "normal");
+      theObject.save({
+      	success: function(theObject2) {
+      	  console.log("Object2 saved!");
+      	  console.log(theObject2);
+      	},
+      	failure: function(theObject2, errorString2) {
+      	  console.log("Error saving object2: " + errorString2);
+      	}
+      });
+    }
+    if (kind == "normal")
+      return createChoiceQuiz(theObject, userCard);
+    return createFreeQuiz(theObject, userCard);
+  };
+  
+  var isGood = function(quiz) {
+    if (quiz.kind == 'normal')
+      return quiz.answer === quiz.guess;
+    return $.inArray(quiz.answer, quiz.choices);
   };
   
   $scope.answer = function(quiz) {
@@ -302,7 +362,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     console.log("due:"+due);
     var interval = userCard.get("interval");
     console.log("interval:"+interval);
-    var good = quiz.answer === quiz.guess;
+    var good = isGood(quiz);
     var now = quizManager.currentTicks()
     var nextInterval = $scope.calcInterval(interval, due, now, good);
     
@@ -372,6 +432,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
   $scope.quizBucket = Kii.bucketWithName("quiz");
   
   $scope.showQuiz = function(quiz) {
-    return quiz.kind == 'normal' || quiz.kind == 'free';
+    return true;
+    //return quiz.kind == 'normal' || quiz.kind == 'free';
   };
 }]);
