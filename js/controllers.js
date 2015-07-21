@@ -377,7 +377,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
       else
         quiz.result = "Wrong! The answer is: " + quiz.choices[0];
     }
-    quiz.next_due = quizManager.daysBetween(new Date(), $scope.dateFromTicks(now + nextInterval));
+    quiz.next_due = quizManager.daysBetween(new Date(), quizManager.dateFromTicks(now + nextInterval));
     
     userCard.set("suspended", !good);
     userCard.set("due", now + nextInterval);
@@ -427,12 +427,6 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
       return 10 * 60 * 1000 * 1000 * 10;
     var delay = now - due;
     return Math.max(0, (interval + delay / 2) * 1.2);
-  };
-
-  $scope.dateFromTicks = function(ticks) {
-    var epochMicrotimeDiff = 621355968000000000;
-    var tickDate = new Date((ticks - epochMicrotimeDiff) / 10000);
-    return tickDate;
   };
 
   $scope.quizBucket = Kii.bucketWithName("quiz");

@@ -24,6 +24,10 @@ function QuizManager() {
   this.ticksFromJS = function(time) {
     return (time * 10000) + 621356292000000000;
   };
+  
+  this.dateFromTicks = function(ticks) {
+    return new Date((ticks - 621356292000000000) / 10000);
+  };
 
   this.saveUserCard = function(userCard) {
     console.log("saveUserCard:"+userCard);
@@ -44,7 +48,8 @@ function QuizManager() {
   this.daysBetween = function(date1, date2) {
     console.log(date1);
     console.log(date2);
-    var one_minute = 1000 * 60;
+    var one_second = 1000;
+    var one_minute = one_second * 60;
     var one_hour = one_minute * 60;
     var one_day= one_hour * 24;
 
