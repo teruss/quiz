@@ -25,10 +25,10 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
     console.log("edit quiz");
     console.log(quiz);
     var obj = quiz.object;
-    saveQuiz(quiz, obj);
+    editQuiz(quiz, obj);
   };
   
-  var saveQuiz = function(quiz, obj) {
+  var setParameters = function(quiz, obj) {
     obj.set("question", quiz.question);
     if (quiz.isFreeAnswer) {
       obj.set("answers", [quiz.answer, quiz.answer1, quiz.answer2, quiz.answer3]);
@@ -39,7 +39,23 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
       obj.set('candidate1', quiz.dummy2);
       obj.set('candidate2', quiz.dummy3);
       obj.set("kind", "normal");
-    }
+    }    
+  };
+  
+  var clearQuiz = function(quiz) {
+  	quiz.question = "";
+  	quiz.answer = "";
+  	quiz.dummy1 = "";
+  	quiz.dummy2 = "";
+  	quiz.dummy3 = "";
+  	quiz.answer1 = "";
+  	quiz.answer2 = "";
+  	quiz.answer3 = "";    
+  };
+  
+  var saveQuiz = function(quiz, obj) {
+    console.log("saveQuiz:" + quiz + "," + obj);
+    setParameters(quiz, obj);
     $scope.isCreating = true;
     
     obj.save({
@@ -47,16 +63,8 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
       	console.log("Object saved!");
       	console.log(theObject);
       	var userCard = quizManager.createUserCard(theObject);
-      	
       	quizManager.saveUserCard(userCard);
-      	quiz.question = "";
-      	quiz.answer = "";
-      	quiz.dummy1 = "";
-      	quiz.dummy2 = "";
-      	quiz.dummy3 = "";
-      	quiz.answer1 = "";
-      	quiz.answer2 = "";
-      	quiz.answer3 = "";
+        clearQuiz(quiz);
       	$scope.$apply(function() {
       	  $scope.isCreating = false;
       	});
@@ -70,6 +78,29 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
     });
   };
   
+  var editQuiz = function(quiz, obj) {
+    console.log("editQuiz:" + quiz + "," + obj);
+    setParameters(quiz, obj);
+    $scope.isCreating = true;
+    
+    obj.save({
+      success: function(theObject) {
+      	console.log("Object saved!");
+      	console.log(theObject);
+        clearQuiz(quiz);
+      	$scope.$apply(function() {
+      	  $scope.isCreating = false;
+      	});
+      },
+      failure: function(theObject, errorString) {
+      	console.log("Error saving object: " + errorString);
+      	$scope.$apply(function() {
+      	  $scope.isCreating = false;
+      	});
+      }
+    });
+  };
+
   $scope.isValid = function(quiz) {
     if ($scope.isCreating)
       return false;
