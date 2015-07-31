@@ -8,90 +8,12 @@ var checkLoginState = function() {
 var quizControllers = angular.module('quizControllers', []);
 
 quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$location', 'Facebook', '$route', 'quizManager', function($scope, $window, $routeParams, $location, Facebook, $route, quizManager) {
-  var sandbox = {
-    "kiiAppId":"6db83d12",
-    "kiiAppKey":"df55dc77ffa451cb686cfda8f9e0fece",
-    "facebookAppId" : '816805231746029'
-  };
-  var production = {
-    "kiiAppId":"d2e84a86",
-    "kiiAppKey":"2c41dd084726f3a409c9963646fddc22",
-    "facebookAppId" : '576444712448750',
-  }
-  var keys = (document.location.hostname == "localhost") ? sandbox : production;
-
   if ($routeParams.quizType == "recent") {
     $scope.quizType = "Recent Quizzes";
   } else {
     $scope.quizType = "My Quizzes";
   }
   
-  var kiiInitialize = function() {
-    console.log("Kii initialize");
-    Kii.initializeWithSite(keys.kiiAppId, keys.kiiAppKey, KiiSite.JP);
-  };
-
-  var userIsConnected = false;
-
-  Facebook.getLoginStatus(function(response) {
-    if (response.status == 'connected') {
-      userIsConnected = true;
-    }
-
-    console.log("userIsConnected?:"+userIsConnected);
-    $scope.statusChangeCallback(response);
-  });
-  
-  /**
-   * IntentLogin
-   */
-  $scope.IntentLogin = function() {
-    console.log("intentLogin:"+userIsConnected);
-    if(!userIsConnected) {
-      $scope.login();
-    }
-  };
-  
-  /**
-   * Login
-   */
-  $scope.login = function() {
-    console.log("login");
-    Facebook.login(function(response) {
-      if (response.status == 'connected') {
-        $scope.isLoggedIn = true;
-      }
-      $scope.statusChangeCallback(response);
-    });
-  };  
-
-  /**
-   * Logout
-   */
-  $scope.logout = function() {
-    Facebook.logout(function() {
-      $scope.$apply(function() {
-        $scope.isLoggedIn = false;
-	$route.reload();
-      });
-    });
-  }
-  /**
-   * Watch for Facebook to be ready.
-   * There's also the event that could be used
-   */
-  $scope.$watch(
-    function() {
-      return Facebook.isReady();
-    },
-    function(newVal, oldVal) {
-      console.log("newVal:" + newVal + "," + oldVal);
-      if (newVal) {
-        $scope.facebookReady = newVal;
-      }
-    }
-  );
-
   $scope.load_quiz_lib = function() {
   };
 
@@ -106,42 +28,6 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
   }
 
   $scope.list = function() {
-  }
-
-  // This is called with the results from from FB.getLoginStatus().
-  $scope.statusChangeCallback = function (response) {
-    console.log('statusChangeCallback');
-    console.log(response);
-    if (response.status === 'connected') {
-      console.log("kii initializing");
-      kiiInitialize();
-      loggedIn(response.authResponse.accessToken);
-    } else if (response.status === 'not_authorized') {
-      console.log('Please log into this app.');
-    } else {
-      console.log('Please log into this app.');
-    }
-  }
-
-  function loggedIn(fbAccessToken) {
-    console.log('Welcome!  Fetching your information.... ');
-    $scope.$apply(function() {
-      console.log("logged in");
-      $scope.isLoggedIn = true;
-    });
-    FB.api('/me', function(response) {
-      console.log('Successful login for: ' + response.name);
-    });
-    console.log("facebook token:"+ fbAccessToken);
-    
-    KiiSocialConnect.setupNetwork(KiiSocialNetworkName.FACEBOOK, keys.facebookAppId, null, {appId:"123"});
-    
-    var options = {
-      access_token : fbAccessToken
-    };
-    
-    console.log("try to log in with KiiSocialConnect");
-    KiiSocialConnect.logIn(KiiSocialNetworkName.FACEBOOK, options, quizManager.loginCallbacks);
   }
 
   quizManager.loginCallbacks = {
@@ -434,6 +320,11 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
   $scope.showQuiz = function(quiz) {
     return quiz.kind == 'normal' || quiz.kind == 'free';
   };
+
+  if (quizManager.isInvalid) {
+    quizManager.checkStatus();
+    quizManager.isInvalid = false;
+  }
 }]);
 
 quizControllers.controller('NavCtrl', function($scope, $location, $route, Facebook, quizManager) {
@@ -443,14 +334,17 @@ quizControllers.controller('NavCtrl', function($scope, $location, $route, Facebo
   );
   var userIsConnected = false;
 
-  Facebook.getLoginStatus(function(response) {
-    if (response.status == 'connected') {
-      userIsConnected = true;
-    }
-
-    console.log("userIsConnected?:"+userIsConnected);
-    $scope.statusChangeCallback(response);
-  });
+  quizManager.checkStatus = function() {
+    Facebook.getLoginStatus(function(response) {
+      if (response.status == 'connected') {
+        userIsConnected = true;
+      }
+  
+      console.log("userIsConnected?:"+userIsConnected);
+      $scope.statusChangeCallback(response);
+    });
+  };
+  quizManager.checkStatus();
   /**
    * IntentLogin
    */

@@ -39,7 +39,8 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
       obj.set('candidate1', quiz.dummy2);
       obj.set('candidate2', quiz.dummy3);
       obj.set("kind", "normal");
-    }    
+    }
+    quizManager.isInvalid = true;    
   };
   
   var clearQuiz = function(quiz) {
