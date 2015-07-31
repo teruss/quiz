@@ -11,7 +11,7 @@
 	<div>
 	  <form ng-submit="answer(quiz)">
       <div class="form-group" ng-show="quiz.kind == 'normal'">
-        <select ng-model="quiz.guess" ng-options="c for c in quiz.choices" ng-disabled="quiz.result">
+        <select class="form-control" ng-model="quiz.guess" ng-options="c for c in quiz.choices" ng-disabled="quiz.result">
         </select>
       </div>
       <div class="form-group" ng-show="quiz.kind == 'free'">
