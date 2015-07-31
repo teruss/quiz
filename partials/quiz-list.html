@@ -7,9 +7,9 @@
     <div class="col-md-4">
       <h3>{{quizType}}</h3>
       <div ng-repeat="quiz in quizzes | filter:showQuiz | filter:{finished:false}">
-        <div class="form-group">
+        <p>
           {{quiz.question}}
-        </div>
+        </p>
         <div>
       	  <form ng-submit="answer(quiz)">
             <div class="form-group" ng-show="quiz.kind == 'normal'">
