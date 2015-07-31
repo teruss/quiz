@@ -7,33 +7,35 @@
     <div class="col-md-4">
       <h3>{{quizType}}</h3>
       <div ng-repeat="quiz in quizzes | filter:showQuiz | filter:{finished:false}">
-	{{quiz.question}}
-	<div>
-	  <form ng-submit="answer(quiz)">
-      <div class="form-group" ng-show="quiz.kind == 'normal'">
-        <select class="form-control" ng-model="quiz.guess" ng-options="c for c in quiz.choices" ng-disabled="quiz.result">
-        </select>
-      </div>
-      <div class="form-group" ng-show="quiz.kind == 'free'">
-    	  <input class="form-control" id="inputanswer" type="text" ng-model="quiz.guess">
-      </div>
-	    <div class="form-group" ng-hide="quiz.result">
-	      <button ng-disabled="quiz.result || !quiz.guess" type="submit" class="btn btn-block btn-primary">Check Answer</button>
-	    </div>
-	  </form>
-	</div>
-	<div ng-show="quiz.result" class="form-group">
-	  <p>{{quiz.result}} You should review after {{quiz.next_due}}.</p>
-	  <form ng-submit="quiz.finished=true">
-	    <button type="submit" class="btn btn-block btn-primary">OK</button>
-	  </form>
-	</div>
-	<div>
-	  <form ng-submit="edit(quiz)">
-	    <button class="btn btn-block">Improve this Quiz</button>
-	  </form>
-	</div>
-	<hr/>
+        <div class="form-group">
+          {{quiz.question}}
+        </div>
+        <div>
+      	  <form ng-submit="answer(quiz)">
+            <div class="form-group" ng-show="quiz.kind == 'normal'">
+              <select class="form-control" ng-model="quiz.guess" ng-options="c for c in quiz.choices" ng-disabled="quiz.result">
+              </select>
+            </div>
+            <div class="form-group" ng-show="quiz.kind == 'free'">
+          	  <input class="form-control" id="inputanswer" type="text" ng-model="quiz.guess">
+            </div>
+      	    <div class="form-group" ng-hide="quiz.result">
+      	      <button ng-disabled="quiz.result || !quiz.guess" type="submit" class="btn btn-block btn-primary">Check Answer</button>
+      	    </div>
+      	  </form>
+      	</div>
+      	<div ng-show="quiz.result" class="form-group">
+      	  <p>{{quiz.result}} You should review after {{quiz.next_due}}.</p>
+      	  <form ng-submit="quiz.finished=true">
+      	    <button type="submit" class="btn btn-block btn-primary">OK</button>
+      	  </form>
+      	</div>
+      	<div>
+      	  <form ng-submit="edit(quiz)">
+      	    <button class="btn btn-block">Improve this Quiz</button>
+      	  </form>
+      	</div>
+      	<hr/>
       </div>
     </div>
     <div class="col-md-4">
