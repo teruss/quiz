@@ -40,7 +40,6 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
       obj.set('candidate2', quiz.dummy3);
       obj.set("kind", "normal");
     }
-    quizManager.isInvalid = true;    
   };
   
   var clearQuiz = function(quiz) {
@@ -109,4 +108,6 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
       return !quiz.answer;
     return !quiz.answer || !quiz.dummy1 || quiz.answer === quiz.dummy1;
   }
+
+  quizManager.isInvalid = true;    
 }]);
