@@ -10,11 +10,6 @@
 	{{quiz.question}}
 	<div>
 	  <form ng-submit="answer(quiz)">
-	    <div ng-show="quiz.kind == 'normal'" ng-repeat="choice in quiz.choices">
-	      <div class="radio">
-		      <label><input type="radio" ng-model="quiz.guess" ng-value="choice" id="{{choice}}" name="quiz_radio" ng-disabled="quiz.result">{{choice}}</label>
-	     </div>
-	    </div>
       <div class="form-group" ng-show="quiz.kind == 'normal'">
         <select ng-model="quiz.guess" ng-options="c for c in quiz.choices" ng-disabled="quiz.result">
         </select>
