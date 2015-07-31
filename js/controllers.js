@@ -312,6 +312,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     if (!good)
       return 10 * 60 * 1000 * 1000 * 10;
     var delay = now - due;
+    delay *= (1 + Math.random() / 4);
     return Math.max(0, (interval + delay / 2) * 1.2);
   };
 
