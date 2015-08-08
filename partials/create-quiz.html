@@ -9,26 +9,32 @@
       	</div>
       	<div class="form-group">
           <label>Free Answer:
-          <input type="checkbox" ng-model="quiz.kind === 'free'">
-        </label> <br />
-      	  <label for="inputanswer">Answer</label>
-      	  <input class="form-control" id="inputanswer" type="text" ng-model="quiz.answer">
+            <input type="checkbox" ng-model="quiz.kind" ng-true-value="'free'" ng-false-value="'normal'">
+          </label>
       	</div>
         <div ng-show="quiz.kind === 'free'">
          	<div class="form-group">
+        	  <label for="inputanswer0">Answer</label>
+        	  <input class="form-control" id="inputanswer0" type="text" ng-model="quiz.choices[0]">
+        	</div> 
+         	<div class="form-group">
         	  <label for="inputanotheranswer1">Another Answer 1</label>
-        	  <input class="form-control" id="inputanotheranswer1" type="text" ng-model="quiz.answer1">
+        	  <input class="form-control" id="inputanotheranswer1" type="text" ng-model="quiz.choices[1]">
         	</div> 
          	<div class="form-group">
         	  <label for="inputanotheranswer2">Another Answer 2</label>
-        	  <input class="form-control" id="inputanotheranswer2" type="text" ng-model="quiz.answer2">
+        	  <input class="form-control" id="inputanotheranswer2" type="text" ng-model="quiz.choices[2]">
         	</div> 
          	<div class="form-group">
         	  <label for="inputwronganswer3">Another Answer 3</label>
-        	  <input class="form-control" id="inputanotheranswer3" type="text" ng-model="quiz.answer3">
+        	  <input class="form-control" id="inputanotheranswer3" type="text" ng-model="quiz.choices[3]">
         	</div> 
         </div>
         <div ng-hide="quiz.kind === 'free'">
+        	<div class="form-group">
+        	  <label for="inputanswer">Answer</label>
+        	  <input class="form-control" id="inputanswer" type="text" ng-model="quiz.answer">
+        	</div> 
         	<div class="form-group">
         	  <label for="inputwronganswer1">Wrong Answer 1</label>
         	  <input class="form-control" id="inputwronganswer1" type="text" ng-model="quiz.dummy1">
@@ -43,7 +49,7 @@
         	</div>
         </div>
       	<input ng-disabled="!quiz.object || isValid(quiz)" type="button" ng-click="editQuiz(quiz)" class="btn btn-block" value="Update Quiz">
-      	<input ng-disabled="isValid(quiz)" type="submit" class="btn btn-block" value="Create Quiz">
+      	<input ng-disabled="!isValid(quiz)" type="submit" class="btn btn-block" value="Create Quiz">
       </form>
     </div>
   </div>

@@ -6,8 +6,15 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
     }
   });
 
-  console.log("new quiz ctrl:" + $scope.isLoggedIn);
+  console.log("new quiz ctrl:" + $scope.isLoggedIn);  
   $scope.quiz = quizManager.currentQuiz;
+  if (!$scope.quiz) {
+    $scope.quiz = {
+      'question' : '',
+      'kind' : 'normal',
+      'choices' : ['', '', '', '']
+    };
+  }
   console.log($scope.quiz);
   quizManager.currentQuiz = null;
   $scope.createQuiz = function(quiz) {
@@ -45,9 +52,8 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
   	quiz.dummy1 = "";
   	quiz.dummy2 = "";
   	quiz.dummy3 = "";
-  	quiz.answer1 = "";
-  	quiz.answer2 = "";
-  	quiz.answer3 = "";    
+    for (var i = 0; i < 4; i++)
+      quiz.choices[i] = "";
   };
   
   var saveQuiz = function(quiz, obj) {
@@ -99,13 +105,20 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
   };
 
   $scope.isValid = function(quiz) {
+     console.log("is valid?");
+     console.log(quiz);
     if ($scope.isCreating)
       return false;
     if (!quiz)
       return false;
-    if (quiz.kind === 'free')
-      return !quiz.answer;
-    return !quiz.answer || !quiz.dummy1 || quiz.answer === quiz.dummy1;
+    if (quiz.kind === 'free') {
+      console.log("is free");
+      if (!quiz.choices || !quiz.choices[0])
+        return false;
+      console.log(quiz.choices[0], Boolean(quiz.choices[0]), !quiz.choices[0]);
+      return true;
+    }
+    return quiz.answer && quiz.dummy1 && quiz.answer != quiz.dummy1;
   }
 
   quizManager.isInvalid = true;    
