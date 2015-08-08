@@ -48,7 +48,7 @@
         	  <input class="form-control" id="inputwronganswer3" type="text" ng-model="quiz.dummy3">
         	</div>
         </div>
-      	<input ng-disabled="!quiz.object || isValid(quiz)" type="button" ng-click="editQuiz(quiz)" class="btn btn-block" value="Update Quiz">
+      	<input ng-disabled="!quiz.object || !isValid(quiz)" type="button" ng-click="editQuiz(quiz)" class="btn btn-block" value="Update Quiz">
       	<input ng-disabled="!isValid(quiz)" type="submit" class="btn btn-block" value="Create Quiz">
       </form>
     </div>
