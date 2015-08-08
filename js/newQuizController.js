@@ -8,6 +8,7 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
 
   console.log("new quiz ctrl:" + $scope.isLoggedIn);
   $scope.quiz = quizManager.currentQuiz;
+  console.log($scope.quiz);
   quizManager.currentQuiz = null;
   $scope.createQuiz = function(quiz) {
     console.log("create quiz");
@@ -100,7 +101,9 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
   $scope.isValid = function(quiz) {
     if ($scope.isCreating)
       return false;
-    if (quiz.isFreeAnswer)
+    if (!quiz)
+      return false;
+    if (quiz.kind === 'free')
       return !quiz.answer;
     return !quiz.answer || !quiz.dummy1 || quiz.answer === quiz.dummy1;
   }
