@@ -34,16 +34,15 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
   
   var setParameters = function(quiz, obj) {
     obj.set("question", quiz.question);
-    if (quiz.isFreeAnswer) {
+    if (quiz.kind === 'free') {
       obj.set("answers", [quiz.answer, quiz.answer1, quiz.answer2, quiz.answer3]);
-      obj.set("kind", "free");      
     } else {
       obj.set("answer", quiz.answer);
       obj.set('candidate0', quiz.dummy1);
       obj.set('candidate1', quiz.dummy2);
       obj.set('candidate2', quiz.dummy3);
-      obj.set("kind", "normal");
     }
+    obj.set("kind", quiz.kind);
   };
   
   var clearQuiz = function(quiz) {
