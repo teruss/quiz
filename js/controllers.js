@@ -116,11 +116,8 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
 
     quiz.refresh({
       success: function(theObject) {
-      	console.log("Object refreshed!");
       	$scope.$apply(function() {
       	  $scope.quizzes[j] = createQuizFromKiiObject(theObject, userCard);
-      	  console.log("quiz created");
-          console.log($scope.quizzes[j]);
       	});
       },
       failure: function(theObject, errorString) {
