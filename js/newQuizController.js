@@ -35,7 +35,7 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
   var setParameters = function(quiz, obj) {
     obj.set("question", quiz.question);
     if (quiz.kind === 'free') {
-      obj.set("answers", [quiz.answer, quiz.answer1, quiz.answer2, quiz.answer3]);
+      obj.set("answers", quiz.choices);
     } else {
       obj.set("answer", quiz.answer);
       obj.set('candidate0', quiz.dummy1);
@@ -104,17 +104,13 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
   };
 
   $scope.isValid = function(quiz) {
-     console.log("is valid?");
-     console.log(quiz);
     if ($scope.isCreating)
       return false;
     if (!quiz)
       return false;
     if (quiz.kind === 'free') {
-      console.log("is free");
       if (!quiz.choices || !quiz.choices[0])
         return false;
-      console.log(quiz.choices[0], Boolean(quiz.choices[0]), !quiz.choices[0]);
       return true;
     }
     return quiz.answer && quiz.dummy1 && quiz.answer != quiz.dummy1;
