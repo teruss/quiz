@@ -7,12 +7,8 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
   });
 
   console.log("new quiz ctrl:" + $scope.isLoggedIn);
-  $scope.quiz = $routeParams
-  $scope.reset = function() {
-    $scope.quiz = $scope.master;
-    console.log($scope.master);
-    console.log($scope.quiz);
-  };
+  $scope.quiz = quizManager.currentQuiz;
+  quizManager.currentQuiz = null;
   $scope.createQuiz = function(quiz) {
     console.log("create quiz");
     console.log(quiz);

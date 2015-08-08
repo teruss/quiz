@@ -272,9 +272,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
 
   $scope.edit = function(quiz) {
     console.log("edit");
-    $scope.quiz = angular.copy(quiz);
-    $scope.master =  angular.copy(quiz);
-    console.log($scope.master);
+    quizManager.currentQuiz = quiz;
     $location.path('/create').search(quiz);
   };
 
