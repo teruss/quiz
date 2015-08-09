@@ -133,75 +133,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         });
       }
     });
-  };
-  
-  var createChoiceQuiz = function(theObject, userCard) {
-    var answer = theObject.get('answer');
-    var dummy0 = theObject.get('candidate0');
-    var dummy1 = theObject.get('candidate1');
-    var dummy2 = theObject.get('candidate2');
-    var choices = [answer, dummy0, dummy1, dummy2];
-    console.log(choices);
-
-    var uniqueNames = [];
-    $.each(choices, function(i, el){
-      if(el && $.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
-    });
-    
-    var shuffle = function() {return Math.random()-.5};
-    uniqueNames.sort(shuffle);
-
-    return {
-      'question': theObject.get("question"),
-      'kind': 'normal',
-      'choices' : uniqueNames,
-      'answer' : answer,
-      'object' : theObject,
-      'userCard' : userCard,
-      'dummy1' : dummy0,
-      'dummy2' : dummy1,
-      'dummy3' : dummy2,
-      'finished' : false
-    };    
-  };
-
-  var createFreeQuiz = function(theObject, userCard) {
-    var choices = theObject.get('answers');
-    console.log(choices);
-    console.log("free");
-    if (!choices) {
-      console.error("it is not valid free quiz");
-      theObject.delete({
-        success: function(theDeletedObject) {
-          console.log("Object deleted!");
-          console.log(theDeletedObject);
-        },
-        failure: function(theObject, errorString) {
-          console.log("Error deleting object: " + errorString);
-        }
-      });
-      return null; 
-    }
-
-    var uniqueNames = [];
-    $.each(choices, function(i, el){
-      if(el && $.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
-    });
-    
-    console.log("uni");
-    console.log(uniqueNames);
-    var x = {
-      'question': theObject.get("question"),
-      'kind': 'free',
-      'choices' : uniqueNames,
-      'object' : theObject,
-      'userCard' : userCard,
-      'finished' : false
-    };
-    console.log("x:");
-    console.log(x);
-    return x;
-  };
+  };  
 
   var createQuizFromKiiObject = function(theObject, userCard) {
     console.log("createQuizFormKiiObject:"+userCard);
@@ -221,9 +153,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
       	}
       });
     }
-    if (kind == "normal")
-      return createChoiceQuiz(theObject, userCard);
-    return createFreeQuiz(theObject, userCard);
+    return quizManager.createQuiz(theObject, userCard);
   };
   
   var isGood = function(quiz) {
@@ -314,7 +244,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
   $scope.quizBucket = Kii.bucketWithName("quiz");
   
   $scope.showQuiz = function(quiz) {
-    return quiz.kind == 'normal' || quiz.kind == 'free';
+    return quiz.kind === 'normal' || quiz.kind === 'free' || quiz.kind === 'number';
   };
 
   if (quizManager.isInvalid) {

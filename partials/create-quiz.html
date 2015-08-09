@@ -8,9 +8,9 @@
       	  <textarea class="form-control" id="inputdefault" ng-model="quiz.question" rows="3"></textarea>
       	</div>
       	<div class="form-group">
-          <label>Free Answer:
-            <input type="checkbox" ng-model="quiz.kind" ng-true-value="'free'" ng-false-value="'normal'">
-          </label>
+       		<label class="radio-inline"><input type="radio" ng-model="quiz.kind" ng-value="'normal'">Normal</label>
+       		<label class="radio-inline"><input type="radio" ng-model="quiz.kind" ng-value="'free'">Free</label>
+       		<label class="radio-inline"><input type="radio" ng-model="quiz.kind" ng-value="'number'">Number</label>
       	</div>
         <div ng-show="quiz.kind === 'free'">
          	<div class="form-group">
@@ -30,7 +30,7 @@
         	  <input class="form-control" id="inputanotheranswer3" type="text" ng-model="quiz.choices[3]">
         	</div> 
         </div>
-        <div ng-hide="quiz.kind === 'free'">
+        <div ng-show="quiz.kind === 'normal'">
         	<div class="form-group">
         	  <label for="inputanswer">Answer</label>
         	  <input class="form-control" id="inputanswer" type="text" ng-model="quiz.answer">
@@ -48,8 +48,14 @@
         	  <input class="form-control" id="inputwronganswer3" type="text" ng-model="quiz.dummy3">
         	</div>
         </div>
+        <div ng-show="quiz.kind === 'number'">
+         	<div class="form-group">
+        	  <label for="number">Answer</label>
+        	  <input class="form-control" id="number" type="number" ng-model="quiz.number">
+        	</div> 
+        </div>
       	<input ng-disabled="!quiz.object || !isValid(quiz)" type="button" ng-click="editQuiz(quiz)" class="btn btn-block" value="Update Quiz">
-      	<input ng-disabled="!isValid(quiz)" type="submit" class="btn btn-block" value="Create Quiz">
+      	<input ng-disabled="!isValid(quiz)" type="submit" class="btn btn-block" value="Create Quiz">        
       </form>
     </div>
   </div>

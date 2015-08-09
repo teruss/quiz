@@ -32,19 +32,6 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
     editQuiz(quiz, obj);
   };
   
-  var setParameters = function(quiz, obj) {
-    obj.set("question", quiz.question);
-    if (quiz.kind === 'free') {
-      obj.set("answers", quiz.choices);
-    } else {
-      obj.set("answer", quiz.answer);
-      obj.set('candidate0', quiz.dummy1);
-      obj.set('candidate1', quiz.dummy2);
-      obj.set('candidate2', quiz.dummy3);
-    }
-    obj.set("kind", quiz.kind);
-  };
-  
   var clearQuiz = function(quiz) {
   	quiz.question = "";
   	quiz.answer = "";
@@ -53,11 +40,12 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
   	quiz.dummy3 = "";
     for (var i = 0; i < 4; i++)
       quiz.choices[i] = "";
+    quiz.number = "";
   };
   
   var saveQuiz = function(quiz, obj) {
     console.log("saveQuiz:" + quiz + "," + obj);
-    setParameters(quiz, obj);
+    quizManager.setParameters(quiz, obj);
     $scope.isCreating = true;
     
     obj.save({
@@ -82,7 +70,7 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
   
   var editQuiz = function(quiz, obj) {
     console.log("editQuiz:" + quiz + "," + obj);
-    setParameters(quiz, obj);
+    quizManager.setParameters(quiz, obj);
     $scope.isCreating = true;
     
     obj.save({
@@ -112,6 +100,9 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
       if (!quiz.choices || !quiz.choices[0])
         return false;
       return true;
+    }
+    if (quiz.kind === 'number') {
+      return quiz.number;
     }
     return quiz.answer && quiz.dummy1 && quiz.answer != quiz.dummy1;
   }

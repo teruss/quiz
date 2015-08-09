@@ -11,12 +11,15 @@
         </p>
         <div>
       	  <form ng-submit="answer(quiz)">
-            <div class="form-group" ng-show="quiz.kind == 'normal'">
+            <div class="form-group" ng-show="quiz.kind === 'normal'">
               <select class="form-control" ng-model="quiz.guess" ng-options="c for c in quiz.choices" ng-disabled="quiz.result">
               </select>
             </div>
-            <div class="form-group" ng-show="quiz.kind == 'free'">
+            <div class="form-group" ng-show="quiz.kind === 'free'">
           	  <input class="form-control" id="inputanswer" type="text" ng-model="quiz.guess">
+            </div>
+            <div class="form-group" ng-show="quiz.kind === 'number'">
+          	  <input class="form-control" id="inputanswer" type="number" ng-model="quiz.guess">
             </div>
       	    <div class="form-group" ng-hide="quiz.result">
       	      <button ng-disabled="quiz.result || !quiz.guess" type="submit" class="btn btn-block btn-primary">Check Answer</button>
@@ -60,9 +63,9 @@
 	  <div class="col-md-6">
 	    <form ng-submit="answer(quiz)">
 	      <div ng-repeat="choice in quiz.choices">
-		<div class="radio">
-		  <label><input type="radio" ng-model="quiz.guess" ng-value="choice" id="{{choice}}" name="quiz_radio">{{choice}}</label>
-		</div>
+      		<div class="radio">
+      		  <label><input type="radio" ng-model="quiz.guess" ng-value="choice" id="{{choice}}" name="quiz_radio">{{choice}}</label>
+      		</div>
 	      </div>
 	      <input type="submit" class="btn" value="Post">
 	    </form>

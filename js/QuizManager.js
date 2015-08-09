@@ -68,5 +68,127 @@ function QuizManager() {
     if (hours == 1)
       return hours + " hour";
     return Math.floor(difference_ms / one_minute) + " minutes";
-  };  
+  };
+  
+  this.setParameters = function(quiz, obj) {
+    obj.set("question", quiz.question);
+    if (quiz.kind === 'free') {
+      obj.set("answers", quiz.choices);
+    } else if (quiz.kind === 'normal') {
+      obj.set("answer", quiz.answer);
+      obj.set('candidate0', quiz.dummy1);
+      obj.set('candidate1', quiz.dummy2);
+      obj.set('candidate2', quiz.dummy3);
+    } else {
+      obj.set("answer", quiz.number);
+    }
+    obj.set("kind", quiz.kind);
+  };
+  
+  this.createChoiceQuiz = function(theObject, userCard) {
+    var answer = theObject.get('answer');
+    var dummy0 = theObject.get('candidate0');
+    var dummy1 = theObject.get('candidate1');
+    var dummy2 = theObject.get('candidate2');
+    var choices = [answer, dummy0, dummy1, dummy2];
+    console.log(choices);
+    if (!answer) {
+      deleteQuiz(theObject);
+      return null; 
+    }
+
+    var uniqueNames = [];
+    $.each(choices, function(i, el){
+      if(el && $.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+    });
+    
+    var shuffle = function() {return Math.random()-.5};
+    uniqueNames.sort(shuffle);
+
+    return {
+      'question': theObject.get("question"),
+      'kind': 'normal',
+      'choices' : uniqueNames,
+      'answer' : answer,
+      'object' : theObject,
+      'userCard' : userCard,
+      'dummy1' : dummy0,
+      'dummy2' : dummy1,
+      'dummy3' : dummy2,
+      'finished' : false
+    };    
+  };
+
+  this.createFreeQuiz = function(theObject, userCard) {
+    var choices = theObject.get('answers');
+    console.log(choices);
+    console.log("free");
+    if (!choices) {
+      deleteQuiz(theObject);
+      return { 'kind' : 'invalid' }; 
+    }
+
+    var uniqueNames = [];
+    $.each(choices, function(i, el){
+      if(el && $.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+    });
+    
+    console.log("uni");
+    console.log(uniqueNames);
+    var x = {
+      'question': theObject.get("question"),
+      'kind': 'free',
+      'choices' : uniqueNames,
+      'object' : theObject,
+      'userCard' : userCard,
+      'finished' : false
+    };
+    console.log("x:");
+    console.log(x);
+    return x;
+  };
+
+  this.createNumberQuiz = function(theObject, userCard) {
+    var answer = theObject.get('answer');
+    console.log(answer);
+    console.log("number");
+    if (!answer) {
+      deleteQuiz(theObject);
+      return null; 
+    }
+
+    var x = {
+      'question': theObject.get("question"),
+      'kind': 'number',
+      'answer' : answer,
+      'object' : theObject,
+      'userCard' : userCard,
+      'finished' : false
+    };
+    console.log("x:");
+    console.log(x);
+    return x;
+  };
+  
+  var deleteQuiz = function(theObject) {
+    console.error("it is not valid card");
+    theObject.delete({
+      success: function(theDeletedObject) {
+        console.log("Object deleted!");
+        console.log(theDeletedObject);
+      },
+      failure: function(theObject, errorString) {
+        console.log("Error deleting object: " + errorString);
+      }
+    });
+  }
+  
+  this.createQuiz = function(theObject, userCard) {
+    var kind = theObject.get('kind');
+    if (kind === 'normal')
+      return this.createChoiceQuiz(theObject, userCard);
+    if (kind === 'number')
+      return this.createNumberQuiz(theObject, userCard);
+    return this.createFreeQuiz(theObject, userCard);
+  }
 };
