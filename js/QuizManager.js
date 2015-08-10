@@ -148,7 +148,7 @@ function QuizManager() {
     return x;
   };
 
-  this.createNumberQuiz = function(theObject, userCard) {
+  var createNumberQuiz = function(theObject, userCard) {
     var answer = theObject.get('answer');
     console.log(answer);
     console.log("number");
@@ -160,7 +160,7 @@ function QuizManager() {
     var x = {
       'question': theObject.get("question"),
       'kind': 'number',
-      'answer' : answer,
+      'number' : answer,
       'object' : theObject,
       'userCard' : userCard,
       'finished' : false
@@ -188,7 +188,7 @@ function QuizManager() {
     if (kind === 'normal')
       return this.createChoiceQuiz(theObject, userCard);
     if (kind === 'number')
-      return this.createNumberQuiz(theObject, userCard);
+      return createNumberQuiz(theObject, userCard);
     return this.createFreeQuiz(theObject, userCard);
   }
 };

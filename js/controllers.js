@@ -13,32 +13,12 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
   } else {
     $scope.quizType = "My Quizzes";
   }
-  
-  $scope.load_quiz_lib = function() {
-  };
-
-  $scope.insert = function() {
-    quiz = {
-      "question" : $scope.question,
-      "answer" : $scope.answer,
-      "dummy1" : $scope.dummy1,
-      "dummy2" : $scope.dummy2,
-      "dummy3" : $scope.dummy3
-    }
-  }
-
-  $scope.list = function() {
-  }
 
   quizManager.loginCallbacks = {
     success : function(user, network) {
       console.log("Connected user " + user + " to network: " + network);
       console.log(user);
 
-      var accessToken = KiiUser.getCurrentUser().getAccessToken();
-
-      var bucket = $scope.quizBucket;
-      
       var ticks = quizManager.currentTicks();
       console.log("currentTicks:"+ticks);
       
@@ -159,17 +139,15 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
   var isGood = function(quiz) {
     console.log("isGood?");
     console.log(quiz);
-    if (isSingleAnswer(quiz.kind))
+    if (quiz.kind === 'normal')
       return quiz.answer === quiz.guess;
+    if (quiz.kind === 'number')
+      return quiz.number === quiz.guess;
     console.log("ans:" + quiz.guess);
     var x = $.inArray(quiz.guess, quiz.choices) != -1;
     console.log("x:"+x);
     console.log(quiz);
     return x;
-  };
-  
-  var isSingleAnswer = function(kind) {
-    return kind === 'normal' || kind === 'number';
   };
   
   $scope.answer = function(quiz) {
@@ -192,10 +170,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     if (good) {
       quiz.result = "Right!";
     } else {
-      if (isSingleAnswer(quiz.kind))
-        quiz.result = "Wrong! The answer is: " + quiz.answer;
-      else
-        quiz.result = "Wrong! The answer is: " + quiz.choices[0];
+      quiz.result = wrongMessage(quiz);
     }
     quiz.next_due = quizManager.daysBetween(new Date(), quizManager.dateFromTicks(now + nextInterval));
     
@@ -205,6 +180,15 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
 
     quizManager.saveUserCard(userCard);
     console.log("result:"+quiz.result);
+  };
+  
+  var wrongMessage = function(quiz) {
+      if (quiz.kind === 'normal')
+        return "Wrong! The answer is: " + quiz.answer;
+      else if (quiz.kind === 'number')
+        return "Wrong! The answer is: " + quiz.number;
+      else
+        return "Wrong! The answer is: " + quiz.choices[0];
   };
 
   $scope.edit = function(quiz) {
