@@ -157,13 +157,19 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
   };
   
   var isGood = function(quiz) {
-    if (quiz.kind === 'normal' || quiz.kind ==='number')
+    console.log("isGood?");
+    console.log(quiz);
+    if (isSingleAnswer(quiz.kind))
       return quiz.answer === quiz.guess;
     console.log("ans:" + quiz.guess);
     var x = $.inArray(quiz.guess, quiz.choices) != -1;
     console.log("x:"+x);
     console.log(quiz);
     return x;
+  };
+  
+  var isSingleAnswer = function(kind) {
+    return kind === 'normal' || kind === 'number';
   };
   
   $scope.answer = function(quiz) {
@@ -179,13 +185,14 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     var interval = userCard.get("interval");
     console.log("interval:"+interval);
     var good = isGood(quiz);
+    console.log("good?"+ good);
     var now = quizManager.currentTicks()
     var nextInterval = $scope.calcInterval(interval, due, now, good);
     
     if (good) {
       quiz.result = "Right!";
     } else {
-      if (quiz.kind == 'normal')
+      if (isSingleAnswer(quiz.kind))
         quiz.result = "Wrong! The answer is: " + quiz.answer;
       else
         quiz.result = "Wrong! The answer is: " + quiz.choices[0];
