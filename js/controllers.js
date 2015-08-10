@@ -238,10 +238,10 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     return quiz.kind === 'normal' || quiz.kind === 'free' || quiz.kind === 'number';
   };
 
-  $scope.noAnswer = function(quiz) {
+  $scope.invalidAnswer = function(quiz) {
     if (quiz.result)
       return true;
-    if (!quiz.guess && !quiz.guessNumber)
+    if (!quiz.guess && !$.isNumeric(quiz.guessNumber))
       return true;
     return false;
   };
