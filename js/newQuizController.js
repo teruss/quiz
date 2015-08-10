@@ -102,7 +102,7 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
       return true;
     }
     if (quiz.kind === 'number') {
-      return quiz.number;
+      return $.isNumeric(quiz.number);
     }
     return quiz.answer && quiz.dummy1 && quiz.answer != quiz.dummy1;
   }
