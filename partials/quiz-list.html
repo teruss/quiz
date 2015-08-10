@@ -19,10 +19,10 @@
           	  <input class="form-control" id="inputanswer" type="text" ng-model="quiz.guess">
             </div>
             <div class="form-group" ng-show="quiz.kind === 'number'">
-          	  <input class="form-control" id="inputanswer" type="number" ng-model="quiz.guess">
+          	  <input class="form-control" id="inputanswer" type="number" ng-model="quiz.guessNumber">
             </div>
       	    <div class="form-group" ng-hide="quiz.result">
-      	      <button ng-disabled="quiz.result || !quiz.guess" type="submit" class="btn btn-block btn-primary">Check Answer</button>
+      	      <button ng-disabled="noAnswer(quiz)" type="submit" class="btn btn-block btn-primary">Check Answer</button>
       	    </div>
       	  </form>
       	</div>

@@ -38,8 +38,9 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
   	quiz.dummy1 = "";
   	quiz.dummy2 = "";
   	quiz.dummy3 = "";
-    for (var i = 0; i < 4; i++)
-      quiz.choices[i] = "";
+    if (quiz.choices)
+      for (var i = 0; i < 4; i++)
+        quiz.choices[i] = "";
     quiz.number = "";
   };
   
