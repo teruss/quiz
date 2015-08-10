@@ -142,7 +142,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     if (quiz.kind === 'normal')
       return quiz.answer === quiz.guess;
     if (quiz.kind === 'number')
-      return quiz.number === quiz.guess;
+      return quiz.number === quiz.guessNumber;
     console.log("ans:" + quiz.guess);
     var x = $.inArray(quiz.guess, quiz.choices) != -1;
     console.log("x:"+x);
