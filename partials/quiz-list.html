@@ -16,7 +16,7 @@
               </select>
             </div>
             <div class="form-group" ng-show="quiz.kind === 'free'">
-          	  <input class="form-control" id="inputanswer" type="text" ng-model="quiz.guess">
+          	  <input class="form-control" spellcheck="true" id="inputanswer" type="text" ng-model="quiz.guess">
             </div>
             <div class="form-group" ng-show="quiz.kind === 'number'">
           	  <input class="form-control" id="inputanswer" type="number" ng-model="quiz.guessNumber">
