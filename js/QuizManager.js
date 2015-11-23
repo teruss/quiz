@@ -45,7 +45,22 @@ function QuizManager() {
     });
   };
 
-  this.daysBetween = function(date1, date2) {
+  this.deleteUserCard = function (userCard) {
+      console.log("deleteUserCard:" + userCard);
+
+      // Delete the Object
+      userCard.delete({
+          success: function (theDeletedObject) {
+              console.log("Object deleted!");
+              console.log(theDeletedObject);
+          },
+          failure: function (theObject, errorString) {
+              console.log("Error deleting object: " + errorString);
+          }
+      });
+  };
+
+  this.daysBetween = function (date1, date2) {
     console.log(date1);
     console.log(date2);
     var one_second = 1000;

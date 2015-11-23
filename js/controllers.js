@@ -191,10 +191,16 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         return "Wrong! The answer is: " + quiz.choices[0];
   };
 
-  $scope.edit = function(quiz) {
-    console.log("edit");
-    quizManager.currentQuiz = quiz;
-    $location.path('/create').search(quiz);
+  $scope.edit = function (quiz) {
+      console.log("edit");
+      quizManager.currentQuiz = quiz;
+      $location.path('/create').search(quiz);
+  };
+
+  $scope.forget = function (quiz) {
+      console.log("forget");
+      var userCard = quiz.userCard;
+      quizManager.deleteUserCard(userCard);
   };
 
   $scope.searchUserCard = function(quiz) {
