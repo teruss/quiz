@@ -46,21 +46,6 @@
       </div>
     </div>
     <div class="col-md-4">
-      <h3>Done</h3>
-      <div ng-repeat="quiz in quizzes.concat(publicQuizzes) | filter:{kind:'normal'} | filter:{finished:true}">
-	{{quiz.question}}
-	<form>
-	  <div ng-repeat="choice in quiz.choices">
-	    <div class="radio">
-	      <label><input type="radio" ng-model="quiz.guess" ng-value="choice" id="{{choice}}" name="quiz_radio">{{choice}}</label>
-	    </div>
-	  </div>
-	</form>
-	<p>{{quiz.result}}</p>
-	<hr/>
-      </div>
-    </div>
-    <div class="col-md-4">
       <h3>Recently Added Quizzes</h3>
       <div ng-repeat="quiz in publicQuizzes | filter:showQuiz | filter:{finished:false}">
 	{{quiz.question}}
