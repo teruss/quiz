@@ -4,7 +4,6 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h3>{{quizType}}</h3>
             <div ng-repeat="quiz in quizzes | filter:showQuiz | filter:{finished:false}">
                 <p>
                     {{quiz.question}}
