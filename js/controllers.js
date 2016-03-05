@@ -66,6 +66,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         quiz.refresh({
             success: function (theObject) {
                 $scope.$apply(function () {
+                    console.log("loading index:" + j);
                     $scope.quizzes[j] = createQuizFromKiiObject(theObject, userCard);
                 });
             },
