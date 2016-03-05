@@ -187,14 +187,35 @@ function QuizManager() {
 
     var createClozeQuiz = function (theObject, userCard) {
         var answer = theObject.get('question');
+        var hidingRate = calcHidingRate(userCard);
+        var question = "";
+        for (var i = 0; i < answer.length; i++) {
+            if (/[a-zA-Z0-9]/.test(answer[i]) && Math.random() < hidingRate) {
+                question += '_';
+            } else {
+                question += answer[i];
+            }
+        }
         return {
-            'question': answer.replace(/[a-zA-Z]/g, '_'),
+            'question': question,
             'answer': answer,
             'kind': 'cloze',
             'hint': theObject.get('hint'),
             'object': theObject,
             'userCard': userCard
         };
+    };
+
+    var calcHidingRate = function (userCard) {
+        var numCorrect = userCard.get('numCorrectAnswers');
+        if (!$.isNumeric(numCorrect))
+            return 0.5;
+        var numWrong = userCard.get('numWrongAnswers');
+        if (!$.isNumeric(numWrong))
+            return 0.5;
+        if (numCorrect + numWrong == 0)
+            return 0.5;
+        return calcAccuracyRate(numCorrect, numWrong);
     };
 
     var deleteQuiz = function (theObject) {

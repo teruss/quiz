@@ -206,7 +206,7 @@ describe('QuizCtrl', function () {
         quizManager.setParameters(quiz, obj);
         var result = quizManager.createQuiz(obj, card);
 
-        expect(result.question).toBe('________');
+        //expect(result.question).toBe('_______');
         expect(result.answer).toBe('question');
         expect(result.kind).toBe('cloze');
         expect(result.hint).toBe('hint');
@@ -226,7 +226,36 @@ describe('QuizCtrl', function () {
         quizManager.setParameters(quiz, obj);
         var result = quizManager.createQuiz(obj, card);
 
+        //expect(result.question).toBe('__e_t__n');
         expect(result.accuracyRate).toBe('30%');
+    });
+
+    it('should return all cloze if there is no wrong answer', function () {
+        var quiz = { 'kind': 'cloze', 'question': 'question' };
+        var obj = new MockObject();
+        var card = new MockObject();
+        card.set('numCorrectAnswers', 3);
+        card.set('numWrongAnswers', 0);
+
+        quizManager.setParameters(quiz, obj);
+        var result = quizManager.createQuiz(obj, card);
+
+        expect(result.question).toBe('________');
+        expect(result.accuracyRate).toBe('100%');
+    });
+
+    it('should return spaced cloze', function () {
+        var quiz = { 'kind': 'cloze', 'question': 'This is a question.' };
+        var obj = new MockObject();
+        var card = new MockObject();
+        card.set('numCorrectAnswers', 3);
+        card.set('numWrongAnswers', 0);
+
+        quizManager.setParameters(quiz, obj);
+        var result = quizManager.createQuiz(obj, card);
+
+        expect(result.question).toBe('____ __ _ ________.');
+        expect(result.accuracyRate).toBe('100%');
     });
 
     it('should return wrong message', function () {
