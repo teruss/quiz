@@ -234,6 +234,15 @@ function QuizManager() {
     this.createQuiz = function (theObject, userCard) {
         var kind = theObject.get('kind');
         var q = createQuizByKind(theObject, userCard, kind);
+        var numCorrect = userCard.get('numCorrectAnswers');
+        if (!$.isNumeric(numCorrect))
+            numCorrect = 0;
+        q['numCorrectAnswers'] = numCorrect;
+        var numWrong = userCard.get('numWrongAnswers');
+        if (!$.isNumeric(numWrong))
+            numWrong = 0;
+        q['numWrongAnswers'] = numWrong;
+
         q['accuracyRate'] = accuracyRate(userCard);
         return q;
     }

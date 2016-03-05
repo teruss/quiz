@@ -210,6 +210,8 @@ describe('QuizCtrl', function () {
         expect(result.answer).toBe('question');
         expect(result.kind).toBe('cloze');
         expect(result.hint).toBe('hint');
+        expect(result.numCorrectAnswers).toBe(0);
+        expect(result.numWrongAnswers).toBe(0);
         expect(result.accuracyRate).toBe('--%');
         expect(result.object).toBe(obj);
         expect(result.userCard).toBe(card);
@@ -227,6 +229,8 @@ describe('QuizCtrl', function () {
         var result = quizManager.createQuiz(obj, card);
 
         //expect(result.question).toBe('__e_t__n');
+        expect(result.numCorrectAnswers).toBe(3);
+        expect(result.numWrongAnswers).toBe(7);
         expect(result.accuracyRate).toBe('30%');
     });
 

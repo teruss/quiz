@@ -118,10 +118,12 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
 
         if (good) {
             quiz.result = "Right!";
-            quiz.numCorrectAnswers += 1;
+            console.assert($.isNumeric(quiz.numCorrectAnswers));
+            quiz.numCorrectAnswers++;
         } else {
             quiz.result = quizManager.wrongMessage(quiz);
-            quiz.numWrongAnswers += 1;
+            console.assert($.isNumeric(quiz.numWrongAnswers));
+            quiz.numWrongAnswers++;
         }
         quiz.next_due = quizManager.daysBetween(new Date(), quizManager.dateFromTicks(now + nextInterval));
 
