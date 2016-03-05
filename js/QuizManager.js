@@ -234,4 +234,8 @@ function QuizManager() {
             quiz.choices[i] = '';
         quiz.hint = '';
     };
+
+    this.isVisible = function (quiz) {
+        return quiz.kind === 'normal' || quiz.kind === 'free' || quiz.kind === 'number' || quiz.kind === 'cloze';
+    };
 };

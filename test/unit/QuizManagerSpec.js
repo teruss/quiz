@@ -133,4 +133,39 @@ describe('QuizCtrl', function () {
             expect(quiz.choices[i]).toBeFalsy();
         }
     });
+
+    it('is visible if quiz is valid', function () {
+        var quiz = {};
+        quiz.kind = 'cloze';
+
+        expect(quizManager.isVisible(quiz)).toBeTruthy();
+    });
+
+    it('is visible if quiz is normal', function () {
+        var quiz = {};
+        quiz.kind = 'normal';
+
+        expect(quizManager.isVisible(quiz)).toBeTruthy();
+    });
+
+    it('is visible if quiz is free', function () {
+        var quiz = {};
+        quiz.kind = 'free';
+
+        expect(quizManager.isVisible(quiz)).toBeTruthy();
+    });
+
+    it('is visible if quiz is number', function () {
+        var quiz = {};
+        quiz.kind = 'number';
+
+        expect(quizManager.isVisible(quiz)).toBeTruthy();
+    });
+
+    it('is not visible if quiz is invalid', function () {
+        var quiz = {};
+        quiz.kind = 'invalid';
+
+        expect(quizManager.isVisible(quiz)).toBeFalsy();
+    });
 });
