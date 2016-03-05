@@ -213,8 +213,24 @@ function QuizManager() {
     this.createQuiz = function (theObject, userCard) {
         var kind = theObject.get('kind');
         var q = createQuizByKind(theObject, userCard, kind);
-        q['accuracyRate'] = '--%';
+        q['accuracyRate'] = accuracyRate(userCard);
         return q;
+    }
+
+    var accuracyRate = function (userCard) {
+        var numCorrect = userCard.get('numCorrectAnswers');
+        if (!$.isNumeric(numCorrect))
+            return '--%';
+        var numWrong = userCard.get('numWrongAnswers');
+        if (!$.isNumeric(numWrong))
+            return '--%';
+        if (numCorrect + numWrong == 0)
+            return '--%';
+        return calcAccuracyRate(numCorrect, numWrong) * 100 + '%';
+    }
+
+    var calcAccuracyRate = function (numCorrectAnswers, numWrongAnswers) {
+        return numCorrectAnswers / (numCorrectAnswers + numWrongAnswers);
     }
 
     var createQuizByKind = function (theObject, userCard, kind) {
@@ -274,9 +290,5 @@ function QuizManager() {
         if (quiz.kind === 'number')
             return quiz.number === quiz.guessNumber;
         return $.inArray(quiz.guess, quiz.choices) != -1;
-    };
-
-    this.accuracyRate = function (quiz) {
-        return quiz.numCorrectAnswers / (quiz.numCorrectAnswers + quiz.numWrongAnswers);
     };
 };

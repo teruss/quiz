@@ -216,6 +216,19 @@ describe('QuizCtrl', function () {
         expect(result.finished).toBeFalsy();
     });
 
+    it('should return accuracy rate', function () {
+        var quiz = { 'kind': 'cloze', 'question': 'question' };
+        var obj = new MockObject();
+        var card = new MockObject();
+        card.set('numCorrectAnswers', 3);
+        card.set('numWrongAnswers', 7);
+
+        quizManager.setParameters(quiz, obj);
+        var result = quizManager.createQuiz(obj, card);
+
+        expect(result.accuracyRate).toBe('30%');
+    });
+
     it('should return wrong message', function () {
         var quiz = { 'kind': 'cloze', 'answer': 'answer' };
         expect(quizManager.wrongMessage(quiz)).toBe("Wrong! The answer is: " + quiz.answer);
@@ -224,10 +237,5 @@ describe('QuizCtrl', function () {
     it('should be good if cloze quiz is correct', function () {
         var quiz = { 'kind': 'cloze', 'answer': 'answer', 'guess': 'answer' };
         expect(quizManager.isCorrect(quiz)).toBeTruthy();
-    });
-
-    it('should be 1 if quiz has no wrong answers', function () {
-        var quiz = { 'numCorrectAnswers': 1, 'numWrongAnswers': 0 };
-        expect(quizManager.accuracyRate(quiz)).toBe(1);
     });
 });
