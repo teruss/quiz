@@ -94,6 +94,8 @@ function QuizManager() {
             obj.set('candidate0', quiz.dummy1);
             obj.set('candidate1', quiz.dummy2);
             obj.set('candidate2', quiz.dummy3);
+        } else if (quiz.kind === 'cloze') {
+            obj.set('hint', quiz.hint);
         } else {
             obj.set("answer", quiz.number);
         }
@@ -136,10 +138,8 @@ function QuizManager() {
 
     this.createFreeQuiz = function (theObject, userCard) {
         var choices = theObject.get('answers');
-        console.log(choices);
-        console.log("free");
+        console.assert(choices, 'choices should not be null');
         if (!choices) {
-            deleteQuiz(theObject);
             return { 'kind': 'invalid' };
         }
 
@@ -185,6 +185,18 @@ function QuizManager() {
         return x;
     };
 
+    var createClozeQuiz = function (theObject, userCard) {
+        var answer = theObject.get('question');
+        return {
+            'question': answer.replace(/[a-zA-Z]/g, '_'),
+            'answer': answer,
+            'kind': 'cloze',
+            'hint': theObject.get('hint'),
+            'object': theObject,
+            'userCard': userCard
+        };
+    };
+
     var deleteQuiz = function (theObject) {
         console.error("it is not valid card");
         theObject.delete({
@@ -204,6 +216,8 @@ function QuizManager() {
             return this.createChoiceQuiz(theObject, userCard);
         if (kind === 'number')
             return createNumberQuiz(theObject, userCard);
+        if (kind === 'cloze')
+            return createClozeQuiz(theObject, userCard);
         return this.createFreeQuiz(theObject, userCard);
     }
 
@@ -236,6 +250,15 @@ function QuizManager() {
     };
 
     this.isVisible = function (quiz) {
-        return quiz.kind === 'normal' || quiz.kind === 'free' || quiz.kind === 'number' || quiz.kind === 'cloze';
+        return !quiz.finished && (quiz.kind === 'normal' || quiz.kind === 'free' || quiz.kind === 'number' || quiz.kind === 'cloze');
+    };
+
+    this.wrongMessage = function (quiz) {
+        if (quiz.kind === 'normal' || quiz.kind === 'cloze')
+            return "Wrong! The answer is: " + quiz.answer;
+        else if (quiz.kind === 'number')
+            return "Wrong! The answer is: " + quiz.number;
+        else
+            return "Wrong! The answer is: " + quiz.choices[0];
     };
 };

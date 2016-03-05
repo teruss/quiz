@@ -95,19 +95,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         console.log(theObject.get("question"));
 
         var kind = theObject.get('kind');
-        if (!kind) {
-            kind = "normal";
-            theObject.set('kind', "normal");
-            theObject.save({
-                success: function (theObject2) {
-                    console.log("Object2 saved!");
-                    console.log(theObject2);
-                },
-                failure: function (theObject2, errorString2) {
-                    console.log("Error saving object2: " + errorString2);
-                }
-            });
-        }
+        console.assert(kind, "kind should not be null");
         return quizManager.createQuiz(theObject, userCard);
     };
 
@@ -145,7 +133,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         if (good) {
             quiz.result = "Right!";
         } else {
-            quiz.result = wrongMessage(quiz);
+            quiz.result = quizManager.wrongMessage(quiz);
         }
         quiz.next_due = quizManager.daysBetween(new Date(), quizManager.dateFromTicks(now + nextInterval));
 
@@ -155,15 +143,6 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
 
         quizManager.saveUserCard(userCard);
         console.log("result:" + quiz.result);
-    };
-
-    var wrongMessage = function (quiz) {
-        if (quiz.kind === 'normal')
-            return "Wrong! The answer is: " + quiz.answer;
-        else if (quiz.kind === 'number')
-            return "Wrong! The answer is: " + quiz.number;
-        else
-            return "Wrong! The answer is: " + quiz.choices[0];
     };
 
     $scope.edit = function (quiz) {
@@ -176,6 +155,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         console.log("forget");
         var userCard = quiz.userCard;
         quizManager.deleteUserCard(userCard);
+        quiz.finished = true;
     };
 
     $scope.searchUserCard = function (quiz) {

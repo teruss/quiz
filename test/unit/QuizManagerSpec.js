@@ -162,10 +162,61 @@ describe('QuizCtrl', function () {
         expect(quizManager.isVisible(quiz)).toBeTruthy();
     });
 
+    it('is invisible if quiz is finished', function () {
+        var quiz = {};
+        quiz.kind = 'number';
+        quiz.finished = true;
+
+        expect(quizManager.isVisible(quiz)).toBeFalsy();
+    });
+
     it('is not visible if quiz is invalid', function () {
         var quiz = {};
         quiz.kind = 'invalid';
 
         expect(quizManager.isVisible(quiz)).toBeFalsy();
+    });
+
+    var MockObject = function () {
+        var dic = {};
+        this.set = function (key, value) {
+            dic[key] = value;
+        };
+        this.get = function (key) {
+            return dic[key];
+        }
+    };
+
+    it('stores hint if cloze has hint', function () {
+        var quiz = { 'kind': 'cloze', 'question': 'question', 'hint': 'hint' };
+        var obj = new MockObject();
+
+        quizManager.setParameters(quiz, obj);
+
+        expect(obj.get('kind')).toBe('cloze');
+        expect(obj.get('question')).toBe('question');
+        expect(obj.get('hint')).toBe('hint');
+    });
+
+    it('should return cloze quiz', function () {
+        var quiz = { 'kind': 'cloze', 'question': 'question', 'hint': 'hint' };
+        var obj = new MockObject();
+        var card = new MockObject();
+
+        quizManager.setParameters(quiz, obj);
+        var result = quizManager.createQuiz(obj, card);
+
+        expect(result.question).toBe('________');
+        expect(result.answer).toBe('question');
+        expect(result.kind).toBe('cloze');
+        expect(result.hint).toBe('hint');
+        expect(result.object).toBe(obj);
+        expect(result.userCard).toBe(card);
+        expect(result.finished).toBeFalsy();
+    });
+
+    it('should return wrong message', function () {
+        var quiz = { 'kind': 'cloze', 'answer': 'answer' };
+        expect(quizManager.wrongMessage(quiz)).toBe("Wrong! The answer is: " + quiz.answer);
     });
 });

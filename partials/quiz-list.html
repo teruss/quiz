@@ -4,9 +4,12 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div ng-repeat="quiz in quizzes | filter:showQuiz | filter:{finished:false}">
+            <div ng-repeat="quiz in quizzes | filter:showQuiz">
                 <p>
                     {{quiz.question}}
+                </p>
+                <p>
+                    {{quiz.hint}}
                 </p>
                 <div>
                     <form ng-submit="answer(quiz)">
@@ -18,6 +21,9 @@
                         </div>
                         <div class="form-group" ng-show="quiz.kind === 'number'">
                             <input class="form-control" id="inputanswer" type="number" ng-model="quiz.guessNumber">
+                        </div>
+                        <div class="form-group" ng-show="quiz.kind === 'cloze'">
+                            <input class="form-control" spellcheck="true" id="inputanswer" type="text" ng-model="quiz.guess">
                         </div>
                         <div class="form-group" ng-hide="quiz.result">
                             <button ng-disabled="invalidAnswer(quiz)" type="submit" class="btn btn-block btn-primary">Check Answer</button>
