@@ -102,17 +102,15 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     $scope.answer = function (quiz) {
         console.log(quiz);
         var userCard = quiz.userCard;
+        console.assert(userCard);
         if (!userCard) {
             console.log("no user card");
             $scope.searchUserCard(quiz);
             return;
         }
         var due = userCard.get("due");
-        console.log("due:" + due);
         var interval = userCard.get("interval");
-        console.log("interval:" + interval);
         var good = quizManager.isCorrect(quiz);
-        console.log("good?" + good);
         var now = quizManager.currentTicks()
         var nextInterval = $scope.calcInterval(interval, due, now, good);
 
