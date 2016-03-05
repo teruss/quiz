@@ -157,14 +157,13 @@ function QuizManager() {
 
     var createNumberQuiz = function (theObject, userCard) {
         var answer = theObject.get('answer');
-        console.log(answer);
-        console.log("number");
+        console.assert(answer);
         if (!answer) {
             deleteQuiz(theObject);
             return null;
         }
 
-        var x = {
+        return {
             'question': theObject.get("question"),
             'kind': 'number',
             'number': answer,
@@ -172,9 +171,6 @@ function QuizManager() {
             'userCard': userCard,
             'finished': false
         };
-        console.log("x:");
-        console.log(x);
-        return x;
     };
 
     var createClozeQuiz = function (theObject, userCard) {
