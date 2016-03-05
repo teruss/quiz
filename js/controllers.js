@@ -21,7 +21,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
 
             var user_query = KiiQuery.queryWithClause(KiiClause.lessThan("due", ticks));
             user_query.sortByAsc("num_wrong");
-            user_query.setLimit(100);
+            user_query.setLimit(50);
             var userQueryCallbacks = {
                 success: function (queryPerformed, resultSet, nextQuery) {
                     $scope.$apply(function () {
