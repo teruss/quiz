@@ -32,18 +32,6 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
         editQuiz(quiz, obj);
     };
 
-    var clearQuiz = function (quiz) {
-        quiz.question = "";
-        quiz.answer = "";
-        quiz.dummy1 = "";
-        quiz.dummy2 = "";
-        quiz.dummy3 = "";
-        if (quiz.choices)
-            for (var i = 0; i < 4; i++)
-                quiz.choices[i] = "";
-        quiz.number = "";
-    };
-
     var saveQuiz = function (quiz, obj) {
         console.log("saveQuiz:" + quiz + "," + obj);
         quizManager.setParameters(quiz, obj);
@@ -55,7 +43,7 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
                 console.log(theObject);
                 var userCard = quizManager.createUserCard(theObject);
                 quizManager.saveUserCard(userCard);
-                clearQuiz(quiz);
+                quizManager.clear(quiz);
                 $scope.$apply(function () {
                     $scope.isCreating = false;
                 });
@@ -78,7 +66,7 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
             success: function (theObject) {
                 console.log("Object saved!");
                 console.log(theObject);
-                clearQuiz(quiz);
+                quizManager.clear(quiz);
                 $scope.$apply(function () {
                     $scope.isCreating = false;
                 });

@@ -94,4 +94,43 @@ describe('QuizCtrl', function () {
 
         expect(quizManager.isValid(quiz)).toBeFalsy();
     });
+
+    it('should return true if cloze quiz has question and hint', function () {
+        var quiz = {};
+        quiz.kind = 'cloze';
+        quiz.question = 'Moleskin is soft and smooth to touch.';
+        quiz.hint = 'モグラの毛皮は柔らかくて手触りが滑らかだ。';
+
+        expect(quizManager.isValid(quiz)).toBeTruthy();
+    });
+
+    it('should return false if cloze quiz has only hint', function () {
+        var quiz = {};
+        quiz.kind = 'cloze';
+        quiz.hint = 'モグラの毛皮は柔らかくて手触りが滑らかだ。';
+
+        expect(quizManager.isValid(quiz)).toBeFalsy();
+    });
+
+    it('should be cleared if quiz cleared', function () {
+        var quiz = {};
+        quiz.kind = 'cloze';
+        quiz.hint = 'モグラの毛皮は柔らかくて手触りが滑らかだ。';
+        quiz.question = 'question';
+        quiz.answer = 'answer';
+        quiz.dummy1 = 'dummy1';
+        quiz.dummy2 = 'dummy2';
+        quiz.dummy3 = 'dummy3';
+        quiz.choices = ['c1', 'c2', 'c3', 'c4'];
+        quizManager.clear(quiz);
+        expect(quiz.hint).toBeFalsy();
+        expect(quiz.question).toBeFalsy();
+        expect(quiz.answer).toBeFalsy();
+        expect(quiz.dummy1).toBeFalsy();
+        expect(quiz.dummy2).toBeFalsy();
+        expect(quiz.dummy3).toBeFalsy();
+        for (var i = 0; i < 4; i++) {
+            expect(quiz.choices[i]).toBeFalsy();
+        }
+    });
 });

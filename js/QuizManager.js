@@ -218,6 +218,20 @@ function QuizManager() {
         if (quiz.kind === 'number') {
             return $.isNumeric(quiz.number);
         }
+        if (quiz.kind === 'cloze') {
+            return quiz.question;
+        }
         return quiz.answer && quiz.dummy1 && quiz.answer != quiz.dummy1;
+    };
+
+    this.clear = function (quiz) {
+        quiz.question = '';
+        quiz.answer = '';
+        quiz.dummy1 = '';
+        quiz.dummy2 = '';
+        quiz.dummy3 = '';
+        for (var i = 0; i < 4; i++)
+            quiz.choices[i] = '';
+        quiz.hint = '';
     };
 };
