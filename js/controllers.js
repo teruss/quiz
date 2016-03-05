@@ -91,9 +91,6 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     };
 
     var createQuizFromKiiObject = function (theObject, userCard) {
-        console.log("createQuizFormKiiObject:" + userCard);
-        console.log(theObject.get("question"));
-
         var kind = theObject.get('kind');
         console.assert(kind, "kind should not be null");
         return quizManager.createQuiz(theObject, userCard);

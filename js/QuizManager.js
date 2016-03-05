@@ -108,7 +108,7 @@ function QuizManager() {
         var dummy1 = theObject.get('candidate1');
         var dummy2 = theObject.get('candidate2');
         var choices = [answer, dummy0, dummy1, dummy2];
-        console.log(choices);
+        console.assert(answer);
         if (!answer) {
             deleteQuiz(theObject);
             return null;
