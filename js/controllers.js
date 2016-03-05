@@ -49,11 +49,9 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
     };
 
     var refreshQuiz = function (userDeck, j) {
-        console.log("refreshQuiz:" + j);
         var userCard = userDeck[j];
-        console.log("userCard:" + userCard);
         var uri = userCard.get("quiz");
-        console.log("uri:" + uri);
+        console.assert(uri);
         if (!uri) {
             console.log("no quiz uri");
             userCard.delete({
