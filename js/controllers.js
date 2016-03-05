@@ -16,9 +16,6 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
 
     quizManager.loginCallbacks = {
         success: function (user, network) {
-            console.log("Connected user " + user + " to network: " + network);
-            console.log(user);
-
             var ticks = quizManager.currentTicks();
             console.log("currentTicks:" + ticks);
 
