@@ -11,6 +11,9 @@
                 <p>
                     {{quiz.hint}}
                 </p>
+                <p>
+                    Accuracy rate: {{quiz.accuracyRate}}
+                </p>
                 <div>
                     <form ng-submit="answer(quiz)">
                         <div class="form-group" ng-show="quiz.kind === 'normal'">

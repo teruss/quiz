@@ -118,14 +118,19 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
 
         if (good) {
             quiz.result = "Right!";
+            quiz.numCorrectAnswers += 1;
         } else {
             quiz.result = quizManager.wrongMessage(quiz);
+            quiz.numWrongAnswers += 1;
         }
         quiz.next_due = quizManager.daysBetween(new Date(), quizManager.dateFromTicks(now + nextInterval));
 
         userCard.set("suspended", !good);
         userCard.set("due", now + nextInterval);
         userCard.set("interval", nextInterval);
+
+        userCard.set("numCorrectAnswers", quiz.numCorrectAnswers);
+        userCard.set("numWrongAnswers", quiz.numWrongAnswers);
 
         quizManager.saveUserCard(userCard);
         console.log("result:" + quiz.result);
@@ -192,6 +197,8 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
             return true;
         return false;
     };
+
+    $scope.accuracyRate = quizManager.accuracyRate;
 
     if (quizManager.isInvalid) {
         quizManager.checkStatus();

@@ -210,6 +210,7 @@ describe('QuizCtrl', function () {
         expect(result.answer).toBe('question');
         expect(result.kind).toBe('cloze');
         expect(result.hint).toBe('hint');
+        expect(result.accuracyRate).toBe('--%');
         expect(result.object).toBe(obj);
         expect(result.userCard).toBe(card);
         expect(result.finished).toBeFalsy();
@@ -223,5 +224,10 @@ describe('QuizCtrl', function () {
     it('should be good if cloze quiz is correct', function () {
         var quiz = { 'kind': 'cloze', 'answer': 'answer', 'guess': 'answer' };
         expect(quizManager.isCorrect(quiz)).toBeTruthy();
+    });
+
+    it('should be 1 if quiz has no wrong answers', function () {
+        var quiz = { 'numCorrectAnswers': 1, 'numWrongAnswers': 0 };
+        expect(quizManager.accuracyRate(quiz)).toBe(1);
     });
 });

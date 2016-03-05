@@ -102,7 +102,7 @@ function QuizManager() {
         obj.set("kind", quiz.kind);
     };
 
-    this.createChoiceQuiz = function (theObject, userCard) {
+    var createChoiceQuiz = function (theObject, userCard) {
         var answer = theObject.get('answer');
         var dummy0 = theObject.get('candidate0');
         var dummy1 = theObject.get('candidate1');
@@ -136,7 +136,7 @@ function QuizManager() {
         };
     };
 
-    this.createFreeQuiz = function (theObject, userCard) {
+    var createFreeQuiz = function (theObject, userCard) {
         var choices = theObject.get('answers');
         console.assert(choices, 'choices should not be null');
         if (!choices) {
@@ -212,13 +212,19 @@ function QuizManager() {
 
     this.createQuiz = function (theObject, userCard) {
         var kind = theObject.get('kind');
+        var q = createQuizByKind(theObject, userCard, kind);
+        q['accuracyRate'] = '--%';
+        return q;
+    }
+
+    var createQuizByKind = function (theObject, userCard, kind) {
         if (kind === 'normal')
-            return this.createChoiceQuiz(theObject, userCard);
+            return createChoiceQuiz(theObject, userCard);
         if (kind === 'number')
             return createNumberQuiz(theObject, userCard);
         if (kind === 'cloze')
             return createClozeQuiz(theObject, userCard);
-        return this.createFreeQuiz(theObject, userCard);
+        return createFreeQuiz(theObject, userCard);
     }
 
     this.isValid = function (quiz) {
@@ -268,5 +274,9 @@ function QuizManager() {
         if (quiz.kind === 'number')
             return quiz.number === quiz.guessNumber;
         return $.inArray(quiz.guess, quiz.choices) != -1;
+    };
+
+    this.accuracyRate = function (quiz) {
+        return quiz.numCorrectAnswers / (quiz.numCorrectAnswers + quiz.numWrongAnswers);
     };
 };
