@@ -99,20 +99,6 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         return quizManager.createQuiz(theObject, userCard);
     };
 
-    var isGood = function (quiz) {
-        console.log("isGood?");
-        console.log(quiz);
-        if (quiz.kind === 'normal')
-            return quiz.answer === quiz.guess;
-        if (quiz.kind === 'number')
-            return quiz.number === quiz.guessNumber;
-        console.log("ans:" + quiz.guess);
-        var x = $.inArray(quiz.guess, quiz.choices) != -1;
-        console.log("x:" + x);
-        console.log(quiz);
-        return x;
-    };
-
     $scope.answer = function (quiz) {
         console.log(quiz);
         var userCard = quiz.userCard;
@@ -125,7 +111,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         console.log("due:" + due);
         var interval = userCard.get("interval");
         console.log("interval:" + interval);
-        var good = isGood(quiz);
+        var good = quizManager.isCorrect(quiz);
         console.log("good?" + good);
         var now = quizManager.currentTicks()
         var nextInterval = $scope.calcInterval(interval, due, now, good);

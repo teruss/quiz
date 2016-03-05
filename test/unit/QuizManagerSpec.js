@@ -219,4 +219,9 @@ describe('QuizCtrl', function () {
         var quiz = { 'kind': 'cloze', 'answer': 'answer' };
         expect(quizManager.wrongMessage(quiz)).toBe("Wrong! The answer is: " + quiz.answer);
     });
+
+    it('should be good if cloze quiz is correct', function () {
+        var quiz = { 'kind': 'cloze', 'answer': 'answer', 'guess': 'answer' };
+        expect(quizManager.isCorrect(quiz)).toBeTruthy();
+    });
 });

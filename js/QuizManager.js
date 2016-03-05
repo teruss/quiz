@@ -261,4 +261,12 @@ function QuizManager() {
         else
             return "Wrong! The answer is: " + quiz.choices[0];
     };
+
+    this.isCorrect = function (quiz) {
+        if (quiz.kind === 'normal' || quiz.kind === 'cloze')
+            return quiz.answer === quiz.guess;
+        if (quiz.kind === 'number')
+            return quiz.number === quiz.guessNumber;
+        return $.inArray(quiz.guess, quiz.choices) != -1;
+    };
 };
