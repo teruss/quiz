@@ -26,7 +26,6 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
             user_query.sortByAsc("num_wrong");
             var userQueryCallbacks = {
                 success: function (queryPerformed, resultSet, nextQuery) {
-                    console.log(resultSet);
                     $scope.$apply(function () {
                         $scope.quizzes = resultSet;
                     });
