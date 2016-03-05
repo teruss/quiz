@@ -139,18 +139,13 @@ function QuizManager() {
     var createFreeQuiz = function (theObject, userCard) {
         var choices = theObject.get('answers');
         console.assert(choices, 'choices should not be null');
-        if (!choices) {
-            return { 'kind': 'invalid' };
-        }
 
         var uniqueNames = [];
         $.each(choices, function (i, el) {
             if (el && $.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
         });
 
-        console.log("uni");
-        console.log(uniqueNames);
-        var x = {
+        return {
             'question': theObject.get("question"),
             'kind': 'free',
             'choices': uniqueNames,
@@ -158,9 +153,6 @@ function QuizManager() {
             'userCard': userCard,
             'finished': false
         };
-        console.log("x:");
-        console.log(x);
-        return x;
     };
 
     var createNumberQuiz = function (theObject, userCard) {
