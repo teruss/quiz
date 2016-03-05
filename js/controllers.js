@@ -34,8 +34,6 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
                     for (var i = 0; i < resultSet.length; i++) {
                         refreshQuiz(resultSet, i);
                     }
-                    if (!nextQuery)
-                        showPublicQuiz();
                 },
                 failure: function (queryPerformed, anErrorString) {
                     // do something with the error response
@@ -48,29 +46,6 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         failure: function (user, network, error) {
             console.log("Unable to connect to " + network + ". Reason: " + error);
         }
-    };
-
-    var showPublicQuiz = function () {
-        console.log("showPublicPuzzle");
-        var all_query = KiiQuery.queryWithClause();
-        all_query.setLimit(10);
-        all_query.sortByDesc("_modified");
-        var queryCallbacks = {
-            success: function (queryPerformed, resultSet, nextQuery) {
-                // do something with the results
-                $scope.publicQuizzes = [];
-                for (var i = 0; i < resultSet.length; i++) {
-                    // do something with the object resultSet[i];
-                    $scope.$apply(function () {
-                        $scope.publicQuizzes.push(createQuizFromKiiObject(resultSet[i], null));
-                    });
-                }
-            },
-            failure: function (queryPerformed, anErrorString) {
-                // do something with the error response
-            }
-        }
-        $scope.quizBucket.executeQuery(all_query, queryCallbacks);
     };
 
     var refreshQuiz = function (userDeck, j) {
