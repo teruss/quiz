@@ -27,6 +27,9 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
                         $scope.quizzes = resultSet;
                     });
 
+                    $scope.loading = 0;
+                    $scope.totalQuiz = resultSet.length;
+                    $scope.showLoading = true;
                     for (var i = 0; i < resultSet.length; i++) {
                         refreshQuiz(resultSet, i);
                     }
@@ -67,7 +70,10 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
             success: function (theObject) {
                 $scope.$apply(function () {
                     console.log("loading index:" + j);
+                    $scope.loading++;
                     $scope.quizzes[j] = createQuizFromKiiObject(theObject, userCard);
+                    if ($scope.loading == $scope.totalQuiz)
+                        $scope.showLoading = false;
                 });
             },
             failure: function (theObject, errorString) {

@@ -4,6 +4,9 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
+            <p ng-show="showLoading">
+                Loading... {{loading/totalQuiz * 100}}%
+            </p>
             <div ng-repeat="quiz in quizzes | filter:showQuiz">
                 <p>
                     {{quiz.question}}
