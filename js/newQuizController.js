@@ -58,14 +58,12 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
     };
 
     var editQuiz = function (quiz, obj) {
-        console.log("editQuiz:" + quiz + "," + obj);
         quizManager.setParameters(quiz, obj);
         $scope.isCreating = true;
 
         obj.save({
             success: function (theObject) {
                 console.log("Object saved!");
-                console.log(theObject);
                 quizManager.clear(quiz);
                 $scope.$apply(function () {
                     $scope.isCreating = false;
