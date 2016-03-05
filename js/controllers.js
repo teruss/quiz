@@ -137,7 +137,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
 
     $scope.edit = function (quiz) {
         console.log("edit");
-        quizManager.currentQuiz = quiz;
+        quizManager.setCurrentQuiz(quiz);
         $location.path('/create').search(quiz);
     };
 

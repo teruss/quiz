@@ -284,8 +284,9 @@ function QuizManager() {
         quiz.dummy1 = '';
         quiz.dummy2 = '';
         quiz.dummy3 = '';
-        for (var i = 0; i < 4; i++)
-            quiz.choices[i] = '';
+        if (quiz.choices)
+            for (var i = 0; i < quiz.choices.length; i++)
+                quiz.choices[i] = '';
         quiz.hint = '';
     };
 
@@ -308,5 +309,11 @@ function QuizManager() {
         if (quiz.kind === 'number')
             return quiz.number === quiz.guessNumber;
         return $.inArray(quiz.guess, quiz.choices) != -1;
+    };
+
+    this.setCurrentQuiz = function (quiz) {
+        if (quiz.kind === 'cloze')
+            quiz.question = quiz.answer;
+        this.currentQuiz = quiz;
     };
 };

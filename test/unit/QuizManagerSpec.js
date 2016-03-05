@@ -134,6 +134,25 @@ describe('QuizCtrl', function () {
         }
     });
 
+    it('should be cleared even if quiz has no choices', function () {
+        var quiz = {};
+        quiz.kind = 'cloze';
+        quiz.hint = 'モグラの毛皮は柔らかくて手触りが滑らかだ。';
+        quiz.question = 'question';
+        quiz.answer = 'answer';
+        quiz.dummy1 = 'dummy1';
+        quiz.dummy2 = 'dummy2';
+        quiz.dummy3 = 'dummy3';
+        quizManager.clear(quiz);
+        expect(quiz.hint).toBeFalsy();
+        expect(quiz.question).toBeFalsy();
+        expect(quiz.answer).toBeFalsy();
+        expect(quiz.dummy1).toBeFalsy();
+        expect(quiz.dummy2).toBeFalsy();
+        expect(quiz.dummy3).toBeFalsy();
+        expect(quiz.choices).toBeFalsy();
+    });
+
     it('is visible if quiz is valid', function () {
         var quiz = {};
         quiz.kind = 'cloze';
@@ -270,5 +289,16 @@ describe('QuizCtrl', function () {
     it('should be good if cloze quiz is correct', function () {
         var quiz = { 'kind': 'cloze', 'answer': 'answer', 'guess': 'answer' };
         expect(quizManager.isCorrect(quiz)).toBeTruthy();
+    });
+
+    it('should be question is answer if close quiz was set', function () {
+        var quiz = {};
+        quiz.kind = 'cloze';
+        quiz.hint = 'モグラの毛皮は柔らかくて手触りが滑らかだ。';
+        quiz.question = 'qu____on';
+        quiz.answer = 'question';
+        quizManager.setCurrentQuiz(quiz);
+        expect(quiz.hint).toBe('モグラの毛皮は柔らかくて手触りが滑らかだ。');
+        expect(quiz.question).toBe('question');
     });
 });
