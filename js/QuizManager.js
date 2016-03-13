@@ -291,7 +291,11 @@ function QuizManager() {
     };
 
     this.isVisible = function (quiz) {
-        return !quiz.finished && (quiz.kind === 'normal' || quiz.kind === 'free' || quiz.kind === 'number' || quiz.kind === 'cloze');
+        return !quiz.finished && (quiz.kind === 'normal' || quiz.kind === 'free' || quiz.kind === 'number' || isCloze(quiz));
+    };
+
+    this.isCloze = function (quiz) {
+        return quiz.kind === 'cloze';
     };
 
     this.wrongMessage = function (quiz) {

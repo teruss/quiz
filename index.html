@@ -1,6 +1,6 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en" ng-app="quizApp">
-  <head>
+<head>
     <title>QuizPost</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,28 +14,32 @@
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/newQuizController.js"></script>
-  </head>
-  
-  <body>
+    <script src="js/rTestController.js"></script>
+</head>
+
+<body>
     <nav class="navbar navbar-inverse" ng-controller="NavCtrl">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#/quizzes">QuizPost</a>
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#/quizzes">QuizPost</a>
+            </div>
+            <div>
+                <!--<ul class="nav navbar-nav">
+                    <li class="active"><a href="#/r-test">Home</a></li>
+                </ul>-->
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#/quizzes">Quiz List</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#/create">Create Quiz</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <button type="button" class="btn btn-primary btn-large" data-ng-show="!isLoggedIn" data-ng-disabled="!facebookReady" data-ng-click="IntentLogin()">Login with Facebook</button>
+                    <button type="button" class="btn btn-danger btn-large" data-ng-show="isLoggedIn" data-ng-disabled="!facebookReady" data-ng-click="logout()">Logout</button>
+                </ul>
+            </div>
         </div>
-        <div>
-          <ul class="nav navbar-nav">
-    	<li class="active"><a href="#/quizzes">Home</a></li>
-          </ul>
-          <ul class="nav navbar-nav">
-    	<li class="active"><a href="#/create">Create Quiz</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-          	<button type="button" class="btn btn-primary btn-large" data-ng-show="!isLoggedIn" data-ng-disabled="!facebookReady" data-ng-click="IntentLogin()">Login with Facebook</button>
-          	<button type="button" class="btn btn-danger btn-large" data-ng-show="isLoggedIn" data-ng-disabled="!facebookReady" data-ng-click="logout()">Logout</button>
-          </ul>
-        </div>
-      </div>
     </nav>
     <div ng-view></div>
-  </body>
+</body>
 </html>
