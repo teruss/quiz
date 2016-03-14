@@ -74,7 +74,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
                 $scope.$apply(function () {
                     console.log("loading index:" + j);
                     $scope.loading++;
-                    $scope.quizzes[j] = createQuizFromKiiObject(theObject, userCard);
+                    $scope.quizzes[j] = quizManager.createQuiz(theObject, userCard);
                     if ($scope.loading == $scope.totalQuiz)
                         $scope.showLoading = false;
                 });
@@ -92,12 +92,6 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
                 });
             }
         });
-    };
-
-    var createQuizFromKiiObject = function (theObject, userCard) {
-        var kind = theObject.get('kind');
-        console.assert(kind, "kind should not be null");
-        return quizManager.createQuiz(theObject, userCard);
     };
 
     $scope.answer = function (quiz) {
@@ -132,6 +126,11 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
 
         userCard.set("numCorrectAnswers", quiz.numCorrectAnswers);
         userCard.set("numWrongAnswers", quiz.numWrongAnswers);
+
+        userCard.set("type", quiz.kind);
+        userCard.set("hint", quiz.hint);
+        userCard.set("answer", quiz.answer);
+        console.log(quiz);
 
         quizManager.saveUserCard(userCard);
         console.log("result:" + quiz.result);

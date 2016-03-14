@@ -52,6 +52,18 @@
 
     var refreshQuiz = function (userDeck, j) {
         var userCard = userDeck[j];
+        var type = userCard.get("type");
+        if (type) {
+            $scope.$apply(function () {
+                console.log("loading index:" + j);
+                $scope.loading++;
+                $scope.quizzes[j] = quizManager.createQuizByUserCard(userCard);
+                if ($scope.loading == $scope.totalQuiz)
+                    $scope.showLoading = false;
+            });
+            return;
+        }
+
         var uri = userCard.get("quiz");
         console.assert(uri);
         if (!uri) {
