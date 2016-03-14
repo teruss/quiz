@@ -195,14 +195,8 @@ function QuizManager() {
     };
 
     var calcHidingRate = function (userCard) {
-        var numCorrect = userCard.get('numCorrectAnswers');
-        if (!$.isNumeric(numCorrect))
-            return 0.5;
-        var numWrong = userCard.get('numWrongAnswers');
-        if (!$.isNumeric(numWrong))
-            return 0.5;
-        if (numCorrect + numWrong == 0)
-            return 0.5;
+        var numCorrect = userCard.get('numCorrectAnswers') + 1;
+        var numWrong = userCard.get('numWrongAnswers') + 1;
         return calcAccuracyRate(numCorrect, numWrong);
     };
 
@@ -291,7 +285,7 @@ function QuizManager() {
     };
 
     this.isVisible = function (quiz) {
-        return !quiz.finished && (quiz.kind === 'normal' || quiz.kind === 'free' || quiz.kind === 'number' || isCloze(quiz));
+        return !quiz.finished && (quiz.kind === 'normal' || quiz.kind === 'free' || quiz.kind === 'number' || this.isCloze(quiz));
     };
 
     this.isCloze = function (quiz) {
