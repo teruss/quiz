@@ -1,4 +1,6 @@
 ﻿quizControllers.controller('RTestCtrl', ['$scope', '$window', '$routeParams', '$location', 'Facebook', '$route', 'quizManager', function ($scope, $window, $routeParams, $location, Facebook, $route, quizManager) {
+    console.log("RTestCtrl");
+    quizManager.isInvalid = true;
     if ($routeParams.quizType == "recent") {
         $scope.quizType = "Recent Quizzes";
     } else {
@@ -13,14 +15,19 @@
             var ticks = quizManager.currentTicks();
             console.log("currentTicks:" + ticks);
 
-            var user_query = KiiQuery.queryWithClause(KiiClause.lessThan("due", ticks));
+            var clozeClause = KiiClause.equals("type", "cloze");
+            var dueClause = KiiClause.lessThan("due", ticks);
+            var totalClause = KiiClause.and(clozeClause, dueClause);
+            var user_query = KiiQuery.queryWithClause(totalClause);
             user_query.sortByAsc("num_wrong");
             user_query.setLimit(25);
             var userQueryCallbacks = {
                 success: function (queryPerformed, resultSet, nextQuery) {
                     $scope.$apply(function () {
                         $scope.quizzes = resultSet;
-                        $scope.quiz = $scope.quizzes[$scope.currentIndex];
+                        console.log(resultSet);
+                        if ($scope.quizzes.length > 0)
+                            $scope.quiz = $scope.quizzes[$scope.currentIndex];
                     });
 
                     $scope.loading = 0;
