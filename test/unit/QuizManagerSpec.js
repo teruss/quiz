@@ -253,6 +253,19 @@ describe('QuizCtrl', function () {
         expect(result.accuracyRate).toBe('30%');
     });
 
+    it('should return rounded accuracy rate', function () {
+        var quiz = { 'kind': 'cloze', 'question': 'question' };
+        var obj = new MockObject();
+        var card = new MockObject();
+        card.set('numCorrectAnswers', 1);
+        card.set('numWrongAnswers', 2);
+
+        quizManager.setParameters(quiz, obj);
+        var result = quizManager.createQuiz(obj, card);
+
+        expect(result.accuracyRate).toBe('33%');
+    });
+
     it('should return all cloze if there is no wrong answer', function () {
         var quiz = { 'kind': 'cloze', 'question': 'question' };
         var obj = new MockObject();

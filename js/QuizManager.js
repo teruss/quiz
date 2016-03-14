@@ -238,7 +238,7 @@ function QuizManager() {
             return '--%';
         if (numCorrect + numWrong == 0)
             return '--%';
-        return calcAccuracyRate(numCorrect, numWrong) * 100 + '%';
+        return Math.round(calcAccuracyRate(numCorrect, numWrong) * 100) + '%';
     }
 
     var calcAccuracyRate = function (numCorrectAnswers, numWrongAnswers) {
