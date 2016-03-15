@@ -1,6 +1,5 @@
 ﻿quizControllers.controller('RTestCtrl', ['$scope', '$window', '$routeParams', '$location', 'Facebook', '$route', 'quizManager', function ($scope, $window, $routeParams, $location, Facebook, $route, quizManager) {
     console.log("RTestCtrl");
-    quizManager.isInvalid = true;
     if ($routeParams.quizType == "recent") {
         $scope.quizType = "Recent Quizzes";
     } else {
@@ -217,6 +216,7 @@
         quizManager.checkStatus();
         quizManager.isInvalid = false;
     }
+    quizManager.isInvalid = true;
 }]);
 
 quizControllers.controller('NavCtrl', function ($scope, $location, $route, Facebook, quizManager) {

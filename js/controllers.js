@@ -9,7 +9,6 @@ var quizControllers = angular.module('quizControllers', []);
 
 quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$location', 'Facebook', '$route', 'quizManager', function ($scope, $window, $routeParams, $location, Facebook, $route, quizManager) {
 
-    quizManager.isInvalid = true;
     if ($routeParams.quizType == "recent") {
         $scope.quizType = "Recent Quizzes";
     } else {
@@ -199,6 +198,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         quizManager.checkStatus();
         quizManager.isInvalid = false;
     }
+    quizManager.isInvalid = true;
 }]);
 
 quizControllers.controller('NavCtrl', function ($scope, $location, $route, Facebook, quizManager) {
