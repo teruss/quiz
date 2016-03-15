@@ -127,11 +127,6 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         userCard.set("numCorrectAnswers", quiz.numCorrectAnswers);
         userCard.set("numWrongAnswers", quiz.numWrongAnswers);
 
-        userCard.set("type", quiz.kind);
-        userCard.set("hint", quiz.hint);
-        userCard.set("answer", quiz.answer);
-        console.log(quiz);
-
         quizManager.saveUserCard(userCard);
         console.log("result:" + quiz.result);
     };

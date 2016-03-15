@@ -225,7 +225,7 @@ describe('QuizCtrl', function () {
         quizManager.setParameters(quiz, obj);
         var result = quizManager.createQuiz(obj, card);
 
-        //expect(result.question).toBe('_______');
+        expect(result.question).not.toBe('question');
         expect(result.answer).toBe('question');
         expect(result.kind).toBe('cloze');
         expect(result.hint).toBe('hint');

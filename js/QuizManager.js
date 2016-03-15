@@ -195,9 +195,11 @@ function QuizManager() {
     };
 
     var calcHidingRate = function (userCard) {
-        var numCorrect = userCard.get('numCorrectAnswers') + 1;
-        var numWrong = userCard.get('numWrongAnswers') + 1;
-        return calcAccuracyRate(numCorrect, numWrong);
+        var numCorrect = userCard.get('numCorrectAnswers');
+        numCorrect = numCorrect || 0;
+        var numWrong = userCard.get('numWrongAnswers');
+        numWrong = numWrong || 0;
+        return calcAccuracyRate(numCorrect + 1, numWrong + 1);
     };
 
     var deleteQuiz = function (theObject) {
