@@ -26,8 +26,7 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
     };
 
     $scope.editQuiz = function (quiz) {
-        console.log("edit quiz");
-        console.log(quiz);
+        console.assert(quiz.choices instanceof Array);
         var obj = quiz.object;
         editQuiz(quiz, obj);
     };

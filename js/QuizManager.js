@@ -314,6 +314,8 @@ function QuizManager() {
     this.setCurrentQuiz = function (quiz) {
         if (quiz.kind === 'cloze')
             quiz.question = quiz.answer;
+        if (!quiz.choices)
+            quiz.choices = ['', '', '', ''];
         this.currentQuiz = quiz;
     };
 };
