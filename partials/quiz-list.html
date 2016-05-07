@@ -10,6 +10,7 @@
             <div ng-repeat="quiz in quizzes">
                 <div ng-show="showQuiz(quiz)">
                     <pre>{{quiz.question}}</pre>
+                    <pre ng-show="quiz.kind === 'cloze'">{{quiz.guess}}</pre>
                     <p>
                         {{quiz.hint}}
                     </p>
