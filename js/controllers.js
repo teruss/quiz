@@ -109,7 +109,8 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         userCard.set("numWrongAnswers", quiz.numWrongAnswers);
 
         var version = userCard.get("version");
-        if (version < 3) {
+        console.log("version:" + version);
+        if (!version || version < 3) {
             userCard.set("version", 3);
             userCard.set("kind", quiz.kind);
         }
