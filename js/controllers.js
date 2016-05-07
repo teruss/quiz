@@ -13,15 +13,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
             var ticks = quizManager.currentTicks();
             console.log("currentTicks:" + ticks);
 
-            var isCloze = KiiClause.equals("kind", "cloze");
-            var isVersion3 = KiiClause.equals("version", 3);
-            var clozeAndVersion3 = KiiClause.and(isCloze, isVersion3);
-
-            var notVersion3 = KiiClause.notEquals("version", 3);
-
-            var clozeOnlyIfVersion3 = KiiClause.or(clozeAndVersion3, notVersion3);
-
-            var user_query = KiiQuery.queryWithClause(KiiClause.and(KiiClause.lessThan("due", ticks), clozeOnlyIfVersion3));
+            var user_query = KiiQuery.queryWithClause(KiiClause.lessThan("due", ticks));
             user_query.sortByDesc("version");
             user_query.setLimit(25);
 
