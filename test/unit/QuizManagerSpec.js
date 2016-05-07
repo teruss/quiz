@@ -204,6 +204,18 @@ describe('QuizCtrl', function () {
         this.get = function (key) {
             return dic[key];
         }
+
+        this.save = function (callbackMap) {
+            callbackMap["success"](this);
+        };
+
+        this.objectURI = function () {
+            return "http://example.com";
+        };
+    };
+
+    var createUserObject = function () {
+        return new MockObject();
     };
 
     it('stores hint if cloze has hint', function () {
@@ -314,4 +326,25 @@ describe('QuizCtrl', function () {
         expect(quiz.hint).toBe('モグラの毛皮は柔らかくて手触りが滑らかだ。');
         expect(quiz.question).toBe('question');
     });
+
+    it('should be version 2', function () {
+        var quiz = { 'kind': 'cloze', 'question': 'This is a question.' };
+        var obj = new MockObject();
+        
+        quizManager.setParameters(quiz, obj);
+
+        obj.save({
+            success: function (theObject) {
+                var userObject = createUserObject();
+                var userCard = quizManager.createUserCard(theObject, userObject);
+                expect(userCard.get("version")).toBe(2);
+
+                var result = quizManager.createQuiz(theObject, userCard);
+
+                expect(result.answer).toBe('This is a question.');
+                expect(result.version).toBe(2);
+            }
+        });
+    });
+
 });

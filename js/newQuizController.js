@@ -34,23 +34,24 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
     var saveQuiz = function (quiz, obj) {
         console.log("saveQuiz:" + quiz + "," + obj);
         quizManager.setParameters(quiz, obj);
-        $scope.isCreating = true;
+        quizManager.isCreating = true;
 
         obj.save({
             success: function (theObject) {
                 console.log("Object saved!");
                 console.log(theObject);
-                var userCard = quizManager.createUserCard(theObject);
+                var userObject = quizManager.createUserObject();
+                var userCard = quizManager.createUserCard(theObject, userObject);
                 quizManager.saveUserCard(userCard);
                 quizManager.clear(quiz);
                 $scope.$apply(function () {
-                    $scope.isCreating = false;
+                    quizManager.isCreating = false;
                 });
             },
             failure: function (theObject, errorString) {
                 console.log("Error saving object: " + errorString);
                 $scope.$apply(function () {
-                    $scope.isCreating = false;
+                    quizManager.isCreating = false;
                 });
             }
         });
@@ -58,27 +59,27 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
 
     var editQuiz = function (quiz, obj) {
         quizManager.setParameters(quiz, obj);
-        $scope.isCreating = true;
+        quizManager.isCreating = true;
 
         obj.save({
             success: function (theObject) {
                 console.log("Object saved!");
                 quizManager.clear(quiz);
                 $scope.$apply(function () {
-                    $scope.isCreating = false;
+                    quizManager.isCreating = false;
                 });
             },
             failure: function (theObject, errorString) {
                 console.log("Error saving object: " + errorString);
                 $scope.$apply(function () {
-                    $scope.isCreating = false;
+                    quizManager.isCreating = false;
                 });
             }
         });
     };
 
     $scope.isValid = function (quiz) {
-        if ($scope.isCreating)
+        if (quizManager.isCreating)
             return false;
         return quizManager.isValid(quiz);
     }

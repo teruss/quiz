@@ -14,10 +14,12 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
             console.log("currentTicks:" + ticks);
 
             var user_query = KiiQuery.queryWithClause(KiiClause.lessThan("due", ticks));
-            user_query.sortByAsc("num_wrong");
+            //user_query.sortByAsc("num_wrong");
+            user_query.sortByDesc("version");
             user_query.setLimit(25);
             var userQueryCallbacks = {
                 success: function (queryPerformed, resultSet, nextQuery) {
+                    console.log(resultSet);
                     $scope.$apply(function () {
                         $scope.quizzes = resultSet;
                     });
@@ -46,19 +48,6 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         var userCard = userDeck[j];
         var uri = userCard.get("quiz");
         console.assert(uri);
-        if (!uri) {
-            console.log("no quiz uri");
-            userCard.delete({
-                success: function (theDeletedObject) {
-                    console.log("Object deleted!");
-                    console.log(theDeletedObject);
-                },
-                failure: function (theObject, errorString) {
-                    console.log("Error deleting object: " + errorString);
-                }
-            });
-            return;
-        }
         var quiz = KiiObject.objectWithURI(uri);
 
         quiz.refresh({
