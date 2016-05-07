@@ -8,13 +8,6 @@ var checkLoginState = function () {
 var quizControllers = angular.module('quizControllers', []);
 
 quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$location', 'Facebook', '$route', 'quizManager', function ($scope, $window, $routeParams, $location, Facebook, $route, quizManager) {
-
-    if ($routeParams.quizType == "recent") {
-        $scope.quizType = "Recent Quizzes";
-    } else {
-        $scope.quizType = "My Quizzes";
-    }
-
     quizManager.loginCallbacks = {
         success: function (user, network) {
             var ticks = quizManager.currentTicks();
