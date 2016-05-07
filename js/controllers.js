@@ -108,6 +108,13 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         userCard.set("numCorrectAnswers", quiz.numCorrectAnswers);
         userCard.set("numWrongAnswers", quiz.numWrongAnswers);
 
+        var version = userCard.get("version");
+        if (version < 3) {
+            userCard.set("version", 3);
+            userCard.set("kind", quiz.kind);
+        }
+        console.assert(userCard.get("version") == 3);
+        console.assert(userCard.get("kind"));
         quizManager.saveUserCard(userCard);
         console.log("result:" + quiz.result);
     };
