@@ -9,9 +9,7 @@
             </p>
             <div ng-repeat="quiz in quizzes">
                 <div ng-show="showQuiz(quiz)">
-                    <p>
-                        {{quiz.question}}
-                    </p>
+                    <pre>{{quiz.question}}</pre>
                     <p>
                         {{quiz.hint}}
                     </p>
