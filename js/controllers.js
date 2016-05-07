@@ -14,9 +14,9 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
             console.log("currentTicks:" + ticks);
 
             var user_query = KiiQuery.queryWithClause(KiiClause.lessThan("due", ticks));
-            //user_query.sortByAsc("num_wrong");
             user_query.sortByDesc("version");
             user_query.setLimit(25);
+
             var userQueryCallbacks = {
                 success: function (queryPerformed, resultSet, nextQuery) {
                     console.log(resultSet);
@@ -49,6 +49,11 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         var uri = userCard.get("quiz");
         console.assert(uri);
         var quiz = KiiObject.objectWithURI(uri);
+
+        var version = userCard.get("version");
+        if (version == 3) {
+            console.assert(userCard.get("kind"));
+        }
 
         quiz.refresh({
             success: function (theObject) {

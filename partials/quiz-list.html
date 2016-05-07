@@ -9,7 +9,7 @@
             </p>
             <div ng-repeat="quiz in quizzes">
                 <div ng-show="showQuiz(quiz)">
-                    <div ng-show="!quiz.version" class="alert alert-danger" role="alert">
+                    <div ng-show="!quiz.version || quiz.version < 3" class="alert alert-danger" role="alert">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         <span class="sr-only">Error:</span>
                         Update this quiz because the version is old

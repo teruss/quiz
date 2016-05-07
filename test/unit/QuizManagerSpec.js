@@ -337,12 +337,14 @@ describe('QuizCtrl', function () {
             success: function (theObject) {
                 var userObject = createUserObject();
                 var userCard = quizManager.createUserCard(theObject, userObject);
-                expect(userCard.get("version")).toBe(2);
+                expect(userCard.get("version")).toBe(3);
+                expect(userCard.get("kind")).toBe("cloze");
 
                 var result = quizManager.createQuiz(theObject, userCard);
 
                 expect(result.answer).toBe('This is a question.');
-                expect(result.version).toBe(2);
+                expect(result.version).toBe(3);
+                expect(result.kind).toBe("cloze");
             }
         });
     });
@@ -360,8 +362,9 @@ describe('QuizCtrl', function () {
         obj.save({
             success: function (theObject) {
                 var userCard = obj.userCard;
-                quizManager.updateUserCard(userCard);
-                expect(userCard.get("version")).toBe(2);
+                quizManager.updateUserCard(obj, userCard);
+                expect(userCard.get("version")).toBe(3);
+                expect(userCard.get("kind")).toBe("cloze");
             }
         });
     });

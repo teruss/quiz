@@ -47,7 +47,7 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
                 } else {
                     var userCard0 = quiz.userCard;
                     var userCard = KiiObject.objectWithURI(userCard0.objectURI());
-                    quizManager.updateUserCard(userCard);
+                    quizManager.updateUserCard(theObject, userCard);
                     userCard.save({
                         success: function (resultUserCard) {
                             console.log("user card was updated!");

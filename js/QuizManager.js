@@ -3,17 +3,18 @@ function QuizManager() {
         return Kii.bucketWithName("quiz");
     };
 
-    this.createUserCard = function (theObject, userCard) {
+    this.createUserCard = function (quiz, userCard) {
         userCard.set("due", this.currentTicks());
         userCard.set("interval", 0);
         userCard.set("suspended", false);
-        userCard.set("quiz", theObject.objectURI());
-        this.updateUserCard(userCard);
+        userCard.set("quiz", quiz.objectURI());
+        this.updateUserCard(quiz, userCard);
         return userCard;
     };
 
-    this.updateUserCard = function (userCard) {
-        userCard.set("version", 2);
+    this.updateUserCard = function (quiz, userCard) {
+        userCard.set("version", 3);
+        userCard.set("kind", quiz.get("kind"));
     };
 
     this.createUserObject = function () {
