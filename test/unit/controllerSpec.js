@@ -60,17 +60,6 @@ describe('QuizCtrl', function () {
         expect(quizManager.daysBetween(new Date(2015, 1, 1, 0, 0), new Date(2015, 1, 1, 0, 12))).toBe('12 minutes');
     });
 
-    it('should return next due', function () {
-        var quiz = {};
-        quiz.object = {};
-        quiz.object.objectURI = function () { };
-        scope.searchUserCard = function (quiz) {
-            quiz.next_due = 100;
-        };
-        scope.answer(quiz);
-        expect(quiz.next_due).toBe(100);
-    });
-
     it('should return next due if has userCard', function () {
         var quiz = {};
         quiz.object = {};

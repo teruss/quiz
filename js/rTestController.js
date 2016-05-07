@@ -115,11 +115,6 @@
         console.log(quiz);
         var userCard = quiz.userCard;
         console.assert(userCard);
-        if (!userCard) {
-            console.log("no user card");
-            $scope.searchUserCard(quiz);
-            return;
-        }
         var due = userCard.get("due");
         var interval = userCard.get("interval");
         var good = quizManager.isCorrect(quiz);
@@ -159,33 +154,6 @@
         var userCard = quiz.userCard;
         quizManager.deleteUserCard(userCard);
         quiz.finished = true;
-    };
-
-    $scope.searchUserCard = function (quiz) {
-        console.log("searchUserCard");
-        var clause1 = KiiClause.equals("quiz", quiz.object.objectURI());
-        var user_query = KiiQuery.queryWithClause(clause1);
-        var userQueryCallbacks = {
-            success: function (queryPerformed, resultSet, nextQuery) {
-                console.log(resultSet);
-                if (resultSet.length >= 1) {
-                    console.log("found user card");
-                    quiz.userCard = resultSet[0];
-                    $scope.$apply(function () {
-                        $scope.answer(quiz);
-                    });
-                    return;
-                }
-                console.log("not found user card");
-                quiz.userCard = $scope.createUserCard(quiz.object);
-                $scope.answer(quiz);
-            },
-            failure: function (queryPerformed, anErrorString) {
-                // do something with the error response
-            }
-        }
-
-        $scope.getUserBucket().executeQuery(user_query, userQueryCallbacks);
     };
 
     $scope.calcInterval = function (interval, due, now, good) {
