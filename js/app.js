@@ -7,10 +7,6 @@ var quizApp = angular.module('quizApp', [
 quizApp.config(['$routeProvider', 'FacebookProvider',
 		function ($routeProvider, FacebookProvider) {
 		    $routeProvider.
-              when('/r-test', {
-                  templateUrl: 'partials/r-test.html',
-                  controller: 'RTestCtrl'
-              }).
               when('/quizzes', {
                   templateUrl: 'partials/quiz-list.html',
                   controller: 'QuizCtrl'
