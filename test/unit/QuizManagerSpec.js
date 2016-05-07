@@ -347,4 +347,23 @@ describe('QuizCtrl', function () {
         });
     });
 
+    it('should be update to version 2', function () {
+        var quiz = { 'kind': 'cloze', 'question': 'This is a question.' };
+        var obj = new MockObject();
+        var card = new MockObject();
+        card.set('numCorrectAnswers', 3);
+        card.set('numWrongAnswers', 0);
+
+        quizManager.setParameters(quiz, obj);
+        obj.userCard = card;
+
+        obj.save({
+            success: function (theObject) {
+                var userCard = obj.userCard;
+                quizManager.updateUserCard(userCard);
+                expect(userCard.get("version")).toBe(2);
+            }
+        });
+    });
+
 });

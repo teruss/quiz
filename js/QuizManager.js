@@ -8,8 +8,12 @@ function QuizManager() {
         userCard.set("interval", 0);
         userCard.set("suspended", false);
         userCard.set("quiz", theObject.objectURI());
-        userCard.set("version", 2);
+        this.updateUserCard(userCard);
         return userCard;
+    };
+
+    this.updateUserCard = function (userCard) {
+        userCard.set("version", 2);
     };
 
     this.createUserObject = function () {

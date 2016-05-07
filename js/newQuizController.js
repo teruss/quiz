@@ -22,16 +22,16 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
         console.log(quiz);
         var appBucket = quizManager.quizBucket();
         var obj = appBucket.createObject();
-        saveQuiz(quiz, obj);
+        saveQuiz(quiz, obj, true);
     };
 
     $scope.editQuiz = function (quiz) {
         console.assert(quiz.choices instanceof Array);
         var obj = quiz.object;
-        editQuiz(quiz, obj);
+        saveQuiz(quiz, obj, false);
     };
 
-    var saveQuiz = function (quiz, obj) {
+    var saveQuiz = function (quiz, obj, isNew) {
         console.log("saveQuiz:" + quiz + "," + obj);
         quizManager.setParameters(quiz, obj);
         quizManager.isCreating = true;
@@ -40,30 +40,25 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
             success: function (theObject) {
                 console.log("Object saved!");
                 console.log(theObject);
-                var userObject = quizManager.createUserObject();
-                var userCard = quizManager.createUserCard(theObject, userObject);
-                quizManager.saveUserCard(userCard);
-                quizManager.clear(quiz);
-                $scope.$apply(function () {
-                    quizManager.isCreating = false;
-                });
-            },
-            failure: function (theObject, errorString) {
-                console.log("Error saving object: " + errorString);
-                $scope.$apply(function () {
-                    quizManager.isCreating = false;
-                });
-            }
-        });
-    };
-
-    var editQuiz = function (quiz, obj) {
-        quizManager.setParameters(quiz, obj);
-        quizManager.isCreating = true;
-
-        obj.save({
-            success: function (theObject) {
-                console.log("Object saved!");
+                if (isNew) {
+                    var userObject = quizManager.createUserObject();
+                    var userCard = quizManager.createUserCard(theObject, userObject);
+                    quizManager.saveUserCard(userCard);
+                } else {
+                    var userCard0 = quiz.userCard;
+                    var userCard = KiiObject.objectWithURI(userCard0.objectURI());
+                    quizManager.updateUserCard(userCard);
+                    userCard.save({
+                        success: function (resultUserCard) {
+                            console.log("user card was updated!");
+                            console.log("due:" + resultUserCard.get("due"));
+                            console.log("quiz:" + resultUserCard.get("quiz"));
+                        },
+                        failure: function (resultUserCard, errorString) {
+                            console.error(errorString);
+                        }
+                    });
+                }
                 quizManager.clear(quiz);
                 $scope.$apply(function () {
                     quizManager.isCreating = false;
