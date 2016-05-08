@@ -328,4 +328,13 @@ function QuizManager() {
             quiz.choices = ['', '', '', ''];
         this.currentQuiz = quiz;
     };
+
+    this.calcInterval = function (interval, due, now, good) {
+        if (!good)
+            return 10 * 60 * 1000 * 1000 * 10;
+        var delay = now - due;
+        //        delay *= (1 + Math.random() / 4);
+        console.assert(delay >= 0);
+        return Math.max(0, (interval + delay / 2) * 1.2) * 86400;
+    };
 };

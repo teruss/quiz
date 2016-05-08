@@ -88,7 +88,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         var interval = userCard.get("interval");
         var good = quizManager.isCorrect(quiz);
         var now = quizManager.currentTicks()
-        var nextInterval = $scope.calcInterval(interval, due, now, good);
+        var nextInterval = quizManager.calcInterval(interval, due, now, good);
 
         if (good) {
             quiz.result = "Right!";
@@ -131,14 +131,6 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         var userCard = quiz.userCard;
         quizManager.deleteUserCard(userCard);
         quiz.finished = true;
-    };
-
-    $scope.calcInterval = function (interval, due, now, good) {
-        if (!good)
-            return 10 * 60 * 1000 * 1000 * 10;
-        var delay = now - due;
-        delay *= (1 + Math.random() / 4);
-        return Math.max(0, (interval + delay / 2) * 1.2);
     };
 
     $scope.quizBucket = Kii.bucketWithName("quiz");
