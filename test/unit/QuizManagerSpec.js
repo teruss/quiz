@@ -12,7 +12,7 @@ describe('QuizCtrl', function () {
     });
 
     it('should return readable days', function () {
-        expect(quizManager.daysBetween(new Date(2015, 1, 1), new Date(2015, 1, 3))).toBe('2 days');
+        expect(quizManager.daysBetween(2 * 24 * 60 * 60 * 1000 * 1000 * 10)).toBe('2 days');
     });
 
     it('should return single type day', function () {
@@ -20,15 +20,15 @@ describe('QuizCtrl', function () {
     });
 
     it('should return hours if within 1 day', function () {
-        expect(quizManager.daysBetween(new Date(2015, 1, 1, 0), new Date(2015, 1, 1, 23))).toBe('23 hours');
+        expect(quizManager.daysBetween(23 * 60 * 60 * 1000 * 1000 * 10)).toBe('23 hours');
     });
 
     it('should return hour if within 1 hour', function () {
-        expect(quizManager.daysBetween(new Date(2015, 1, 1, 0), new Date(2015, 1, 1, 1))).toBe('1 hour');
+        expect(quizManager.daysBetween(1 * 60 * 60 * 1000 * 1000 * 10)).toBe('1 hour');
     });
 
     it('should return minutes if within 1 hour', function () {
-        expect(quizManager.daysBetween(new Date(2015, 1, 1, 0, 0), new Date(2015, 1, 1, 0, 12))).toBe('12 minutes');
+        expect(quizManager.daysBetween(12 * 60 * 1000 * 1000 * 10)).toBe('12 minutes');
     });
 
     it('should return 635556672000000000 ticks if date is 2015 1 1', function () {

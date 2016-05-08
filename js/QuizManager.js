@@ -69,17 +69,13 @@ function QuizManager() {
         });
     };
 
-    this.daysBetween = function (date1, date2) {
-        console.log(date1);
-        console.log(date2);
+    this.daysBetween = function (difference_ticks) {
         var one_second = 1000;
         var one_minute = one_second * 60;
         var one_hour = one_minute * 60;
         var one_day = one_hour * 24;
 
-        var date1_ms = date1.getTime();
-        var date2_ms = date2.getTime();
-        var difference_ms = date2_ms - date1_ms;
+        var difference_ms = difference_ticks / 10 / 1000;
 
         var days = Math.floor(difference_ms / one_day);
         if (days > 1)

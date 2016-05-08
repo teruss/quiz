@@ -99,7 +99,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
             console.assert($.isNumeric(quiz.numWrongAnswers));
             quiz.numWrongAnswers++;
         }
-        quiz.next_due = quizManager.daysBetween(new Date(), quizManager.dateFromTicks(now + nextInterval));
+        quiz.next_due = quizManager.daysBetween(nextInterval);
 
         userCard.set("suspended", !good);
         userCard.set("due", now + nextInterval);
