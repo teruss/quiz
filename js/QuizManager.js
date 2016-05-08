@@ -335,6 +335,6 @@ function QuizManager() {
         var delay = now - due;
         //        delay *= (1 + Math.random() / 4);
         console.assert(delay >= 0);
-        return Math.max(0, (interval + delay / 2) * 1.2) * 86400;
+        return Math.max(0, (interval + delay / 2) * 1.2);
     };
 };

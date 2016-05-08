@@ -374,15 +374,15 @@ describe('QuizCtrl', function () {
     });
 
     it('should return 1200 ticks if interval is 1000 and correct answer', function () {
-        expect(quizManager.calcInterval(1000, 0, 0, true)).toBe(1200 * 86400);
+        expect(quizManager.calcInterval(1000, 0, 0, true)).toBe(1200);
     });
 
     it('should return 1260 ticks if interval is 1000 and now is 100 and due is 0 and correct answer', function () {
-        expect(quizManager.calcInterval(1000, 0, 100, true)).toBe(1260 * 86400);
+        expect(quizManager.calcInterval(1000, 0, 100, true)).toBe(1260);
     });
 
     it('should return 10368000 ticks if interval is 100 and correct answer', function () {
-        expect(quizManager.calcInterval(100, 0, 0, true)).toBe(10368000);
+        expect(quizManager.calcInterval(100, 0, 0, true)).toBe(120);
     });
 
     it('should never return negative ticks', function () {
