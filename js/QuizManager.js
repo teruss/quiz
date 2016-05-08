@@ -330,11 +330,12 @@ function QuizManager() {
     };
 
     this.calcInterval = function (interval, due, now, good) {
+        console.assert(interval >= 0);
         if (!good)
             return 10 * 60 * 1000 * 1000 * 10;
         var delay = now - due;
         //        delay *= (1 + Math.random() / 4);
         console.assert(delay >= 0);
-        return Math.max(0, (interval + delay / 2) * 1.2);
+        return Math.max(86400 * 1000 * 1000 * 10, (interval + delay / 2) * 1.2);
     };
 };
