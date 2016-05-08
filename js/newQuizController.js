@@ -15,6 +15,7 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
             'choices': ['', '', '', '']
         };
     }
+    $scope.quiz.kind = 'cloze';
     console.log($scope.quiz);
     quizManager.currentQuiz = null;
     $scope.createQuiz = function (quiz) {
