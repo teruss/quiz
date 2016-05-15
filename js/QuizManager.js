@@ -178,17 +178,30 @@ function QuizManager() {
         };
     };
 
-    var createClozeQuiz = function (theObject, userCard) {
+    this.hideWord = function (word, hidingRate) {
+        var token = '';
+        for (var i = 0; i < word.length; i++) {
+            if (/[a-zA-Z0-9]/.test(word[i]) && Math.random() < hidingRate) {
+                token += '_';
+            } else {
+                token += word[i];
+            }
+        }
+        return token;
+    };
+
+    this.createClozeQuiz = function (theObject, userCard) {
         var answer = theObject.get('question');
         var hidingRate = calcHidingRate(userCard);
         var question = "";
-        for (var i = 0; i < answer.length; i++) {
-            if (/[a-zA-Z0-9]/.test(answer[i]) && Math.random() < hidingRate) {
-                question += '_';
-            } else {
-                question += answer[i];
+        var tokens = answer.split(" ");
+            for (var i = 0; i < tokens.length; i++) {
+                var t = tokens[i];
+                    question += this.hideWord(t, hidingRate);
+                    if (i < tokens.length - 1) {
+                        question += ' ';
+                    }
             }
-        }
         return {
             'question': question,
             'answer': answer,
@@ -222,7 +235,7 @@ function QuizManager() {
 
     this.createQuiz = function (theObject, userCard) {
         var kind = theObject.get('kind');
-        var q = createQuizByKind(theObject, userCard, kind);
+        var q = this.createQuizByKind(theObject, userCard, kind);
         var numCorrect = userCard.get('numCorrectAnswers');
         if (!$.isNumeric(numCorrect))
             numCorrect = 0;
@@ -253,13 +266,13 @@ function QuizManager() {
         return numCorrectAnswers / (numCorrectAnswers + numWrongAnswers);
     }
 
-    var createQuizByKind = function (theObject, userCard, kind) {
+    this.createQuizByKind = function (theObject, userCard, kind) {
         if (kind === 'normal')
             return createChoiceQuiz(theObject, userCard);
         if (kind === 'number')
             return createNumberQuiz(theObject, userCard);
         if (kind === 'cloze')
-            return createClozeQuiz(theObject, userCard);
+            return this.createClozeQuiz(theObject, userCard);
         return createFreeQuiz(theObject, userCard);
     }
 
