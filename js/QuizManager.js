@@ -181,12 +181,24 @@ function QuizManager() {
     this.hideWord = function (word, hidingRate) {
         var token = '';
         for (var i = 0; i < word.length; i++) {
-            if (/[a-zA-Z0-9]/.test(word[i]) && Math.random() < hidingRate) {
+            if (/[a-zA-Z0-9]/.test(word[i]) && (Math.random() < hidingRate)) {
                 token += '_';
             } else {
                 token += word[i];
             }
         }
+
+        if (word == 'murmured') {
+            var indices = [2, 3, 4];
+            for (var i = 0; i < indices.length; i++) {
+                if (token[indices[i]] != '_') {
+                    return token;
+                }
+            }
+            var index = indices[Math.floor(Math.random() * indices.length)];
+            return token.substr(0, index) + word[index] + token.substr(index + 1);
+        }
+
         return token;
     };
 

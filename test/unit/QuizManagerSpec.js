@@ -381,4 +381,17 @@ describe('QuizCtrl', function () {
         expect(quizManager.calcInterval(100000000000000, 0, 0, true)).toBe(120000000000000);
     });
 
+    it('should return __r_____ if murmured', function () {
+        var hiddenWord = quizManager.hideWord('murmured', 1.0);
+        expect(hiddenWord).not.toBe('________');
+        expect(hiddenWord[0]).toBe('_');
+        expect(hiddenWord[1]).toBe('_');
+        expect(hiddenWord[5]).toBe('_');
+        expect(hiddenWord[6]).toBe('_');
+        expect(hiddenWord[7]).toBe('_');
+    });
+    it('should return ___ ____ __ ________ if The Cave of Altamira', function () {
+        var hiddenWord = quizManager.hideWord('The Cave of Altamira', 1.01);
+        expect(hiddenWord).toBe('___ ____ __ ________');
+    });
 });
