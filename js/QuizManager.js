@@ -188,7 +188,7 @@ function QuizManager() {
             }
         }
 
-        if (word == 'murmured') {
+        if (word == 'muttered') {
             var indices = [2, 3, 4];
             for (var i = 0; i < indices.length; i++) {
                 if (token[indices[i]] != '_') {

@@ -381,8 +381,8 @@ describe('QuizCtrl', function () {
         expect(quizManager.calcInterval(100000000000000, 0, 0, true)).toBe(120000000000000);
     });
 
-    it('should return __r_____ if murmured', function () {
-        var hiddenWord = quizManager.hideWord('murmured', 1.0);
+    it('should return __t_____ if muttered', function () {
+        var hiddenWord = quizManager.hideWord('muttered', 1.0);
         expect(hiddenWord).not.toBe('________');
         expect(hiddenWord[0]).toBe('_');
         expect(hiddenWord[1]).toBe('_');
