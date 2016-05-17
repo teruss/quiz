@@ -394,4 +394,12 @@ describe('QuizCtrl', function () {
         var hiddenWord = quizManager.hideWord('The Cave of Altamira', 1.01);
         expect(hiddenWord).toBe('___ ____ __ ________');
     });
+
+    it('should not return ________ if Finnish', function () {
+        var hiddenWord = quizManager.hideWord('Finnish', 1.0);
+        expect(hiddenWord).not.toBe('_______');
+        expect(hiddenWord[0]).toBe('_');
+        expect(hiddenWord[1]).toBe('_');
+        expect(hiddenWord[2]).toBe('_');
+    });
 });

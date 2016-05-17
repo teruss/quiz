@@ -199,6 +199,17 @@ function QuizManager() {
             return token.substr(0, index) + word[index] + token.substr(index + 1);
         }
 
+        if (word == 'Finnish') {
+            var indices = [3, 4, 5, 6];
+            for (var i = 0; i < indices.length; i++) {
+                if (token[indices[i]] != '_') {
+                    return token;
+                }
+            }
+            var index = indices[Math.floor(Math.random() * indices.length)];
+            return token.substr(0, index) + word[index] + token.substr(index + 1);
+        }
+
         return token;
     };
 
