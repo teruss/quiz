@@ -292,6 +292,24 @@ describe('QuizCtrl', function () {
         expect(result.accuracyRate).toBe('100%');
     });
 
+    it('should return spaced cloze with wrong indices are clear', function () {
+        var quiz = { 'kind': 'cloze', 'question': 'This is a question.' };
+        var obj = new MockObject();
+        var card = new MockObject();
+        card.set('numCorrectAnswers', 3);
+        card.set('numWrongAnswers', 0);
+        card.set('wrongIndices', [0, 3, 11]);
+
+        quizManager.setParameters(quiz, obj);
+        var result = quizManager.createQuiz(obj, card);
+
+        //expect(result.question).toBe('____ __ _ ________.');
+        expect(result.accuracyRate).toBe('100%');
+        expect(result.question[0]).toBe('T');
+        expect(result.question[3]).toBe('s');
+        expect(result.question[11]).toBe('u');
+    });
+
     it('should return spaced cloze', function () {
         var quiz = { 'kind': 'cloze', 'question': 'This is a question.' };
         var obj = new MockObject();
@@ -314,6 +332,12 @@ describe('QuizCtrl', function () {
     it('should be good if cloze quiz is correct', function () {
         var quiz = { 'kind': 'cloze', 'answer': 'answer', 'guess': 'answer' };
         expect(quizManager.isCorrect(quiz)).toBeTruthy();
+    });
+
+    it('should be return 3 if index 3 is wrong', function () {
+        var quiz = { 'kind': 'cloze', 'answer': 'answer', 'guess': 'ansver' };
+        expect(quizManager.isCorrect(quiz)).toBeFalsy();
+        expect(quizManager.wrongIndex(quiz)).toBe(3);
     });
 
     it('should be question is answer if close quiz was set', function () {

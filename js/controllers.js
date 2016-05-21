@@ -50,11 +50,6 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         console.assert(uri);
         var quiz = KiiObject.objectWithURI(uri);
 
-        var version = userCard.get("version");
-        if (version == 3) {
-            console.assert(userCard.get("kind"));
-        }
-
         quiz.refresh({
             success: function (theObject) {
                 $scope.$apply(function () {
@@ -94,10 +89,21 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
             quiz.result = "Right!";
             console.assert($.isNumeric(quiz.numCorrectAnswers));
             quiz.numCorrectAnswers++;
+            userCard.set('wrongIndices', []);
         } else {
             quiz.result = quizManager.wrongMessage(quiz);
             console.assert($.isNumeric(quiz.numWrongAnswers));
+            var index = quizManager.wrongIndex(quiz);
+            console.log("wrong index:" + index);
             quiz.numWrongAnswers++;
+            var indices = userCard.get('wrongIndices');
+            if (!indices) {
+                indices = [];
+            }
+            console.assert(indices instanceof Array);
+            indices.push(index);
+
+            userCard.set('wrongIndices', indices);
         }
         quiz.next_due = quizManager.daysBetween(nextInterval);
 
@@ -108,13 +114,9 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         userCard.set("numCorrectAnswers", quiz.numCorrectAnswers);
         userCard.set("numWrongAnswers", quiz.numWrongAnswers);
 
-        var version = userCard.get("version");
-        console.log("version:" + version);
-        if (!version || version < 3) {
-            userCard.set("version", 3);
-            userCard.set("kind", quiz.kind);
-        }
-        console.assert(userCard.get("version") == 3);
+        userCard.set("version", 4);
+        userCard.set("kind", quiz.kind);
+        console.assert(userCard.get("version") == 4);
         console.assert(userCard.get("kind"));
         quizManager.saveUserCard(userCard);
         console.log("result:" + quiz.result);

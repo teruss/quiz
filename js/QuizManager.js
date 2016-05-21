@@ -47,6 +47,7 @@ function QuizManager() {
                 console.log(theObject);
                 console.log("due:" + theObject.get("due"));
                 console.log("quiz:" + theObject.get("quiz"));
+                console.log("wrong indices:" + theObject.get("wrongIndices"));
             },
             failure: function (theObject, errorString) {
                 console.log("Error saving object: " + errorString);
@@ -218,13 +219,21 @@ function QuizManager() {
         var hidingRate = calcHidingRate(userCard);
         var question = "";
         var tokens = answer.split(" ");
-            for (var i = 0; i < tokens.length; i++) {
-                var t = tokens[i];
-                    question += this.hideWord(t, hidingRate);
-                    if (i < tokens.length - 1) {
-                        question += ' ';
-                    }
+        for (var i = 0; i < tokens.length; i++) {
+            var t = tokens[i];
+            question += this.hideWord(t, hidingRate);
+            if (i < tokens.length - 1) {
+                question += ' ';
             }
+        }
+        var array = userCard.get('wrongIndices');
+        if (array) {
+            for (var i = 0; i < array.length; i++) {
+                var index = array[i];
+                question = question.substr(0, index) + answer[index] + question.substr(index + 1);
+            }
+        }
+
         return {
             'question': question,
             'answer': answer,
@@ -351,6 +360,17 @@ function QuizManager() {
         if (quiz.kind === 'number')
             return quiz.number === quiz.guessNumber;
         return $.inArray(quiz.guess, quiz.choices) != -1;
+    };
+
+    this.wrongIndex = function (quiz) {
+        console.assert(quiz.kind === 'cloze');
+        for (var i = 0; i < quiz.answer.length; i++) {
+            if (quiz.answer[i] != quiz.guess[i]) {
+                return i;
+            }
+        }
+        console.assert(false);
+        return -1;
     };
 
     this.setCurrentQuiz = function (quiz) {
