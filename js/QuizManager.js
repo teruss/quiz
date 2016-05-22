@@ -13,7 +13,7 @@ function QuizManager() {
     };
 
     this.updateUserCard = function (quiz, userCard) {
-        userCard.set("version", 3);
+        userCard.set("version", 4);
         userCard.set("kind", quiz.get("kind"));
     };
 

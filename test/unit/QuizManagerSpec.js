@@ -351,7 +351,7 @@ describe('QuizCtrl', function () {
         expect(quiz.question).toBe('question');
     });
 
-    it('should be version 2', function () {
+    it('should be version 4', function () {
         var quiz = { 'kind': 'cloze', 'question': 'This is a question.' };
         var obj = new MockObject();
         
@@ -361,19 +361,19 @@ describe('QuizCtrl', function () {
             success: function (theObject) {
                 var userObject = createUserObject();
                 var userCard = quizManager.createUserCard(theObject, userObject);
-                expect(userCard.get("version")).toBe(3);
+                expect(userCard.get("version")).toBe(4);
                 expect(userCard.get("kind")).toBe("cloze");
 
                 var result = quizManager.createQuiz(theObject, userCard);
 
                 expect(result.answer).toBe('This is a question.');
-                expect(result.version).toBe(3);
+                expect(result.version).toBe(4);
                 expect(result.kind).toBe("cloze");
             }
         });
     });
 
-    it('should be update to version 2', function () {
+    it('should be update to version 4', function () {
         var quiz = { 'kind': 'cloze', 'question': 'This is a question.' };
         var obj = new MockObject();
         var card = new MockObject();
@@ -387,7 +387,7 @@ describe('QuizCtrl', function () {
             success: function (theObject) {
                 var userCard = obj.userCard;
                 quizManager.updateUserCard(obj, userCard);
-                expect(userCard.get("version")).toBe(3);
+                expect(userCard.get("version")).toBe(4);
                 expect(userCard.get("kind")).toBe("cloze");
             }
         });
