@@ -93,17 +93,20 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         } else {
             quiz.result = quizManager.wrongMessage(quiz);
             console.assert($.isNumeric(quiz.numWrongAnswers));
-            var index = quizManager.wrongIndex(quiz);
-            console.log("wrong index:" + index);
-            quiz.numWrongAnswers++;
-            var indices = userCard.get('wrongIndices');
-            if (!indices) {
-                indices = [];
-            }
-            console.assert(indices instanceof Array);
-            indices.push(index);
 
-            userCard.set('wrongIndices', indices);
+            if (quiz.kind === 'cloze') {
+                var index = quizManager.wrongIndex(quiz);
+                console.log("wrong index:" + index);
+                quiz.numWrongAnswers++;
+                var indices = userCard.get('wrongIndices');
+                if (!indices) {
+                    indices = [];
+                }
+                console.assert(indices instanceof Array);
+                indices.push(index);
+
+                userCard.set('wrongIndices', indices);
+            }
         }
         quiz.next_due = quizManager.daysBetween(nextInterval);
 
