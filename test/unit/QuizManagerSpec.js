@@ -389,6 +389,7 @@ describe('QuizCtrl', function () {
                 quizManager.updateUserCard(obj, userCard);
                 expect(userCard.get("version")).toBe(4);
                 expect(userCard.get("kind")).toBe("cloze");
+                expect(userCard.get("wrongIndices")).toEqual([]);
             }
         });
     });

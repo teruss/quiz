@@ -15,6 +15,7 @@ function QuizManager() {
     this.updateUserCard = function (quiz, userCard) {
         userCard.set("version", 4);
         userCard.set("kind", quiz.get("kind"));
+        userCard.set("wrongIndices", []);
     };
 
     this.createUserObject = function () {
@@ -230,7 +231,9 @@ function QuizManager() {
         if (array) {
             for (var i = 0; i < array.length; i++) {
                 var index = array[i];
-                question = question.substr(0, index) + answer[index] + question.substr(index + 1);
+                if (index < question.length) {
+                    question = question.substr(0, index) + answer[index] + question.substr(index + 1);
+                }
             }
         }
 
