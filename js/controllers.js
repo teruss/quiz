@@ -48,7 +48,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         var userCard = userDeck[j];
         var version = userCard.get("version");
         if (version >= 5) {
-            console.log("loading index:" + j);
+            console.log("version 5 loading index:" + j);
             $scope.loading++;
             $scope.quizzes[j] = quizManager.createQuiz(null, userCard);
             if ($scope.loading == $scope.totalQuiz)
@@ -62,7 +62,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         quiz.refresh({
             success: function (theObject) {
                 $scope.$apply(function () {
-                    console.log("loading index:" + j);
+                    console.log("version 4 loading index:" + j);
                     $scope.loading++;
                     $scope.quizzes[j] = quizManager.createQuiz(theObject, userCard);
                     if ($scope.loading == $scope.totalQuiz)
