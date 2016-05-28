@@ -296,8 +296,10 @@ function QuizManager() {
 
     this.createQuiz = function (theObject, userCard) {
         var kind = userCard.get('kind');
+        console.log("userCard kind:" + kind);
         if (!kind) {
             kind = theObject.get('kind');
+            console.log("object kind:" + kind);
         }
         var q = this.createQuizByKind(theObject, userCard, kind);
         var numCorrect = userCard.get('numCorrectAnswers');
