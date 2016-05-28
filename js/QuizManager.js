@@ -236,11 +236,11 @@ function QuizManager() {
 
     this.createClozeQuiz = function (theObject, userCard) {
         var answer = userCard.get('question');
-        if (!answer) {
+        if (theObject) {
             answer = theObject.get('question');
         }
         var hint = userCard.get('hint');
-        if (!hint) {
+        if (theObject) {
             hint = theObject.get('hint');
         }
         var hidingRate = calcHidingRate(userCard);
