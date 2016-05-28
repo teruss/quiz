@@ -12,11 +12,28 @@ function QuizManager() {
         return userCard;
     };
 
+    this.createUserCardByQuiz = function (quiz) {
+        var userCard = this.createUserObject();
+        userCard.set("due", this.currentTicks());
+        userCard.set("interval", 0);
+        userCard.set("suspended", false);
+        this.updateUserCardByQuiz(quiz, userCard);
+        return userCard;
+    };
+
     this.updateUserCard = function (quiz, userCard) {
         userCard.set("version", 4);
         userCard.set("kind", quiz.get("kind"));
         userCard.set("wrongIndices", []);
     };
+
+    this.updateUserCardByQuiz = function (quiz, userCard) {
+        userCard.set("question", quiz.question);
+        userCard.set("hint", quiz.hint);
+        userCard.set("version", 5);
+        userCard.set("kind", "cloze");
+        userCard.set("wrongIndices", []);
+    }
 
     this.createUserObject = function () {
         var userBucket = this.getUserBucket();
@@ -49,6 +66,8 @@ function QuizManager() {
                 console.log("due:" + theObject.get("due"));
                 console.log("quiz:" + theObject.get("quiz"));
                 console.log("wrong indices:" + theObject.get("wrongIndices"));
+                console.log("question:" + theObject.get("question"));
+                console.log("hint:" + theObject.get("hint"));
             },
             failure: function (theObject, errorString) {
                 console.log("Error saving object: " + errorString);
@@ -216,7 +235,14 @@ function QuizManager() {
     };
 
     this.createClozeQuiz = function (theObject, userCard) {
-        var answer = theObject.get('question');
+        var answer = userCard.get('question');
+        if (!answer) {
+            answer = theObject.get('question');
+        }
+        var hint = userCard.get('hint');
+        if (!hint) {
+            hint = theObject.get('hint');
+        }
         var hidingRate = calcHidingRate(userCard);
         var question = "";
         var tokens = answer.split(" ");
@@ -241,7 +267,7 @@ function QuizManager() {
             'question': question,
             'answer': answer,
             'kind': 'cloze',
-            'hint': theObject.get('hint'),
+            'hint': hint,
             'object': theObject,
             'userCard': userCard
         };
@@ -269,7 +295,10 @@ function QuizManager() {
     }
 
     this.createQuiz = function (theObject, userCard) {
-        var kind = theObject.get('kind');
+        var kind = userCard.get('kind');
+        if (!kind) {
+            kind = theObject.get('kind');
+        }
         var q = this.createQuizByKind(theObject, userCard, kind);
         var numCorrect = userCard.get('numCorrectAnswers');
         if (!$.isNumeric(numCorrect))
@@ -312,6 +341,7 @@ function QuizManager() {
     }
 
     this.isValid = function (quiz) {
+        console.log(quiz);
         if (!quiz)
             return false;
         if (quiz.kind === 'free') {

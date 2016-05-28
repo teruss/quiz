@@ -21,15 +21,42 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
     $scope.createQuiz = function (quiz) {
         console.log("create quiz");
         console.log(quiz);
-        var appBucket = quizManager.quizBucket();
-        var obj = appBucket.createObject();
-        saveQuiz(quiz, obj, true);
+        var userCard = quizManager.createUserCardByQuiz(quiz);
+        userCard.save({
+            success: function (theObject) {
+                quizManager.clear(quiz);
+                $scope.$apply(function () {
+                    quizManager.isCreating = false;
+                });
+            },
+            failure: function (theObject, errorString) {
+                console.error(errorString);
+            }
+        });
     };
 
     $scope.editQuiz = function (quiz) {
-        console.assert(quiz.choices instanceof Array);
-        var obj = quiz.object;
-        saveQuiz(quiz, obj, false);
+        //console.assert(quiz.choices instanceof Array);
+        //var obj = quiz.object;
+        //saveQuiz(quiz, obj, false);
+        var userCard0 = quiz.userCard;
+        var userCard = KiiObject.objectWithURI(userCard0.objectURI());
+
+        quizManager.updateUserCardByQuiz(quiz, userCard);
+        userCard.save({
+            success: function (resultUserCard) {
+                console.log("user card was updated!");
+                console.log("due:" + resultUserCard.get("due"));
+                console.log("quiz:" + resultUserCard.get("quiz"));
+                quizManager.clear(quiz);
+                $scope.$apply(function () {
+                    quizManager.isCreating = false;
+                });
+            },
+            failure: function (resultUserCard, errorString) {
+                console.error(errorString);
+            }
+        });
     };
 
     var saveQuiz = function (quiz, obj, isNew) {

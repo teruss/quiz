@@ -46,6 +46,15 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
 
     var refreshQuiz = function (userDeck, j) {
         var userCard = userDeck[j];
+        var version = userCard.get("version");
+        if (version >= 5) {
+            console.log("loading index:" + j);
+            $scope.loading++;
+            $scope.quizzes[j] = quizManager.createQuiz(null, userCard);
+            if ($scope.loading == $scope.totalQuiz)
+                $scope.showLoading = false;
+            return;
+        }
         var uri = userCard.get("quiz");
         console.assert(uri);
         var quiz = KiiObject.objectWithURI(uri);
@@ -119,7 +128,12 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
 
         userCard.set("version", 4);
         userCard.set("kind", quiz.kind);
-        console.assert(userCard.get("version") == 4);
+        if (quiz.kind === "cloze") {
+            userCard.set("version", 5);
+            userCard.set("question", quiz.answer);
+            userCard.set("hint", quiz.hint);
+        }
+        console.assert(userCard.get("version") >= 4);
         console.assert(userCard.get("kind"));
         quizManager.saveUserCard(userCard);
         console.log("result:" + quiz.result);

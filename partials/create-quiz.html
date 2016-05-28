@@ -12,7 +12,7 @@
                         <input class="form-control" id="hint" type="text" ng-model="quiz.hint">
                     </div>
                 </div>
-                <input ng-disabled="!quiz.object || !isValid(quiz)" type="button" ng-click="editQuiz(quiz)" class="btn btn-block" value="Update Quiz">
+                <input ng-disabled="!isValid(quiz)" type="button" ng-click="editQuiz(quiz)" class="btn btn-block" value="Update Quiz">
                 <input ng-disabled="!isValid(quiz)" type="submit" class="btn btn-block" value="Create Quiz">
             </form>
         </div>
