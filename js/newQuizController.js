@@ -36,9 +36,6 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
     };
 
     $scope.editQuiz = function (quiz) {
-        //console.assert(quiz.choices instanceof Array);
-        //var obj = quiz.object;
-        //saveQuiz(quiz, obj, false);
         var userCard0 = quiz.userCard;
         var userCard = KiiObject.objectWithURI(userCard0.objectURI());
 
@@ -105,6 +102,10 @@ quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook',
         if (quizManager.isCreating)
             return false;
         return quizManager.isValid(quiz);
+    }
+
+    $scope.isUpdatable = function (quiz) {
+        return quiz.userCard && this.isValid(quiz);
     }
 
     quizManager.isInvalid = true;
