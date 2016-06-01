@@ -48,12 +48,14 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         var userCard = userDeck[j];
         var version = userCard.get("version");
         if (version >= 5) {
-            console.log("version 5 loading index:" + j);
-            $scope.loading++;
-            $scope.quizzes[j] = quizManager.createQuiz(null, userCard);
-            if ($scope.loading == $scope.totalQuiz)
-                $scope.showLoading = false;
-            return;
+            $scope.$apply(function () {
+                console.log("version 5 loading index:" + j);
+                $scope.loading++;
+                $scope.quizzes[j] = quizManager.createQuiz(null, userCard);
+                if ($scope.loading == $scope.totalQuiz)
+                    $scope.showLoading = false;
+                return;
+            });
         }
         var uri = userCard.get("quiz");
         console.assert(uri);
