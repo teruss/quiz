@@ -54,11 +54,11 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
                 $scope.quizzes[j] = quizManager.createQuiz(null, userCard);
                 if ($scope.loading == $scope.totalQuiz)
                     $scope.showLoading = false;
-                return;
             });
+            return;
         }
         var uri = userCard.get("quiz");
-        console.assert(uri);
+        console.assert(uri, "uri is falsy");
         var quiz = KiiObject.objectWithURI(uri);
 
         quiz.refresh({
