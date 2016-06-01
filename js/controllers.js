@@ -58,6 +58,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
             return;
         }
         var uri = userCard.get("quiz");
+        console.log(uri);
         console.assert(uri, "uri is falsy");
         var quiz = KiiObject.objectWithURI(uri);
 
