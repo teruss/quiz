@@ -14,14 +14,14 @@
                         <span class="sr-only">Error:</span>
                         Update this quiz because the version is old
                     </div>
-                    <pre><code>{{quiz.question}}</code></pre>
-                    <pre ng-show="quiz.kind === 'cloze'"><code>{{quiz.guess}}</code></pre>
                     <p>
                         {{quiz.hint}}
                     </p>
                     <p>
                         Accuracy rate: {{quiz.accuracyRate}}
                     </p>
+                    <pre><code>{{quiz.question}}</code></pre>
+                    <pre ng-show="quiz.kind === 'cloze'"><code>{{quiz.guess}}</code></pre>
                     <div>
                         <form ng-submit="answer(quiz)">
                             <div class="form-group" ng-show="quiz.kind === 'normal'">
