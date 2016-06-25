@@ -211,11 +211,12 @@
             if (Math.random() < hidingRate) {
                 if (/[a-zA-Z0-9]/.test(word[i])) {
                     token += '_';
+                    continue;
                 }
                 if (/[^\x01-\x7E]/.test(word[i])) {
                     token += "＿";
+                    continue;
                 }
-                continue;
             }
 
             token += word[i];
