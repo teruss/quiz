@@ -28,11 +28,8 @@ function QuizManager() {
     };
 
     this.updateUserCardByQuiz = function (quiz, userCard) {
-        userCard.set("question", quiz.question);
-        userCard.set("hint", quiz.hint);
         userCard.set("version", 5);
-        userCard.set("kind", "cloze");
-        userCard.set("wrongIndices", []);
+        this.setParameters(quiz, userCard);
     }
 
     this.createUserObject = function () {
@@ -122,17 +119,25 @@ function QuizManager() {
             obj.set('candidate2', quiz.dummy3);
         } else if (quiz.kind === 'cloze') {
             obj.set('hint', quiz.hint);
+            obj.set("wrongIndices", []);
         } else {
             obj.set("answer", quiz.number);
         }
         obj.set("kind", quiz.kind);
     };
 
+    var getValue = function (key, primary, secondary) {
+        var value = primary.get(key);
+        if (value)
+            return value;
+        return secondary.get(key);
+    };
+
     var createChoiceQuiz = function (theObject, userCard) {
-        var answer = theObject.get('answer');
-        var dummy0 = theObject.get('candidate0');
-        var dummy1 = theObject.get('candidate1');
-        var dummy2 = theObject.get('candidate2');
+        var answer = getValue('answer', userCard, theObject);
+        var dummy0 = getValue('candidate0', userCard, theObject);
+        var dummy1 = getValue('candidate1', userCard, theObject);
+        var dummy2 = getValue('candidate2', userCard, theObject);
         var choices = [answer, dummy0, dummy1, dummy2];
         console.assert(answer);
         if (!answer) {
@@ -149,7 +154,7 @@ function QuizManager() {
         uniqueNames.sort(shuffle);
 
         return {
-            'question': theObject.get("question"),
+            'question': getValue("question", userCard, theObject),
             'kind': 'normal',
             'choices': uniqueNames,
             'answer': answer,
