@@ -7,6 +7,10 @@
                     <textarea class="form-control" id="inputdefault" ng-model="quiz.question" rows="3"></textarea>
                 </div>
                 <div class="form-group">
+                    <label for="inputreference">Reference</label>
+                    <input class="form-control" spellcheck="true" id="inputreference" type="text" ng-model="quiz.reference">
+                </div>
+                <div class="form-group">
                     <label class="radio-inline"><input type="radio" ng-model="quiz.kind" ng-value="'normal'">Choice</label>
                     <label class="radio-inline"><input type="radio" ng-model="quiz.kind" ng-value="'free'">Free</label>
                     <label class="radio-inline"><input type="radio" ng-model="quiz.kind" ng-value="'number'">Number</label>

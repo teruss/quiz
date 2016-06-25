@@ -110,6 +110,7 @@ function QuizManager() {
 
     this.setParameters = function (quiz, obj) {
         obj.set("question", quiz.question);
+        obj.set("reference", quiz.reference);
         if (quiz.kind === 'free') {
             obj.set("answers", quiz.choices);
         } else if (quiz.kind === 'normal') {
@@ -318,6 +319,7 @@ function QuizManager() {
 
         q['accuracyRate'] = accuracyRate(userCard);
         q['version'] = userCard.get('version');
+        q['reference'] = userCard.get('reference');
         return q;
     }
 
@@ -367,6 +369,7 @@ function QuizManager() {
 
     this.clear = function (quiz) {
         quiz.question = '';
+        quiz.reference = '';
         quiz.answer = '';
         quiz.dummy1 = '';
         quiz.dummy2 = '';
