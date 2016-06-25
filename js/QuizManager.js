@@ -213,7 +213,7 @@
                     token += '_';
                     continue;
                 }
-                if (/[^\x01-\x7E]/.test(word[i])) {
+                if (/[^\x01-\x7E・]/.test(word[i])) {
                     token += "＿";
                     continue;
                 }
