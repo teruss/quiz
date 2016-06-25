@@ -169,7 +169,7 @@ function QuizManager() {
     };
 
     var createFreeQuiz = function (theObject, userCard) {
-        var choices = theObject.get('answers');
+        var choices = getValue('answers', userCard, theObject);
         console.assert(choices, 'choices should not be null');
 
         var uniqueNames = [];
@@ -178,7 +178,7 @@ function QuizManager() {
         });
 
         return {
-            'question': theObject.get("question"),
+            'question': getValue("question", userCard, theObject),
             'kind': 'free',
             'choices': uniqueNames,
             'object': theObject,
