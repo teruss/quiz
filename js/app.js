@@ -19,6 +19,10 @@ quizApp.config(['$routeProvider', 'FacebookProvider',
                   templateUrl: 'partials/quiz-list.html',
                   controller: 'ChoiceQuizCtrl'
               }).
+              when('/not-choice-quizzes', {
+                  templateUrl: 'partials/quiz-list.html',
+                  controller: 'NotChoiceQuizCtrl'
+              }).
               when('/free-quizzes', {
                   templateUrl: 'partials/quiz-list.html',
                   controller: 'FreeQuizCtrl'

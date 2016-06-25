@@ -60,6 +60,7 @@
   <ItemGroup>
     <Content Include="Content\jasmine\jasmine.css" />
     <Content Include="Content\jasmine\jasmine_favicon.png" />
+    <Content Include="js\NotChoiceQuizController.js" />
     <Content Include="js\FreeQuizController.js" />
     <Content Include="js\ChoiceQuizController.js" />
     <Content Include="js\ClozeQuizController.js" />
