@@ -61,7 +61,7 @@
                 <div ng-show="quiz.kind === 'cloze'">
                     <div class="form-group">
                         <label for="hint">Hint</label>
-                        <input class="form-control" id="hint" type="text" ng-model="quiz.hint">
+                        <textarea class="form-control" id="hint" type="text" ng-model="quiz.hint" />
                     </div>
                 </div>
                 <input ng-disabled="!isUpdatable(quiz)" type="button" ng-click="editQuiz(quiz)" class="btn btn-block" value="Update Quiz">

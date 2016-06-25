@@ -63,9 +63,6 @@
     <Content Include="js\FreeQuizController.js" />
     <Content Include="js\ChoiceQuizController.js" />
     <Content Include="js\ClozeQuizController.js" />
-    <Content Include="partials\free-quiz-list.html" />
-    <Content Include="partials\choice-quiz-list.html" />
-    <Content Include="partials\cloze-quiz-list.html" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-route.js" />
     <Content Include="Scripts\angular-route.min.js" />
