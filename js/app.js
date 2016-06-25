@@ -12,15 +12,15 @@ quizApp.config(['$routeProvider', 'FacebookProvider',
                   controller: 'QuizCtrl'
               }).
               when('/cloze-quizzes', {
-                  templateUrl: 'partials/cloze-quiz-list.html',
+                  templateUrl: 'partials/quiz-list.html',
                   controller: 'ClozeQuizCtrl'
               }).
               when('/choice-quizzes', {
-                  templateUrl: 'partials/choice-quiz-list.html',
+                  templateUrl: 'partials/quiz-list.html',
                   controller: 'ChoiceQuizCtrl'
               }).
               when('/free-quizzes', {
-                  templateUrl: 'partials/free-quiz-list.html',
+                  templateUrl: 'partials/quiz-list.html',
                   controller: 'FreeQuizCtrl'
               }).
               when('/create', {

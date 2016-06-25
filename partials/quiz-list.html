@@ -18,8 +18,9 @@
                         {{quiz.hint}}
                     </p>
                     <p>
-                        Accuracy rate: {{quiz.accuracyRate}}
+                        Accuracy rate: {{quiz.accuracyRate}} <span ng-show="quiz.reference"> Cite: <cite>{{quiz.reference}}</cite></span>
                     </p>
+
                     <pre><code>{{quiz.question}}</code></pre>
                     <pre ng-show="quiz.kind === 'cloze'"><code>{{quiz.guess}}</code></pre>
                     <div>
