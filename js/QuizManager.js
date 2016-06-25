@@ -1,4 +1,4 @@
-function QuizManager() {
+﻿function QuizManager() {
     this.quizBucket = function () {
         return Kii.bucketWithName("quiz");
     };
@@ -208,11 +208,17 @@ function QuizManager() {
     this.hideWord = function (word, hidingRate) {
         var token = '';
         for (var i = 0; i < word.length; i++) {
-            if (/[a-zA-Z0-9]/.test(word[i]) && (Math.random() < hidingRate)) {
-                token += '_';
-            } else {
-                token += word[i];
+            if (Math.random() < hidingRate) {
+                if (/[a-zA-Z0-9]/.test(word[i])) {
+                    token += '_';
+                }
+                if (/[^\x01-\x7E]/.test(word[i])) {
+                    token += "＿";
+                }
+                continue;
             }
+
+            token += word[i];
         }
 
         if (word == 'muttered') {
