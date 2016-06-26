@@ -129,6 +129,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         userCard.set("numCorrectAnswers", quiz.numCorrectAnswers);
         userCard.set("numWrongAnswers", quiz.numWrongAnswers);
 
+        quizManager.setCurrentQuiz(quiz);
         quizManager.updateUserCardByQuiz(quiz, userCard);
         console.assert(userCard.get("kind"));
         quizManager.saveUserCard(userCard);
