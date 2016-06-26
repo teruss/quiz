@@ -129,14 +129,7 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         userCard.set("numCorrectAnswers", quiz.numCorrectAnswers);
         userCard.set("numWrongAnswers", quiz.numWrongAnswers);
 
-        userCard.set("version", 4);
-        userCard.set("kind", quiz.kind);
-        if (quiz.kind === "cloze") {
-            userCard.set("version", 5);
-            userCard.set("question", quiz.answer);
-            userCard.set("hint", quiz.hint);
-        }
-        console.assert(userCard.get("version") >= 4);
+        quizManager.updateUserCardByQuiz(quiz, userCard);
         console.assert(userCard.get("kind"));
         quizManager.saveUserCard(userCard);
         console.log("result:" + quiz.result);
