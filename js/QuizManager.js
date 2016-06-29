@@ -131,7 +131,9 @@
         var value = primary.get(key);
         if (value)
             return value;
-        return secondary.get(key);
+        if (secondary)
+            return secondary.get(key);
+        return "";
     };
 
     var createChoiceQuiz = function (theObject, userCard) {

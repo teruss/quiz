@@ -35,22 +35,29 @@ quizControllers.controller('ChoiceQuizCtrl', ['$scope', '$window', '$routeParams
         }
     };
 
+    var loadByUserCard = function (userCard, j) {
+        $scope.$apply(function () {
+            console.log("version 5 loading index:" + j);
+            $scope.loading++;
+            $scope.quizzes[j] = quizManager.createQuiz(null, userCard);
+            if ($scope.loading == $scope.totalQuiz)
+                $scope.showLoading = false;
+        });
+    };
+
     var refreshQuiz = function (userDeck, j) {
         var userCard = userDeck[j];
         var version = userCard.get("version");
         if (version >= 5) {
-            $scope.$apply(function () {
-                console.log("version 5 loading index:" + j);
-                $scope.loading++;
-                $scope.quizzes[j] = quizManager.createQuiz(null, userCard);
-                if ($scope.loading == $scope.totalQuiz)
-                    $scope.showLoading = false;
-            });
+            loadByUserCard(userCard, j);
             return;
         }
         var uri = userCard.get("quiz");
         console.log(uri);
-        console.assert(uri, "uri is falsy");
+        if (!uri) {
+            loadByUserCard(userCard, j);
+            return;
+        }
         var quiz = KiiObject.objectWithURI(uri);
 
         quiz.refresh({
