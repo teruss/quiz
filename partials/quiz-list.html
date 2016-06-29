@@ -15,10 +15,10 @@
                         Update this quiz because the version is old
                     </div>
                     <p>
-                        {{quiz.hint}}
+                        {{quiz.hint}}<span ng-show="quiz.reference"> [<cite>{{quiz.reference}}</cite>]</span>
                     </p>
                     <p>
-                        Accuracy rate: {{quiz.accuracyRate}} <span ng-show="quiz.reference"> Cite: <cite>{{quiz.reference}}</cite></span>
+                        Accuracy rate: {{quiz.accuracyRate}}
                     </p>
 
                     <pre><code>{{quiz.question}}</code></pre>
