@@ -130,7 +130,9 @@ quizControllers.controller('QuizCtrl', ['$scope', '$window', '$routeParams', '$l
         userCard.set("numWrongAnswers", quiz.numWrongAnswers);
 
         quizManager.setCurrentQuiz(quiz);
+        var indices = userCard.get('wrongIndices');
         quizManager.updateUserCardByQuiz(quiz, userCard);
+        userCard.set('wrongIndices', indices);
         console.assert(userCard.get("kind"));
         quizManager.saveUserCard(userCard);
         console.log("result:" + quiz.result);
