@@ -20,8 +20,8 @@
                     <p>
                         Accuracy rate: {{quiz.accuracyRate}}
                     </p>
-
-                    <pre><code>{{quiz.question}}</code></pre>
+                    <p ng-show="quiz.kind === 'normal'">{{quiz.question}}</p>
+                    <pre ng-show="quiz.kind != 'normal'"><code>{{quiz.question}}</code></pre>
                     <pre ng-show="quiz.kind === 'cloze'"><code>{{quiz.guess}}</code></pre>
                     <div>
                         <form ng-submit="answer(quiz)">
