@@ -1,6 +1,7 @@
 var quizApp = angular.module('quizApp', [
   'ngRoute',
   'quizControllers',
+  'quizList',
   'facebook'
 ]);
 
@@ -9,6 +10,9 @@ angular.
     config(['$routeProvider', 'FacebookProvider',
 		function config($routeProvider, FacebookProvider) {
 		    $routeProvider.
+                when('/mode/:modeId', {
+                    template: '<quiz-list></quiz-list>'
+                }).
               when('/quizzes', {
                   templateUrl: 'partials/quiz-list.html',
                   controller: 'QuizCtrl'

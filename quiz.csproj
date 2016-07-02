@@ -60,10 +60,13 @@
   <ItemGroup>
     <Content Include="Content\jasmine\jasmine.css" />
     <Content Include="Content\jasmine\jasmine_favicon.png" />
+    <Content Include="js\app.module.js" />
     <Content Include="js\NotChoiceQuizController.js" />
     <Content Include="js\FreeQuizController.js" />
     <Content Include="js\ChoiceQuizController.js" />
     <Content Include="js\ClozeQuizController.js" />
+    <Content Include="quiz-list\quiz-list.component.js" />
+    <Content Include="quiz-list\quiz-list.module.js" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-route.js" />
     <Content Include="Scripts\angular-route.min.js" />
