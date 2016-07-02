@@ -68,7 +68,6 @@
                 console.assert(!(kind == "normal" && hint), "0x00000001 Choise quiz has hint");
                 console.log("version:" + theObject.get("version"));
                 console.log("due:" + theObject.get("due"));
-                console.log("quiz:" + theObject.get("quiz"));
                 console.log("wrong indices:" + theObject.get("wrongIndices"));
                 console.log("question:" + theObject.get("question"));
             },

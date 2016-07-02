@@ -8,7 +8,7 @@
                     <li ng-repeat="mode in modes" class="active"><a href="#/mode/{{mode.path}}">{{mode.name}}</a></li>
                 </ul>
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#/create">Create Quiz</a></li>
+                    <li class="active"><a href="#/edit/new">Create Quiz</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <button type="button" class="btn btn-primary btn-large" data-ng-show="!isLoggedIn" data-ng-disabled="!facebookReady" data-ng-click="IntentLogin()">Login with Facebook</button>

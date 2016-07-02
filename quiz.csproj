@@ -61,6 +61,9 @@
     <Content Include="Content\jasmine\jasmine.css" />
     <Content Include="Content\jasmine\jasmine_favicon.png" />
     <Content Include="js\app.module.js" />
+    <Content Include="quiz-detail\quiz-detail.component.js" />
+    <Content Include="quiz-detail\quiz-detail.module.js" />
+    <Content Include="quiz-detail\quiz-detail.template.html" />
     <Content Include="quiz-list\quiz-list.component.js" />
     <Content Include="quiz-list\quiz-list.module.js" />
     <Content Include="quiz-list\quiz-list.template.html" />
@@ -103,10 +106,7 @@
     <Content Include="js\Facebook.js" />
     <Content Include="js\facebook_sample.js" />
     <Content Include="js\KiiSDK.js" />
-    <Content Include="js\newQuizController.js" />
     <Content Include="js\QuizManager.js" />
-    <Content Include="partials\create-quiz.html" />
-    <Content Include="partials\quiz-list.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

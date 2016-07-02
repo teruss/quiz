@@ -1,7 +1,7 @@
 var quizApp = angular.module('quizApp', [
   'ngRoute',
-  'quizControllers',
   'quizList',
+  'quizDetail',
   'facebook'
 ]);
 
@@ -13,9 +13,8 @@ angular.
                 when('/mode/:modeId', {
                     template: '<quiz-list></quiz-list>'
                 }).
-              when('/create', {
-                  templateUrl: 'partials/create-quiz.html',
-                  controller: 'NewQuizCtrl'
+              when('/edit/:quizId', {
+                  template: '<quiz-detail></quiz-detail>'
               }).
               otherwise({
                   redirectTo: '/mode/quizzes'
