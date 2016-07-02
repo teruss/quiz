@@ -89,6 +89,7 @@
     <Content Include="Views\Jasmine\SpecRunner.cshtml" />
     <Content Include="Scripts\angular-route.min.js.map" />
     <Content Include="Scripts\jquery-2.2.1.min.map" />
+    <Content Include="nav-list\nav-list.template.html" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -99,7 +100,7 @@
   <ItemGroup>
     <Content Include="index.html" />
     <Content Include="js\app.js" />
-    <Content Include="js\controllers.js" />
+    <Content Include="js\nav-list.component.js" />
     <Content Include="js\Facebook.js" />
     <Content Include="js\facebook_sample.js" />
     <Content Include="js\KiiSDK.js" />
