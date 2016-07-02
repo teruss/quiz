@@ -171,8 +171,6 @@
                     quiz.finished = true;
                 };
 
-                $scope.quizBucket = Kii.bucketWithName("quiz");
-
                 $scope.showQuiz = function (quiz) {
                     return quizManager.isVisible(quiz);
                 };

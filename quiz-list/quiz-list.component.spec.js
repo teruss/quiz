@@ -2,7 +2,9 @@
 
 describe('quizList', function () {
 
+    beforeEach(module('quizApp'));
     beforeEach(module('quizList'));
+    beforeEach(module('facebook'));
 
     describe('QuizListController', function () {
         var $httpBackend, ctrl;
@@ -30,7 +32,8 @@ describe('quizList', function () {
         //});
 
         it('should set a default value for the `orderProp` property', function () {
-            expect(ctrl.isAllBlank('_')).toBe(true);
+            var quiz = { 'kind': 'cloze', 'question': '__ __ __ _?' };
+            expect(ctrl.showPreQuestion(quiz)).toBe(false);
         });
     });
 

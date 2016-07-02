@@ -5,6 +5,7 @@ module.exports = function(config) {
     files: [
       'bower_components/angular/angular.js',
       'bower_components/angular-mocks/angular-mocks.js',
+      'bower_components/kii-cloud-sdk/KiiSDK.min.js',
       'lib/angular-facebook.js',
       'lib/angular-facebook-phonegap.js',
       'test/unit/*.spec.js'
