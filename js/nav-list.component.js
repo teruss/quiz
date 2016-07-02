@@ -188,7 +188,6 @@ angular.
 
         controller: function NavListController($scope, $location, $route, Facebook, quizManager) {
 
-
             $scope.$watch(
                 function () { return $scope.isLoggedIn },
                 function (newVal, oldVal) { $scope.isLoggedIn = newVal }

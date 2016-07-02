@@ -4,8 +4,10 @@ var quizApp = angular.module('quizApp', [
   'facebook'
 ]);
 
-quizApp.config(['$routeProvider', 'FacebookProvider',
-		function ($routeProvider, FacebookProvider) {
+angular.
+    module('quizApp').
+    config(['$routeProvider', 'FacebookProvider',
+		function config($routeProvider, FacebookProvider) {
 		    $routeProvider.
               when('/quizzes', {
                   templateUrl: 'partials/quiz-list.html',
@@ -50,6 +52,7 @@ quizApp.config(['$routeProvider', 'FacebookProvider',
 
 		    console.log("init:" + keys.facebookAppId);
 		    FacebookProvider.init(keys.facebookAppId);
-		}]);
+		}
+    ]);
 
 quizApp.service('quizManager', QuizManager);
