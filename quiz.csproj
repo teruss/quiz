@@ -105,7 +105,6 @@
     <Content Include="nav-list\nav-list.component.js" />
     <Content Include="js\Facebook.js" />
     <Content Include="js\facebook_sample.js" />
-    <Content Include="js\KiiSDK.js" />
     <Content Include="js\QuizManager.js" />
     <Content Include="Web.config" />
   </ItemGroup>

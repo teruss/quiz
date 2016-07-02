@@ -158,9 +158,10 @@
                     console.log("edit");
                     quizManager.setCurrentQuiz(quiz);
                     var userCard = quiz.userCard;
-                    var uri = userCard.get("quiz");
-                    console.log(uri);
-                    $location.path('/edit/' + uri);
+                    console.log(userCard);
+                    var id = userCard.getID();
+                    console.log(id);
+                    $location.path('/edit/' + id);
                 };
 
                 $scope.forget = function (quiz) {
