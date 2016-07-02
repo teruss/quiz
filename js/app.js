@@ -13,33 +13,12 @@ angular.
                 when('/mode/:modeId', {
                     template: '<quiz-list></quiz-list>'
                 }).
-              when('/quizzes', {
-                  templateUrl: 'partials/quiz-list.html',
-                  controller: 'QuizCtrl'
-              }).
-              when('/cloze-quizzes', {
-                  templateUrl: 'partials/quiz-list.html',
-                  controller: 'ClozeQuizCtrl'
-              }).
-              when('/choice-quizzes', {
-                  templateUrl: 'partials/quiz-list.html',
-                  controller: 'ChoiceQuizCtrl'
-              }).
-              when('/not-choice-quizzes', {
-                  templateUrl: 'partials/quiz-list.html',
-                  controller: 'NotChoiceQuizCtrl'
-              }).
-              when('/free-quizzes', {
-                  templateUrl: 'partials/quiz-list.html',
-                  controller: 'FreeQuizCtrl'
-              }).
               when('/create', {
                   templateUrl: 'partials/create-quiz.html',
                   controller: 'NewQuizCtrl'
               }).
               otherwise({
-                  //redirectTo: '/r-test'
-                  redirectTo: '/quizzes'
+                  redirectTo: '/mode/quizzes'
               });
 
 		    var sandbox = {

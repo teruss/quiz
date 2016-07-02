@@ -1,3 +1,5 @@
+var quizControllers = angular.module('quizControllers', []);
+
 quizControllers.controller('NewQuizCtrl', ['$scope', '$routeParams', 'Facebook', 'quizManager', function ($scope, $routeParams, Facebook, quizManager) {
 
     Facebook.getLoginStatus(function (response) {
