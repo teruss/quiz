@@ -67,6 +67,7 @@
     <Content Include="js\ClozeQuizController.js" />
     <Content Include="quiz-list\quiz-list.component.js" />
     <Content Include="quiz-list\quiz-list.module.js" />
+    <Content Include="quiz-list\quiz-list.template.html" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-route.js" />
     <Content Include="Scripts\angular-route.min.js" />
