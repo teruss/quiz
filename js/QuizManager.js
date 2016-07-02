@@ -54,7 +54,7 @@
     };
 
     this.saveUserCard = function (userCard) {
-        console.log("saveUserCard:" + userCard);
+        console.assert(!(userCard.get("kind") == "normal" && userCard.get("hint")), "0x00000002 Choise quiz has hint");
 
         userCard.save({
             success: function (theObject) {
@@ -65,7 +65,7 @@
                 var hint = theObject.get("hint");
                 console.log("kind:" + kind);
                 console.log("hint:" + hint);
-                console.assert(!(kind == "normal" && hint), "Choise quiz has hint");
+                console.assert(!(kind == "normal" && hint), "0x00000001 Choise quiz has hint");
                 console.log("version:" + theObject.get("version"));
                 console.log("due:" + theObject.get("due"));
                 console.log("quiz:" + theObject.get("quiz"));
@@ -365,7 +365,6 @@
     }
 
     this.isValid = function (quiz) {
-        console.log(quiz);
         if (!quiz)
             return false;
         if (quiz.kind === 'free') {
