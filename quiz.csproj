@@ -84,7 +84,6 @@
     <Content Include="test\e2e\scenarios.js" />
     <Content Include="test\karma.conf.js" />
     <Content Include="test\protractor-conf.js" />
-    <Content Include="test\unit\controllerSpec.js" />
     <Content Include="test\unit\QuizManagerSpec.js" />
     <Content Include="Views\Jasmine\SpecRunner.cshtml" />
     <Content Include="Scripts\angular-route.min.js.map" />

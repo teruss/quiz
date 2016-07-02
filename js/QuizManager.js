@@ -61,12 +61,16 @@
                 console.log("user card was saved!");
                 console.log(theObject);
                 console.assert(theObject.get("version") == 5, "Version is not 5");
+                var kind = theObject.get("kind");
+                var hint = theObject.get("hint");
+                console.log("kind:" + kind);
+                console.log("hint:" + hint);
+                console.assert(!(kind == "normal" && hint), "Choise quiz has hint");
                 console.log("version:" + theObject.get("version"));
                 console.log("due:" + theObject.get("due"));
                 console.log("quiz:" + theObject.get("quiz"));
                 console.log("wrong indices:" + theObject.get("wrongIndices"));
                 console.log("question:" + theObject.get("question"));
-                console.log("hint:" + theObject.get("hint"));
             },
             failure: function (theObject, errorString) {
                 console.log("Error saving object: " + errorString);
