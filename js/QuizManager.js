@@ -60,6 +60,8 @@
             success: function (theObject) {
                 console.log("user card was saved!");
                 console.log(theObject);
+                console.assert(theObject.get("version") == 5, "Version is not 5");
+                console.log("version:" + theObject.get("version"));
                 console.log("due:" + theObject.get("due"));
                 console.log("quiz:" + theObject.get("quiz"));
                 console.log("wrong indices:" + theObject.get("wrongIndices"));
