@@ -10,7 +10,11 @@ module.exports = function(config){
       'bower_components/angular-facebook/lib/angular-facebook.js',
       'bower_components/jquery/dist/jquery.min.js',
       'js/**/*.js',
-      'test/unit/**/*.js'
+      'test/unit/**/*.js',
+      '**/*.module.js',
+      '*!(.module|.spec).js',
+      '!(bower_components)/**/*!(.module|.spec).js',
+      '**/*.spec.js'
     ],
 
     autoWatch : true,
@@ -21,7 +25,6 @@ module.exports = function(config){
 
     plugins : [
             'karma-chrome-launcher',
-            'karma-firefox-launcher',
             'karma-jasmine'
             ],
 

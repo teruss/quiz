@@ -192,6 +192,17 @@
                     quizManager.isInvalid = false;
                 }
                 quizManager.isInvalid = true;
+
+                var self = this;
+
+                self.showPreQuestion = function (quiz) {
+                    if (quiz.kind === 'cloze') {
+                        if (quizManager.isAllBlank(quiz.question)) {
+                            return false;
+                        }
+                    }
+                    return quiz.kind != 'normal';
+                };
             }
         ]
     });

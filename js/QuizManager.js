@@ -212,6 +212,18 @@
         };
     };
 
+    this.isAllBlank = function (word) {
+        for (var i = 0; i < word.length; i++) {
+            if (/[a-zA-Z0-9]/.test(word[i])) {
+                return false;
+            }
+            if (/[^\x01-\x7E・]/.test(word[i])) {
+                return false;
+            }
+        }
+        return true;
+    };
+
     this.hideWord = function (word, hidingRate) {
         var token = '';
         for (var i = 0; i < word.length; i++) {
