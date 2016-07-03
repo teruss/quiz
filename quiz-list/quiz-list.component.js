@@ -161,6 +161,9 @@
                     console.log(userCard);
                     var id = userCard.getID();
                     console.log(id);
+                    console.log(userCard.objectURI());
+                    quizManager.isInvalid = true;
+
                     $location.path('/edit/' + id);
                 };
 

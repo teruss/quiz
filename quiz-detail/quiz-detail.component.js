@@ -13,16 +13,41 @@ angular.
               });
 
               console.log("new quiz ctrl:" + $scope.isLoggedIn);
-              $scope.quiz = quizManager.currentQuiz;
-              if (!$scope.quiz) {
-                  $scope.quiz = {
-                      'question': '',
-                      'kind': 'normal',
-                      'choices': ['', '', '', '']
+
+                   $scope.quiz = {
+                       'question': '',
+                       'kind': 'normal',
+                       'choices': ['', '', '', '']
                   };
-              }
-              console.log($scope.quiz);
-              quizManager.currentQuiz = null;
+
+
+                quizManager.loginCallbacks = {
+                    success: function (user, network) {
+                        var id = $routeParams.quizId;
+                        console.log("quizId:"+id);
+                        if (id != "new") {
+                            var object = quizManager.getUserBucket().createObjectWithID(id);
+                            object.refresh({
+                                success: function(userCard) {
+                                    $scope.$apply(function () {
+                                        $scope.quiz = quizManager.createQuiz(null, userCard);
+                                    });
+                                },
+                                failure: function(userCard, errorString) {
+                                    console.assert(false, errorString);
+                                }
+                            });
+                        }
+
+                        console.log($scope.quiz);
+                        quizManager.currentQuiz = null;
+                    },
+                    // unable to connect
+                    failure: function (user, network, error) {
+                        console.log("Unable to connect to " + network + ". Reason: " + error);
+                    }
+                };
+
               $scope.createQuiz = function (quiz) {
                   console.log("create quiz");
                   console.log(quiz);
@@ -113,7 +138,11 @@ angular.
                   return quiz.userCard && this.isValid(quiz);
               }
 
-              quizManager.isInvalid = true;
+                if (quizManager.isInvalid) {
+                    quizManager.checkStatus();
+                    quizManager.isInvalid = false;
+                }
+                quizManager.isInvalid = true;
           }
       ]
   });
