@@ -66,11 +66,18 @@ angular.
                 var userCard = KiiObject.objectWithURI(userCard0.objectURI());
 
                 quizManager.updateUserCardByQuiz(quiz, userCard);
-                userCard.save({
+
+                console.log("interval0:" + userCard0.get("interval"));
+                console.log("interval:" + userCard.get("interval"));
+                userCard.set("due", userCard0.get("due"));
+                userCard.set("interval", userCard0.get("interval"));
+                console.log("interval0:" + userCard0.get("interval"));
+                console.log("interval:" + userCard.get("interval"));
+
+                userCard.saveAllFields({
                     success: function (resultUserCard) {
                         console.log("user card was updated!");
                         console.log("due:" + resultUserCard.get("due"));
-                        console.log("quiz:" + resultUserCard.get("quiz"));
                         quizManager.clear(quiz);
                         $scope.$apply(function () {
                             quizManager.isCreating = false;
