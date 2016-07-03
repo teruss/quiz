@@ -22,7 +22,7 @@
     };
 
     this.updateUserCard = function (quiz, userCard) {
-        userCard.set("version", 4);
+        userCard.set("version", 5);
         userCard.set("kind", quiz.get("kind"));
         userCard.set("wrongIndices", []);
     };
@@ -419,8 +419,10 @@
     };
 
     this.wrongMessage = function (quiz) {
-        if (quiz.kind === 'normal' || quiz.kind === 'cloze')
+        if (quiz.kind === 'normal')
             return "Wrong! The answer is: " + quiz.answer;
+        else if (quiz.kind === 'cloze')
+            return "Wrong! The answer is: " + quiz.question;
         else if (quiz.kind === 'number')
             return "Wrong! The answer is: " + quiz.number;
         else
@@ -439,8 +441,8 @@
 
     this.wrongIndex = function (quiz) {
         console.assert(quiz.kind === 'cloze');
-        for (var i = 0; i < quiz.answer.length; i++) {
-            if (quiz.answer[i] != quiz.guess[i]) {
+        for (var i = 0; i < quiz.question.length; i++) {
+            if (quiz.question[i] != quiz.guess[i]) {
                 return i;
             }
         }

@@ -237,8 +237,8 @@ describe('QuizCtrl', function () {
         quizManager.setParameters(quiz, obj);
         var result = quizManager.createQuiz(obj, card);
 
-        expect(result.question).not.toBe('question');
-        expect(result.answer).toBe('question');
+        expect(result.question).toBe('question');
+        expect(result.clozed).not.toBe('question');
         expect(result.kind).toBe('cloze');
         expect(result.hint).toBe('hint');
         expect(result.numCorrectAnswers).toBe(0);
@@ -247,6 +247,7 @@ describe('QuizCtrl', function () {
         expect(result.object).toBe(obj);
         expect(result.userCard).toBe(card);
         expect(result.finished).toBeFalsy();
+        expect(quizManager.wrongMessage(quiz)).toBe("Wrong! The answer is: question");
     });
 
     it('should return accuracy rate', function () {
@@ -330,12 +331,12 @@ describe('QuizCtrl', function () {
     });
 
     it('should be good if cloze quiz is correct', function () {
-        var quiz = { 'kind': 'cloze', 'answer': 'answer', 'guess': 'answer' };
+        var quiz = { 'kind': 'cloze', 'question': 'answer', 'guess': 'answer' };
         expect(quizManager.isCorrect(quiz)).toBeTruthy();
     });
 
     it('should be return 3 if index 3 is wrong', function () {
-        var quiz = { 'kind': 'cloze', 'answer': 'answer', 'guess': 'ansver' };
+        var quiz = { 'kind': 'cloze', 'question': 'answer', 'guess': 'ansver' };
         expect(quizManager.isCorrect(quiz)).toBeFalsy();
         expect(quizManager.wrongIndex(quiz)).toBe(3);
     });
@@ -344,14 +345,14 @@ describe('QuizCtrl', function () {
         var quiz = {};
         quiz.kind = 'cloze';
         quiz.hint = 'モグラの毛皮は柔らかくて手触りが滑らかだ。';
-        quiz.question = 'qu____on';
-        quiz.answer = 'question';
+        quiz.clozed = 'qu____on';
+        quiz.question = 'question';
         quizManager.setCurrentQuiz(quiz);
         expect(quiz.hint).toBe('モグラの毛皮は柔らかくて手触りが滑らかだ。');
         expect(quiz.question).toBe('question');
     });
 
-    it('should be version 4', function () {
+    it('should be version 5', function () {
         var quiz = { 'kind': 'cloze', 'question': 'This is a question.' };
         var obj = new MockObject();
         
@@ -361,19 +362,19 @@ describe('QuizCtrl', function () {
             success: function (theObject) {
                 var userObject = createUserObject();
                 var userCard = quizManager.createUserCard(theObject, userObject);
-                expect(userCard.get("version")).toBe(4);
+                expect(userCard.get("version")).toBe(5);
                 expect(userCard.get("kind")).toBe("cloze");
 
                 var result = quizManager.createQuiz(theObject, userCard);
 
-                expect(result.answer).toBe('This is a question.');
-                expect(result.version).toBe(4);
+                expect(result.question).toBe('This is a question.');
+                expect(result.version).toBe(5);
                 expect(result.kind).toBe("cloze");
             }
         });
     });
 
-    it('should be update to version 4', function () {
+    it('should be update to version 5', function () {
         var quiz = { 'kind': 'cloze', 'question': 'This is a question.' };
         var obj = new MockObject();
         var card = new MockObject();
@@ -387,7 +388,7 @@ describe('QuizCtrl', function () {
             success: function (theObject) {
                 var userCard = obj.userCard;
                 quizManager.updateUserCard(obj, userCard);
-                expect(userCard.get("version")).toBe(4);
+                expect(userCard.get("version")).toBe(5);
                 expect(userCard.get("kind")).toBe("cloze");
                 expect(userCard.get("wrongIndices")).toEqual([]);
             }
