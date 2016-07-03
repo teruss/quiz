@@ -326,8 +326,8 @@ describe('QuizCtrl', function () {
     });
 
     it('should return wrong message', function () {
-        var quiz = { 'kind': 'cloze', 'answer': 'answer' };
-        expect(quizManager.wrongMessage(quiz)).toBe("Wrong! The answer is: " + quiz.answer);
+        var quiz = { 'kind': 'cloze', 'question': 'answer' };
+        expect(quizManager.wrongMessage(quiz)).toBe("Wrong! The answer is: " + quiz.question);
     });
 
     it('should be good if cloze quiz is correct', function () {

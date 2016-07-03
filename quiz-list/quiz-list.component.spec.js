@@ -31,8 +31,8 @@ describe('quizList', function () {
         //    expect(ctrl.orderProp).toBe('age');
         //});
 
-        it('should set a default value for the `orderProp` property', function () {
-            var quiz = { 'kind': 'cloze', 'question': '__ __ __ _?' };
+        it('should turn off hint if it is all blank', function () {
+            var quiz = { 'kind': 'cloze', 'clozed': '__ __ __ _?' };
             expect(ctrl.showPreQuestion(quiz)).toBe(false);
         });
     });
