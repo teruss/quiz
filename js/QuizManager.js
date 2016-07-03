@@ -147,9 +147,9 @@
         var dummy1 = getValue('candidate1', userCard, theObject);
         var dummy2 = getValue('candidate2', userCard, theObject);
         var choices = [answer, dummy0, dummy1, dummy2];
-        console.assert(answer);
+        console.assert(answer, "0x00000002: Answer is not defined");
         if (!answer) {
-            deleteQuiz(theObject);
+            deleteQuiz(theObject, userCard);
             return null;
         }
 
@@ -198,7 +198,7 @@
         var answer = theObject.get('answer');
         console.assert(answer);
         if (!answer) {
-            deleteQuiz(theObject);
+            deleteQuiz(theObject, userCard);
             return null;
         }
 
@@ -313,8 +313,7 @@
         return calcAccuracyRate(numCorrect + 1, numWrong + 1);
     };
 
-    var deleteQuiz = function (theObject) {
-        console.error("it is not valid card");
+    var deleteOne = function(theObject) {
         theObject.delete({
             success: function (theDeletedObject) {
                 console.log("Object deleted!");
@@ -324,6 +323,12 @@
                 console.log("Error deleting object: " + errorString);
             }
         });
+    }
+
+    var deleteQuiz = function (theObject, userCard) {
+        console.error("it is not valid card");
+        if (theObject) deleteOne(theObject);
+        if (userCard) deleteOne(userCard);
     }
 
     this.createQuiz = function (theObject, userCard) {
