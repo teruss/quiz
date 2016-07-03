@@ -462,4 +462,24 @@
         console.assert(delay >= 0);
         return Math.max(86400 * 1000 * 1000 * 10, (interval + delay / 2) * 1.2);
     };
+
+    this.upgradeUserCard = function (quiz, onSuccess) {
+        var userCard0 = quiz.userCard;
+        var userCard = KiiObject.objectWithURI(userCard0.objectURI());
+
+        this.updateUserCardByQuiz(quiz, userCard);
+
+        userCard.set("due", userCard0.get("due"));
+        userCard.set("interval", userCard0.get("interval"));
+
+        userCard.saveAllFields({
+            success: function (resultUserCard) {
+                onSuccess();
+            },
+            failure: function (resultUserCard, errorString) {
+                console.error(errorString);
+            }
+        });
+    };
+
 };

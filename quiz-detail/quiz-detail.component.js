@@ -78,31 +78,13 @@ angular.
             };
 
             $scope.editQuiz = function (quiz) {
-                var userCard0 = quiz.userCard;
-                var userCard = KiiObject.objectWithURI(userCard0.objectURI());
-
-                quizManager.updateUserCardByQuiz(quiz, userCard);
-
-                console.log("interval0:" + userCard0.get("interval"));
-                console.log("interval:" + userCard.get("interval"));
-                userCard.set("due", userCard0.get("due"));
-                userCard.set("interval", userCard0.get("interval"));
-                console.log("interval0:" + userCard0.get("interval"));
-                console.log("interval:" + userCard.get("interval"));
-
-                userCard.saveAllFields({
-                    success: function (resultUserCard) {
-                        $scope.$apply(function () {
-                            console.log("user card was updated!");
-                            console.log("due:" + resultUserCard.get("due"));
-                            quizManager.clear(quiz);
-                            quizManager.isCreating = false;
-                            $location.path('/mode/quizzes');
-                        });
-                    },
-                    failure: function (resultUserCard, errorString) {
-                        console.error(errorString);
-                    }
+                quizManager.upgradeUserCard(quiz, function() {
+                    $scope.$apply(function () {
+                        console.log("user card was updated!");
+                        quizManager.clear(quiz);
+                        quizManager.isCreating = false;
+                        $location.path('/mode/quizzes');
+                    });
                 });
             };
 
