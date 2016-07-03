@@ -161,7 +161,7 @@
         var shuffle = function () { return Math.random() - .5 };
         uniqueNames.sort(shuffle);
 
-        var quiz = {
+        return {
             'question': getValue("question", userCard, theObject),
             'kind': 'normal',
             'choices': uniqueNames,
@@ -173,11 +173,6 @@
             'dummy3': dummy2,
             'finished': false
         };
-        if (getValue('hint', userCard, theObject)) {
-            console.warn("0x00000004: Update old quiz")
-            this.upgradeUserCard(quiz);
-        }
-        return quiz;
     };
 
     var createFreeQuiz = function (theObject, userCard) {
