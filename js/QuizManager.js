@@ -296,8 +296,8 @@
         }
 
         return {
-            'question': question,
-            'answer': answer,
+            'question': answer,
+            'clozed': question,
             'kind': 'cloze',
             'hint': hint,
             'object': theObject,
@@ -428,8 +428,10 @@
     };
 
     this.isCorrect = function (quiz) {
-        if (quiz.kind === 'normal' || quiz.kind === 'cloze')
+        if (quiz.kind === 'normal')
             return quiz.answer === quiz.guess;
+        if (quiz.kind === 'cloze')
+            return quiz.question === quiz.guess;
         if (quiz.kind === 'number')
             return quiz.number === quiz.guessNumber;
         return $.inArray(quiz.guess, quiz.choices) != -1;
@@ -447,8 +449,6 @@
     };
 
     this.setCurrentQuiz = function (quiz) {
-        if (quiz.kind === 'cloze')
-            quiz.question = quiz.answer;
         if (!quiz.choices)
             quiz.choices = ['', '', '', ''];
     };
