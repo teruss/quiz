@@ -69,9 +69,6 @@
     <Content Include="quiz-list\quiz-list.module.js" />
     <Content Include="quiz-list\quiz-list.template.html" />
     <Content Include="packages.config" />
-    <Content Include="test\e2e\scenarios.js" />
-    <Content Include="test\karma.conf.js" />
-    <Content Include="test\protractor-conf.js" />
     <Content Include="test\unit\QuizManagerSpec.js" />
     <Content Include="nav-list\nav-list.template.html" />
     <None Include="Web.Debug.config">
