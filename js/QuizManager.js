@@ -217,7 +217,7 @@
             if (/[a-zA-Z0-9]/.test(word[i])) {
                 return false;
             }
-            if (/[^\x01-\x7E・]/.test(word[i])) {
+            if (/[^\x01-\x7E・＿]/.test(word[i])) {
                 return false;
             }
         }

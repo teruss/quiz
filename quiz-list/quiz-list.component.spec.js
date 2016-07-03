@@ -35,6 +35,11 @@ describe('quizList', function () {
             var quiz = { 'kind': 'cloze', 'clozed': '__ __ __ _?' };
             expect(ctrl.showPreQuestion(quiz)).toBe(false);
         });
+
+        it('should turn off hint if it is all blank in Japanese', function () {
+            var quiz = { 'kind': 'cloze', 'clozed': '＿＿＿' };
+            expect(ctrl.showPreQuestion(quiz)).toBe(false);
+        });
     });
 
 });
