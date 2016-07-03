@@ -141,7 +141,7 @@
         return "";
     };
 
-    var createChoiceQuiz = function (theObject, userCard) {
+    this.createChoiceQuiz = function (theObject, userCard) {
         var answer = getValue('answer', userCard, theObject);
         var dummy0 = getValue('candidate0', userCard, theObject);
         var dummy1 = getValue('candidate1', userCard, theObject);
@@ -153,8 +153,6 @@
             return null;
         }
 
-        console.assert(!getValue('hint', userCard, theObject), "0x00000003: Choice quiz has hint");
-
         var uniqueNames = [];
         $.each(choices, function (i, el) {
             if (el && $.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
@@ -163,7 +161,7 @@
         var shuffle = function () { return Math.random() - .5 };
         uniqueNames.sort(shuffle);
 
-        return {
+        var quiz = {
             'question': getValue("question", userCard, theObject),
             'kind': 'normal',
             'choices': uniqueNames,
@@ -175,6 +173,11 @@
             'dummy3': dummy2,
             'finished': false
         };
+        if (getValue('hint', userCard, theObject)) {
+            console.warn("0x00000004: Update old quiz")
+            this.upgradeUserCard(quiz);
+        }
+        return quiz;
     };
 
     var createFreeQuiz = function (theObject, userCard) {
@@ -374,7 +377,7 @@
 
     this.createQuizByKind = function (theObject, userCard, kind) {
         if (kind === 'normal')
-            return createChoiceQuiz(theObject, userCard);
+            return this.createChoiceQuiz(theObject, userCard);
         if (kind === 'number')
             return createNumberQuiz(theObject, userCard);
         if (kind === 'cloze')
