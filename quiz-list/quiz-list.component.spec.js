@@ -40,6 +40,11 @@ describe('quizList', function () {
             var quiz = { 'kind': 'cloze', 'clozed': '＿＿＿' };
             expect(ctrl.showPreQuestion(quiz)).toBe(false);
         });
+
+        it('should not show pre if it is free', function () {
+            var quiz = { 'kind': 'free' };
+            expect(ctrl.showPreQuestion(quiz)).toBe(false);
+        });
     });
 
 });

@@ -197,6 +197,9 @@
                 var self = this;
 
                 self.showPreQuestion = function (quiz) {
+                    if (quiz.kind === 'free') {
+                        return false;
+                    }
                     if (quiz.kind === 'cloze') {
                         if (quizManager.isAllBlank(quiz.clozed)) {
                             return false;
