@@ -153,6 +153,8 @@
             return null;
         }
 
+        console.assert(!getValue('hint', userCard, theObject), "0x00000003: Choice quiz has hint");
+
         var uniqueNames = [];
         $.each(choices, function (i, el) {
             if (el && $.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
