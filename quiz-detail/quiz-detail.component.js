@@ -14,12 +14,6 @@ angular.
 
             console.log("new quiz ctrl:" + $scope.isLoggedIn);
 
-            $scope.quiz = {
-                'question': '',
-                'kind': 'normal',
-                'choices': ['', '', '', '']
-            };
-
             quizManager.loginCallbacks = {
                 success: function (user, network) {
                     var id = $routeParams.quizId;
@@ -51,6 +45,14 @@ angular.
                             failure: function(userCard, errorString) {
                                 console.assert(false, errorString);
                             }
+                        });
+                    } else {
+                        $scope.$apply(function () {
+                            $scope.quiz = {
+                                'question': '',
+                                'kind': 'normal',
+                                'choices': ['', '', '', '']
+                            };
                         });
                     }
                 },
@@ -137,7 +139,7 @@ angular.
             }
 
             $scope.isUpdatable = function (quiz) {
-                return quiz.userCard && this.isValid(quiz);
+                return quiz && quiz.userCard && this.isValid(quiz);
             }
 
             if (quizManager.isInvalid) {

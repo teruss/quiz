@@ -1,7 +1,7 @@
 ﻿<div class="container">
     <div class="row">
         <div class="col-md-12" ng-show="isLoggedIn">
-            <form ng-submit="createQuiz(quiz)">
+            <form ng-show="quiz" ng-submit="createQuiz(quiz)">
                 <div class="form-group">
                     <label for="inputdefault">Question</label>
                     <textarea class="form-control" id="inputdefault" ng-model="quiz.question" rows="3"></textarea>
