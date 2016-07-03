@@ -446,7 +446,6 @@
             quiz.question = quiz.answer;
         if (!quiz.choices)
             quiz.choices = ['', '', '', ''];
-        this.currentQuiz = quiz;
     };
 
     this.calcInterval = function (interval, due, now, good) {

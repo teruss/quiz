@@ -38,9 +38,6 @@ angular.
                                 }
                             });
                         }
-
-                        console.log($scope.quiz);
-                        quizManager.currentQuiz = null;
                     },
                     // unable to connect
                     failure: function (user, network, error) {
