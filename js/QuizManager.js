@@ -53,6 +53,7 @@
         return new Date((ticks - 621356292000000000) / 10000);
     };
 
+    var self = this;
     this.saveUserCard = function (userCard) {
         console.assert(!(userCard.get("kind") == "normal" && userCard.get("hint")), "0x00000002 Choise quiz has hint");
 
@@ -67,8 +68,8 @@
                 console.log("hint:" + hint);
 
                 if (kind == "normal" && hint) {
-                    var quiz = this.createQuiz(null, userCard);
-                    this.upgradeUserCard(quiz, function() {
+                    var quiz = self.createQuiz(null, userCard);
+                    self.upgradeUserCard(quiz, function() {
                         console.log("user card was upgraded!");
                     });
                 }
