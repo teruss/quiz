@@ -65,7 +65,14 @@
                 var hint = theObject.get("hint");
                 console.log("kind:" + kind);
                 console.log("hint:" + hint);
-                console.assert(!(kind == "normal" && hint), "0x00000001 Choise quiz has hint");
+
+                if (kind == "normal" && hint) {
+                    var quiz = this.createQuiz(null, userCard);
+                    this.upgradeUserCard(quiz, function() {
+                        console.log("user card was upgraded!");
+                    });
+                }
+
                 console.log("version:" + theObject.get("version"));
                 console.log("due:" + theObject.get("due"));
                 console.log("wrong indices:" + theObject.get("wrongIndices"));
