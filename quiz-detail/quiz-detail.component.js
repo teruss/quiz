@@ -30,6 +30,7 @@ angular.
                                         success: function (theObject) {
                                             $scope.$apply(function () {
                                                 $scope.quiz = quizManager.createQuiz(theObject, userCard);
+                                                console.log("question:" + $scope.quiz.question);
                                             });                                    
                                         },
                                         failure: function (theObject, errorString) {
