@@ -374,6 +374,29 @@ describe('QuizCtrl', function () {
         });
     });
 
+    it('should return user card rather than quiz object', function () {
+        var quiz = { 'kind': 'cloze', 'question': 'question', 'hint': 'hint' };
+        var quizObj = { 'kind': 'cloze', 'question': 'question obj', 'hint': 'hint obj' };
+        var obj = new MockObject();
+        var card = new MockObject();
+
+        quizManager.setParameters(quizObj, obj);
+        quizManager.setParameters(quiz, card);
+        var result = quizManager.createQuiz(obj, card);
+
+        expect(result.question).toBe('question');
+        expect(result.clozed).not.toBe('question');
+        expect(result.kind).toBe('cloze');
+        expect(result.hint).toBe('hint');
+        expect(result.numCorrectAnswers).toBe(0);
+        expect(result.numWrongAnswers).toBe(0);
+        expect(result.accuracyRate).toBe('--%');
+        expect(result.object).toBe(obj);
+        expect(result.userCard).toBe(card);
+        expect(result.finished).toBeFalsy();
+        expect(quizManager.wrongMessage(quiz)).toBe("Wrong! The answer is: question");
+    });
+
     it('should be update to version 5', function () {
         var quiz = { 'kind': 'cloze', 'question': 'This is a question.' };
         var obj = new MockObject();

@@ -275,14 +275,8 @@
     };
 
     this.createClozeQuiz = function (theObject, userCard) {
-        var answer = userCard.get('question');
-        if (theObject) {
-            answer = theObject.get('question');
-        }
-        var hint = userCard.get('hint');
-        if (theObject) {
-            hint = theObject.get('hint');
-        }
+        var answer = getValue('question', userCard, theObject);
+        var hint = getValue('hint', userCard, theObject);
         var hidingRate = calcHidingRate(userCard);
         var question = "";
         var tokens = answer.split(" ");
