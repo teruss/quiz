@@ -78,7 +78,7 @@
                 console.log("question:" + theObject.get("question"));
             },
             failure: function (theObject, errorString) {
-                console.log("Error saving object: " + errorString);
+                console.warn("Failed to save object: " + errorString);
             }
         });
     };
