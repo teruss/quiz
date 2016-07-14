@@ -19,8 +19,10 @@
                         Accuracy rate: {{quiz.accuracyRate}}
                     </p>
                     <p ng-show="quiz.kind === 'normal' || quiz.kind === 'free'">{{quiz.question}}</p>
-                    <pre ng-show="$ctrl.showPreQuestion(quiz)"><code ng-show="quiz.kind != 'cloze'">{{quiz.question}}</code><code ng-show="quiz.kind == 'cloze'">{{quiz.clozed}}</code></pre>
-                    <pre ng-show="quiz.kind === 'cloze'"><code>{{quiz.guess}}</code></pre>
+                    <div ng-show="$ctrl.showPreQuestion(quiz)">
+                        <pre><code ng-show="quiz.kind != 'cloze'">{{quiz.question}}</code><code ng-show="quiz.kind == 'cloze'">{{quiz.clozed}}</code></pre>
+                        <pre><code ng-show="quiz.kind === 'cloze'">{{quiz.guess}}</code></pre>
+                    </div>
                     <div>
                         <form ng-submit="answer(quiz)">
                             <div class="form-group" ng-show="quiz.kind === 'normal'">
