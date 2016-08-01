@@ -95,7 +95,7 @@ angular.
                 console.log("forget");
                 var userCard = quiz.userCard;
                 quizManager.deleteUserCard(userCard);
-                quiz.finished = true;
+                $location.path('/mode/quizzes');
             };
 
             var saveQuiz = function (quiz, obj, isNew) {
