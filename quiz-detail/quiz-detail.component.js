@@ -91,6 +91,13 @@ angular.
                 });
             };
 
+            $scope.forgetQuiz = function (quiz) {
+                console.log("forget");
+                var userCard = quiz.userCard;
+                quizManager.deleteUserCard(userCard);
+                quiz.finished = true;
+            };
+
             var saveQuiz = function (quiz, obj, isNew) {
                 console.log("saveQuiz:" + quiz + "," + obj);
                 quizManager.setParameters(quiz, obj);
