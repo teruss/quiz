@@ -1,5 +1,5 @@
 ﻿'use strict';
 
-angular.module('quizDetail', [
+angular.module('cloze', [
     'ngRoute'
 ]);

@@ -2,6 +2,8 @@ var quizApp = angular.module('quizApp', [
   'ngRoute',
   'quizList',
   'quizDetail',
+  'cloze',
+  'core',
   'facebook'
 ]);
 

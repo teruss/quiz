@@ -4,11 +4,11 @@
             <form>
                 <div class="form-group">
                     <label for="inputanswer0">Text</label>
-                    <input class="form-control" spellcheck="true" id="inputanswer0" type="text" ng-model="normalText">
+                    <input class="form-control" spellcheck="true" id="inputanswer0" type="text" ng-model="$ctrl.normalText">
                 </div>
                 <div class="form-group">
                     <label for="inputanotheranswer1">Clozed</label>
-                    <input class="form-control" spellcheck="true" id="inputanotheranswer1" type="text" ng-model="clozedText">
+                    <input class="form-control" ng-readonly="expression" id="inputanotheranswer1" readonly="readonly" type="text" value="{{$ctrl.normalText | cloze}}">
                 </div>
             </form>
         </div>
