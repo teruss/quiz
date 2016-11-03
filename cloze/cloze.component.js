@@ -1,18 +1,13 @@
 ﻿'use strict';
 
 angular.
-  module('quizDetail').
-  component('quizDetail', {
-      templateUrl: 'quiz-detail/quiz-detail.template.html',
+  module('cloze').
+  component('cloze', {
+      templateUrl: 'cloze/cloze.template.html',
       controller: ['$scope', '$routeParams', '$location', 'Facebook', 'quizManager',
           function QuizDetailController($scope, $routeParams, $location, Facebook, quizManager) {
-            Facebook.getLoginStatus(function (response) {
-                if (response.status == 'connected') {
-                    $scope.isLoggedIn = true;
-                }
-            });
 
-            console.log("new quiz ctrl:" + $scope.isLoggedIn);
+            console.log("cloze");
 
             quizManager.loginCallbacks = {
                 success: function (user, network) {
