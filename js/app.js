@@ -16,6 +16,9 @@ angular.
               when('/edit/:quizId', {
                   template: '<quiz-detail></quiz-detail>'
               }).
+              when('/cloze', {
+                  template: '<cloze></cloze>'
+              }).
               otherwise({
                   redirectTo: '/mode/quizzes'
               });

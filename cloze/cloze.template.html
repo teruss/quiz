@@ -1,0 +1,76 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-md-12" ng-show="isLoggedIn">
+            <form ng-show="quiz" ng-submit="createQuiz(quiz)">
+                <div class="form-group">
+                    <label for="inputdefault">Question</label>
+                    <textarea class="form-control" id="inputdefault" ng-model="quiz.question" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="inputreference">Reference</label>
+                    <input class="form-control" spellcheck="true" id="inputreference" type="text" ng-model="quiz.reference">
+                </div>
+                <div class="form-group">
+                    <label class="radio-inline"><input type="radio" ng-model="quiz.kind" ng-value="'normal'">Choice</label>
+                    <label class="radio-inline"><input type="radio" ng-model="quiz.kind" ng-value="'free'">Free</label>
+                    <label class="radio-inline"><input type="radio" ng-model="quiz.kind" ng-value="'number'">Number</label>
+                    <label class="radio-inline"><input type="radio" ng-model="quiz.kind" ng-value="'cloze'">Cloze</label>
+                </div>
+                <div ng-show="quiz.kind === 'free'">
+                    <div class="form-group">
+                        <label for="inputanswer0">Answer</label>
+                        <input class="form-control" spellcheck="true" id="inputanswer0" type="text" ng-model="quiz.choices[0]">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputanotheranswer1">Another Answer 1</label>
+                        <input class="form-control" spellcheck="true" id="inputanotheranswer1" type="text" ng-model="quiz.choices[1]">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputanotheranswer2">Another Answer 2</label>
+                        <input class="form-control" spellcheck="true" id="inputanotheranswer2" type="text" ng-model="quiz.choices[2]">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputwronganswer3">Another Answer 3</label>
+                        <input class="form-control" spellcheck="true" id="inputanotheranswer3" type="text" ng-model="quiz.choices[3]">
+                    </div>
+                </div>
+                <div ng-show="quiz.kind === 'normal'">
+                    <div class="form-group">
+                        <label for="inputanswer">Answer</label>
+                        <input class="form-control" spellcheck="true" id="inputanswer" type="text" ng-model="quiz.answer">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputwronganswer1">Wrong Answer 1</label>
+                        <input class="form-control" spellcheck="true" id="inputwronganswer1" type="text" ng-model="quiz.dummy1">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputwronganswer2">Wrong Answer 2</label>
+                        <input class="form-control" spellcheck="true" id="inputwronganswer2" type="text" ng-model="quiz.dummy2">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputwronganswer3">Wrong Answer 3</label>
+                        <input class="form-control" spellcheck="true" id="inputwronganswer3" type="text" ng-model="quiz.dummy3">
+                    </div>
+                </div>
+                <div ng-show="quiz.kind === 'number'">
+                    <div class="form-group">
+                        <label for="number">Answer</label>
+                        <input class="form-control" id="number" type="number" ng-model="quiz.number">
+                    </div>
+                </div>
+                <div ng-show="quiz.kind === 'cloze'">
+                    <div class="form-group">
+                        <label for="hint">Hint</label>
+                        <textarea class="form-control" id="hint" type="text" ng-model="quiz.hint" />
+                    </div>
+                </div>
+                <input ng-disabled="!isUpdatable(quiz)" type="button" ng-click="editQuiz(quiz)" class="btn btn-block" value="Update Quiz">
+                <input ng-disabled="!isUpdatable(quiz)" type="button" ng-click="forgetQuiz(quiz)" class="btn btn-block" value="Forget Quiz">
+                <input ng-disabled="!isValid(quiz)" type="submit" class="btn btn-block" value="Create Quiz">
+            </form>
+        </div>
+    </div>
+</div>
+<footer class="container-fluid">
+    <small>Copyright (C) 2015 teruss All Rights Reserved.</small>
+</footer>
