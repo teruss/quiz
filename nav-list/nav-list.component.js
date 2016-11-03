@@ -35,7 +35,8 @@ angular.
                 { "path": "cloze-quizzes", "name": "Cloze Quiz List" },
                 { "path": "choice-quizzes", "name": "Choice Quiz List" },
                 { "path": "not-choice-quizzes", "name": "Not Choice Quiz List" },
-                { "path": "free-quizzes", "name": "Free Quiz List" }
+                { "path": "free-quizzes", "name": "Free Quiz List" },
+                { "path": "cloze", "name": "Cloze" }
             ];
 
             /**
