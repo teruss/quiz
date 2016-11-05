@@ -201,12 +201,7 @@
     };
 
     var createNumberQuiz = function (theObject, userCard) {
-        var answer = theObject.get('answer');
-        console.assert(answer);
-        if (!answer) {
-            deleteQuiz(theObject, userCard);
-            return null;
-        }
+        var answer = getValue('answer', userCard, theObject);
 
         return {
             'question': theObject.get("question"),
