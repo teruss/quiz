@@ -204,7 +204,7 @@
         var answer = getValue('answer', userCard, theObject);
 
         return {
-            'question': theObject.get("question"),
+            'question': getValue('question', userCard, theObject),
             'kind': 'number',
             'number': answer,
             'object': theObject,
